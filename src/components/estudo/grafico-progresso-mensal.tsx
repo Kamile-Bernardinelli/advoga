@@ -1,0 +1,98 @@
+"use client";
+
+// Gráfico de progresso mensal: real × meta (anel/barra).
+// Usa RadialBarChart do Recharts para exibir o anel de progresso.
+
+import {
+  RadialBarChart,
+  RadialBar,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import type { SaldoMes } from "@/lib/types/domain";
+
+// ---------------------------------------------------------------------------
+// Tipos
+// ---------------------------------------------------------------------------
+
+interface GraficoProgressoMensalProps {
+  saldoMes: SaldoMes | null;
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function formatarMin(min: number): string {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  if (h === 0) return `${m}min`;
+  if (m === 0) return `${h}h`;
+  return `${h}h${m}min`;
+}
+
+// ---------------------------------------------------------------------------
+// Componente
+// ---------------------------------------------------------------------------
+
+export function GraficoProgressoMensal({ saldoMes }: GraficoProgressoMensalProps) {
+  const realMin  = saldoMes?.realMin ?? 0;
+  const metaMin  = saldoMes?.metaMensalMin ?? null;
+  const pct      = saldoMes?.pctMeta ?? null;
+
+  if (!metaMin || metaMin === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-32 text-center">
+        <p className="text-sm text-gray-400">Sem meta mensal definida.</p>
+        <p className="text-xs text-gray-400 mt-1">
+          Defina abaixo para ver o progresso do contrato.
+        </p>
+      </div>
+    );
+  }
+
+  const pctDisplay = pct ?? Math.round((realMin / metaMin) * 100);
+  const pctCapped  = Math.min(100, pctDisplay);
+  const cor        = pctDisplay >= 100 ? "#22c55e" : pctDisplay >= 60 ? "#3b82f6" : "#f59e0b";
+
+  const chartData = [
+    { name: "Progresso", value: pctCapped, fill: cor },
+  ];
+
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <ResponsiveContainer width="100%" height={160}>
+        <RadialBarChart
+          cx="50%"
+          cy="50%"
+          innerRadius="55%"
+          outerRadius="80%"
+          barSize={14}
+          data={chartData}
+          startAngle={90}
+          endAngle={-270}
+        >
+          <RadialBar
+            background
+            dataKey="value"
+            isAnimationActive={false}
+          />
+          <Tooltip
+            formatter={(value) => [typeof value === "number" ? `${value}%` : `${value}`, "Progresso"]}
+            contentStyle={{ fontSize: 12, borderRadius: 6 }}
+          />
+        </RadialBarChart>
+      </ResponsiveContainer>
+
+      {/* Texto central (sobre o anel) */}
+      <div className="text-center -mt-12 mb-8">
+        <span className="text-2xl font-bold" style={{ color: cor }}>
+          {pctDisplay}%
+        </span>
+        <p className="text-xs text-gray-500 mt-0.5">
+          {formatarMin(realMin)} de {formatarMin(metaMin)}
+        </p>
+      </div>
+    </div>
+  );
+}

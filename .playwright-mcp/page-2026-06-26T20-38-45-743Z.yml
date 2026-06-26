@@ -1,0 +1,88 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: Ambiente de Estudo
+        - navigation [ref=e6]:
+          - link "Plano do dia" [ref=e7] [cursor=pointer]:
+            - /url: /plano
+          - link "Cronograma" [ref=e8] [cursor=pointer]:
+            - /url: /cronograma
+          - link "Registro" [ref=e9] [cursor=pointer]:
+            - /url: /registro
+          - link "Treino" [ref=e10] [cursor=pointer]:
+            - /url: /treino
+    - main [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - heading "Plano do Dia" [level=1] [ref=e14]
+          - paragraph [ref=e15]: 2026-06-26 · Meta, saldo e blocos de hoje
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - generic [ref=e18]:
+              - generic [ref=e19]:
+                - paragraph [ref=e20]: Meta de hoje
+                - generic [ref=e21]:
+                  - generic [ref=e22]: 120min
+                  - button "ajustar" [ref=e23]
+              - generic [ref=e24]:
+                - paragraph [ref=e25]: Hoje
+                - generic [ref=e26]: 45min
+                - paragraph [ref=e27]: −1h15min
+            - paragraph [ref=e28]:
+              - text: Defina uma meta mensal em
+              - link "Cronograma" [ref=e29] [cursor=pointer]:
+                - /url: /cronograma
+              - text: para ver o progresso do contrato.
+          - generic [ref=e30]:
+            - generic [ref=e31]: Blocos de hoje
+            - generic [ref=e32]: 0min / 236min concluídos
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - generic [ref=e35]:
+                - generic [ref=e36]:
+                  - generic [ref=e37]:
+                    - generic [ref=e38]: Conteúdo
+                    - generic [ref=e39]: 59min
+                  - paragraph [ref=e40]: Estatuto da Advocacia e da OAB, Regulamento Geral e Código de Ética e Disciplina
+                - button "Marcar como feito" [ref=e41]
+              - button "▶ Iniciar" [ref=e45]:
+                - generic [ref=e46]: ▶
+                - text: Iniciar
+            - generic [ref=e47]:
+              - generic [ref=e48]:
+                - generic [ref=e49]:
+                  - generic [ref=e50]:
+                    - generic [ref=e51]: Conteúdo
+                    - generic [ref=e52]: 59min
+                  - paragraph [ref=e53]: Direito Civil
+                - button "Marcar como feito" [ref=e54]
+              - button "▶ Iniciar" [ref=e58]:
+                - generic [ref=e59]: ▶
+                - text: Iniciar
+            - generic [ref=e60]:
+              - generic [ref=e61]:
+                - generic [ref=e62]:
+                  - generic [ref=e63]:
+                    - generic [ref=e64]: Conteúdo
+                    - generic [ref=e65]: 59min
+                  - paragraph [ref=e66]: Direito Constitucional
+                - button "Marcar como feito" [ref=e67]
+              - button "▶ Iniciar" [ref=e71]:
+                - generic [ref=e72]: ▶
+                - text: Iniciar
+            - generic [ref=e73]:
+              - generic [ref=e74]:
+                - generic [ref=e75]:
+                  - generic [ref=e76]:
+                    - generic [ref=e77]: Conteúdo
+                    - generic [ref=e78]: 59min
+                  - paragraph [ref=e79]: Direito Penal
+                - button "Marcar como feito" [ref=e80]
+              - button "▶ Iniciar" [ref=e84]:
+                - generic [ref=e85]: ▶
+                - text: Iniciar
+          - link "Registrar sessao manualmente" [ref=e87] [cursor=pointer]:
+            - /url: /registro
+  - button "Open Next.js Dev Tools" [ref=e93] [cursor=pointer]:
+    - img [ref=e94]

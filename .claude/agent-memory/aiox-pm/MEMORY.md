@@ -1,0 +1,1 @@
+- [Advoga — Contexto do Projeto](project_advoga_context.md) — Stack, decisões travadas D-01..D-07, MVP 3 drops, DoD Drop 1, gate de volume ≥ 8 (anti-chute)

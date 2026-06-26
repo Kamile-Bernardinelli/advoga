@@ -1,0 +1,86 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]: Ambiente de Verificação
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - heading "Resultado da Prova" [level=1] [ref=e7]
+          - paragraph [ref=e8]: "Duração: 0h 1min"
+        - generic [ref=e9]:
+          - generic [ref=e10]:
+            - generic [ref=e11]: "0"
+            - generic [ref=e12]: Acertos
+          - generic [ref=e13]:
+            - generic [ref=e14]: "1"
+            - generic [ref=e15]: Erros
+          - generic [ref=e16]:
+            - generic [ref=e17]: 0%
+            - generic [ref=e18]: Acertos geral
+          - generic [ref=e19]:
+            - generic [ref=e20]: "0"
+            - generic [ref=e21]: Anuladas
+        - generic [ref=e22]:
+          - heading "Desempenho por Matéria" [level=2] [ref=e23]
+          - generic [ref=e24]:
+            - generic [ref=e26]:
+              - generic:
+                - status:
+                  - paragraph: Classificação pend…
+                  - list:
+                    - listitem: "Classificação pendente : 0% (0/1)"
+              - application [ref=e27]:
+                - generic [ref=e34]:
+                  - generic [ref=e35]:
+                    - generic [ref=e37]: 0%
+                    - generic [ref=e39]: 25%
+                    - generic [ref=e41]: 50%
+                    - generic [ref=e43]: 75%
+                    - generic [ref=e45]: 100%
+                  - generic [ref=e48]: Classificação pend…
+            - generic [ref=e49]:
+              - generic [ref=e50]: ≥ 70%
+              - generic [ref=e52]: 50–69%
+              - generic [ref=e54]: < 50%
+        - generic [ref=e56]:
+          - heading "Detalhe por Matéria" [level=2] [ref=e57]
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - text: Classificação pendente
+                - generic [ref=e61]: (1 questões)
+              - generic [ref=e62]:
+                - generic [ref=e63]: 0/1
+                - generic [ref=e64]: 0%
+            - generic [ref=e66]:
+              - generic [ref=e67]:
+                - text: Subtema pendente
+                - generic [ref=e68]: amostra insuficiente (1/8 questões)
+              - generic [ref=e69]:
+                - generic [ref=e70]: 0/1
+                - generic [ref=e71]: 0%
+        - generic [ref=e72]:
+          - heading "Revisão Questão-a-Questão" [level=2] [ref=e73]
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]: Questão 1
+              - generic [ref=e79]: Errado
+            - paragraph [ref=e80]: Determinada operação de combate à corrupção conduzida pela Polícia Federal reuniu elementos indicativos de autoria e materialidade da prática de crime por parte de Cláudio, advogado regularmente inscrito na Ordem dos Advogados do Brasil. Com base nesses elementos, a Justiça Federal expediu mandado de busca e apreensão, específico e pormenorizado, o qual foi cumprido, na presença de representante da OAB, no endereço residencial de Cláudio, o qual também lhe servia como local de trabalho. Foram apreendidos e periciados um notebook e dois aparelhos de telefone celular, todos contendo informações sobre diversos processos de clientes patrocinados por Cláudio. A respeito da validade jurídica da diligência realizada e da utilização das informações encontradas nas mídias apreendidas, assinale a afirmativa correta.
+            - generic [ref=e81]:
+              - generic [ref=e82]:
+                - generic [ref=e83]: A)
+                - generic [ref=e84]: A medida cautelar decretada é inválida, uma vez que o Estatuto da Advocacia assegura a inviolabilidade absoluta do escritório ou local de trabalho do advogado, e, portanto, as informações encontradas sobre os clientes de Cláudio não podem ser utilizadas.(Sua resposta)
+              - generic [ref=e85]:
+                - generic [ref=e86]: B)
+                - generic [ref=e87]: Amedida cautelar decretada é válida, porque não foi cumprida no escritório de Cláudio, mas na sua residência, porém as informações encontradas sobre os clientes de Cláudio estão protegidas de modo insuperável pelo Estatuto da Advocacia e, portanto, não podem ser utilizadas.
+              - generic [ref=e88]:
+                - generic [ref=e89]: C)
+                - generic [ref=e90]: A medida cautelar decretada é inválida, tendo em vista a inviolabilidade do escritório ou local de trabalho do advogado, mas as informações encontradas sobre os clientes de Cláudio podem ser utilizadas, caso esses clientes também figurem formalmente como investigados.
+              - generic [ref=e91]:
+                - generic [ref=e92]: D)
+                - generic [ref=e93]: A medida cautelar decretada é válida, e as informações encontradas sobre os clientes de Cláudio poderão ser utilizadas se esses clientes forem formalmente investigados como partícipes ou coautores pela prática do mesmo crime que deu causa à decretação da medida.(Gabarito)
+        - link "Fazer outra prova" [ref=e95] [cursor=pointer]:
+          - /url: /teste
+  - button "Open Next.js Dev Tools" [ref=e101] [cursor=pointer]:
+    - img [ref=e102]
+  - alert [ref=e105]
+  - generic [ref=e106]: Classificação pend…

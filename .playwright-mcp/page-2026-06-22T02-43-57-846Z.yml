@@ -1,0 +1,10 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]: Ambiente de Estudo
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - heading "Plano do Dia" [level=1] [ref=e6]
+        - paragraph [ref=e7]: Informe quantas horas tem disponíveis e o motor distribui as questões priorizando pontos fracos com volume suficiente (gate ≥ 8).
+        - generic [ref=e8]: Controles do planner — a implementar (Drop 1)
+  - button "Open Next.js Dev Tools" [ref=e14] [cursor=pointer]:
+    - img [ref=e15]

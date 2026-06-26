@@ -1,0 +1,15 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - heading "Entrar" [level=1] [ref=e6]
+        - paragraph [ref=e7]: Advoga — plataforma de estudos OAB
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]: Email
+          - textbox "Email" [ref=e11]: kamile@advoga.local
+        - generic [ref=e12]:
+          - generic [ref=e13]: Senha
+          - textbox "Senha" [ref=e14]
+        - button "Entrar" [ref=e15]
+  - alert [ref=e16]

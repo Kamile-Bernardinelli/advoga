@@ -1,0 +1,73 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]: Ambiente de Verificação
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - heading "Dashboard" [level=1] [ref=e6]
+        - generic [ref=e7]:
+          - generic [ref=e8]: "77"
+          - generic [ref=e9]: dias para a prova
+          - generic [ref=e10]: OAB 1ª Fase — 06 de setembro de 2026
+        - generic [ref=e11]:
+          - generic [ref=e12]:
+            - generic [ref=e13]: "81"
+            - generic [ref=e14]: Questões feitas
+          - generic [ref=e15]:
+            - generic [ref=e16]: 59%
+            - generic [ref=e17]: Taxa geral
+          - generic [ref=e18]:
+            - generic [ref=e19]: "2"
+            - generic [ref=e20]: Sessões
+          - generic [ref=e21]:
+            - generic [ref=e22]: –
+            - generic [ref=e23]: Sem dados
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - paragraph [ref=e26]: Última sessão — 2026-06-22
+            - paragraph [ref=e27]: 0/1 acertos (0%)
+          - link "Ver resultado →" [ref=e28] [cursor=pointer]:
+            - /url: /verificacao/resultado/f7379bfe-d885-4081-bd89-b32ecfff1918
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - heading "Acerto por Matéria" [level=2] [ref=e31]
+            - generic [ref=e32]:
+              - application [ref=e35]:
+                - generic [ref=e43]:
+                  - generic [ref=e44]:
+                    - generic [ref=e46]: 0%
+                    - generic [ref=e48]: 25%
+                    - generic [ref=e50]: 50%
+                    - generic [ref=e52]: 75%
+                    - generic [ref=e54]: 100%
+                  - generic [ref=e55]:
+                    - generic [ref=e57]: DireitoPrevidenciário
+                    - generic [ref=e59]: Direito Civil
+                    - generic [ref=e61]: Direito Penal
+                    - generic [ref=e63]: Direito Processuald…
+                    - generic [ref=e65]: Direito Empresarial
+                    - generic [ref=e67]: Direito Administrativo
+                    - generic [ref=e69]: DireitoConstitucional
+                    - generic [ref=e71]: Direito Processual P…
+                    - generic [ref=e73]: Direito do Trabalho
+                    - generic [ref=e75]: Direito Ambiental
+              - paragraph [ref=e76]: Cinza = amostra insuficiente (< 8 questões)
+          - generic [ref=e77]:
+            - heading "Evolução Temporal" [level=2] [ref=e78]
+            - generic [ref=e79]:
+              - application [ref=e82]:
+                - generic [ref=e102]:
+                  - generic [ref=e103]:
+                    - generic [ref=e105]: 06-22
+                    - generic [ref=e107]: 06-22
+                  - generic [ref=e108]:
+                    - generic [ref=e110]: 0%
+                    - generic [ref=e112]: 25%
+                    - generic [ref=e114]: 50%
+                    - generic [ref=e116]: 75%
+                    - generic [ref=e118]: 100%
+                  - generic [ref=e119]: 70%
+              - paragraph [ref=e120]: Linha verde = meta de 70% de acerto
+  - button "Open Next.js Dev Tools" [ref=e126] [cursor=pointer]:
+    - img [ref=e127]
+  - alert [ref=e130]
+  - generic [ref=e131]: 06-22

@@ -1,0 +1,14 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]: Ambiente de Estudo
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - heading "Plano do Dia" [level=1] [ref=e6]
+        - paragraph [ref=e7]: Informe as horas disponíveis. O planner distribui as questões priorizando matérias fracas com volume suficiente (gate ≥ 8) e garante dose de Ética. Matérias sem dados suficientes entram como “medir” — sem afirmação de fraqueza sem dados.
+        - generic [ref=e9]:
+          - generic [ref=e10]:
+            - generic [ref=e11]: Horas disponíveis hoje
+            - spinbutton "Horas disponíveis hoje" [ref=e12]: "3"
+          - button "Gerar plano do dia" [ref=e13]
+  - button "Open Next.js Dev Tools" [ref=e19] [cursor=pointer]:
+    - img [ref=e20]

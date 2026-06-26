@@ -1,0 +1,164 @@
+[
+  {
+    "evento": "Publicacao do Edital",
+    "data": "2026-05-25",
+    "fase": "EDITAL",
+    "fonte": "Anexo V — linha 1 / Secao 6 assinatura"
+  },
+  {
+    "evento": "Inicio do periodo de inscricoes",
+    "data": "2026-06-01",
+    "fase": "INSCRICAO",
+    "fonte": "Anexo V — linha 2 / item 2.1.2"
+  },
+  {
+    "evento": "Fim do periodo de inscricoes",
+    "data": "2026-06-08",
+    "fase": "INSCRICAO",
+    "fonte": "Anexo V — linha 2 / item 2.1.2 (horario: 17h Brasilia)"
+  },
+  {
+    "evento": "Inicio do periodo de solicitacao de isencao da taxa",
+    "data": "2026-06-01",
+    "fase": "INSCRICAO",
+    "fonte": "Anexo V — linha 3 / item 2.6.2"
+  },
+  {
+    "evento": "Fim do periodo de solicitacao de isencao da taxa",
+    "data": "2026-06-08",
+    "fase": "INSCRICAO",
+    "fonte": "Anexo V — linha 3 / item 2.6.2 (horario: 17h Brasilia)"
+  },
+  {
+    "evento": "Resultado preliminar da analise de solicitacoes de isencao da taxa",
+    "data": "2026-07-06",
+    "fase": "INSCRICAO",
+    "fonte": "Anexo V — linha 4 / item 2.6.7"
+  },
+  {
+    "evento": "Prazo recursal contra o resultado preliminar de isencao da taxa",
+    "data": "2026-07-07",
+    "fase": "INSCRICAO",
+    "fonte": "Anexo V — linha 5 / item 2.6.7.2 (0h a 23h59)"
+  },
+  {
+    "evento": "Publicacao do Edital complementar — reaproveitamento da 1a fase",
+    "data": "2026-07-24",
+    "fase": "EDITAL",
+    "fonte": "Anexo V — linha 6 / item 1.2"
+  },
+  {
+    "evento": "Resultado definitivo da analise de solicitacoes de isencao da taxa",
+    "data": "2026-07-29",
+    "fase": "INSCRICAO",
+    "fonte": "Anexo V — linha 7 / item 2.6.8"
+  },
+  {
+    "evento": "Prazo limite para pagamento da taxa de inscricao",
+    "data": "2026-07-31",
+    "fase": "INSCRICAO",
+    "fonte": "Anexo V — linha 8 / item 2.1.2.1 (horario: 17h)"
+  },
+  {
+    "evento": "Divulgacao dos locais de realizacao da prova objetiva",
+    "data": "2026-08-31",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 9 / item 3.1.1.1"
+  },
+  {
+    "evento": "Realizacao da 1a fase — prova objetiva",
+    "data": "2026-09-06",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 10 / item 3.1.1 (13h-18h Brasilia)"
+  },
+  {
+    "evento": "Divulgacao do gabarito preliminar da prova objetiva",
+    "data": "2026-09-06",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 11 / item 5.1 (ate 22h)"
+  },
+  {
+    "evento": "Inicio do prazo recursal contra o gabarito preliminar da 1a fase",
+    "data": "2026-09-08",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 12 / item 5.3 (a partir de 0h)"
+  },
+  {
+    "evento": "Fim do prazo recursal contra o gabarito preliminar da 1a fase",
+    "data": "2026-09-10",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 12 / item 5.3 (ate 23h59)"
+  },
+  {
+    "evento": "Divulgacao do gabarito definitivo e resposta aos recursos da 1a fase",
+    "data": "2026-09-23",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 13 / item 5.1"
+  },
+  {
+    "evento": "Resultado preliminar da 1a fase — prova objetiva",
+    "data": "2026-09-23",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 14 / item 5.1"
+  },
+  {
+    "evento": "Inicio do prazo recursal contra o resultado preliminar da 1a fase — erro material",
+    "data": "2026-09-24",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 15 / item 5.3.1 (a partir de 0h)"
+  },
+  {
+    "evento": "Fim do prazo recursal contra o resultado preliminar da 1a fase — erro material",
+    "data": "2026-09-25",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 15 / item 5.3.1 (ate 23h59)"
+  },
+  {
+    "evento": "Divulgacao do gabarito definitivo e resultado final da 1a fase",
+    "data": "2026-10-05",
+    "fase": "1A_FASE",
+    "fonte": "Anexo V — linha 16"
+  },
+  {
+    "evento": "Divulgacao dos locais de realizacao da prova pratico-profissional",
+    "data": "2026-10-09",
+    "fase": "2A_FASE",
+    "fonte": "Anexo V — linha 17 / item 3.1.2.1"
+  },
+  {
+    "evento": "Realizacao da 2a fase — prova pratico-profissional",
+    "data": "2026-10-18",
+    "fase": "2A_FASE",
+    "fonte": "Anexo V — linha 18 / item 3.1.2 (13h-18h Brasilia)"
+  },
+  {
+    "evento": "Divulgacao do padrao de resposta preliminar da prova pratico-profissional",
+    "data": "2026-10-18",
+    "fase": "2A_FASE",
+    "fonte": "Anexo V — linha 19 / item 5.2 (ate 22h)"
+  },
+  {
+    "evento": "Divulgacao do padrao de respostas definitivo e resultado preliminar da 2a fase",
+    "data": "2026-11-12",
+    "fase": "2A_FASE",
+    "fonte": "Anexo V — linha 20 / item 5.2"
+  },
+  {
+    "evento": "Inicio do prazo recursal do resultado preliminar da 2a fase",
+    "data": "2026-11-13",
+    "fase": "2A_FASE",
+    "fonte": "Anexo V — linha 21 / item 5.3.2 (a partir de 0h)"
+  },
+  {
+    "evento": "Fim do prazo recursal do resultado preliminar da 2a fase",
+    "data": "2026-11-15",
+    "fase": "2A_FASE",
+    "fonte": "Anexo V — linha 21 / item 5.3.2 (ate 23h59)"
+  },
+  {
+    "evento": "Resultado final do Exame — decisao dos recursos",
+    "data": "2026-12-03",
+    "fase": "RESULTADO_FINAL",
+    "fonte": "Anexo V — linha 22"
+  }
+]

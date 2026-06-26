@@ -1,0 +1,11 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "Provas e Simulados" [level=1] [ref=e4]
+    - paragraph [ref=e5]: Selecione uma prova para iniciar. O gabarito fica oculto até você finalizar.
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: OAB 42º Exame
+        - generic [ref=e10]: Prova Oficial · 2024
+      - button "Iniciar Prova" [ref=e12]
+  - button "Open Next.js Dev Tools" [ref=e18] [cursor=pointer]:
+    - img [ref=e19]

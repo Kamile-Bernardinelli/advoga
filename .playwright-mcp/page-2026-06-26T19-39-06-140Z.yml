@@ -1,0 +1,73 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: Ambiente de Estudo
+        - navigation [ref=e6]:
+          - link "Plano do dia" [ref=e7] [cursor=pointer]:
+            - /url: /plano
+          - link "Cronograma" [ref=e8] [cursor=pointer]:
+            - /url: /cronograma
+          - link "Registro" [ref=e9] [cursor=pointer]:
+            - /url: /registro
+          - link "Treino" [ref=e10] [cursor=pointer]:
+            - /url: /treino
+    - main [ref=e11]:
+      - generic [ref=e12]:
+        - heading "Registrar Estudo" [level=1] [ref=e13]
+        - paragraph [ref=e14]: Informe o que estudou, por quanto tempo e onde. O sensor captura seu esforço para cruzar com os resultados das questões.
+        - generic [ref=e15]:
+          - generic [ref=e16]:
+            - generic [ref=e17]: Matéria *
+            - combobox "Matéria *" [ref=e18]:
+              - option "Selecione uma matéria…" [selected]
+              - option "Direito Administrativo"
+              - option "Direito Ambiental"
+              - option "Direito Civil"
+              - option "Direito Constitucional"
+              - option "Direito do Consumidor"
+              - option "Direito do Trabalho"
+              - option "Direito Eleitoral"
+              - option "Direito Empresarial"
+              - option "Direito Financeiro"
+              - option "Direito Internacional"
+              - option "Direito Penal"
+              - option "Direito Previdenciário"
+              - option "Direito Processual Civil"
+              - option "Direito Processual do Trabalho"
+              - option "Direito Processual Penal"
+              - option "Direito Tributário"
+              - option "Direitos Humanos"
+              - option "Estatuto da Advocacia e da OAB, Regulamento Geral e Código…"
+              - option "Estatuto da Criança e do Adolescente (ECA)"
+              - option "Filosofia do Direito"
+          - generic [ref=e19]:
+            - generic [ref=e20]:
+              - generic [ref=e21]: Tipo de estudo
+              - combobox "Tipo de estudo" [ref=e22]:
+                - option "Leitura" [selected]
+                - option "Vídeo"
+                - option "Resumo"
+                - option "Revisão"
+                - option "Questões"
+                - option "Outro"
+            - generic [ref=e23]:
+              - generic [ref=e24]: Local (opcional)
+              - textbox "Local (opcional)" [ref=e25]:
+                - /placeholder: "Ex: casa, faculdade…"
+          - generic [ref=e26]:
+            - generic [ref=e27]: Tempo estudado (minutos) *
+            - spinbutton "Tempo estudado (minutos) *" [ref=e28]
+            - paragraph [ref=e29]: O timer (start/stop) vem na Fatia 2.
+          - generic [ref=e30]:
+            - generic [ref=e31]: Anotação (opcional)
+            - textbox "Anotação (opcional)" [ref=e32]:
+              - /placeholder: O que você estudou? Dificuldades? Próximos passos?
+          - paragraph [ref=e50]: Sessão registrada com sucesso.
+          - button "Registrar sessão" [ref=e33]
+        - generic [ref=e34]:
+          - heading "Registros recentes" [level=2] [ref=e35]
+          - paragraph [ref=e36]: Nenhum registro ainda. Use o formulário acima para começar a capturar seu tempo de estudo.
+  - button "Open Next.js Dev Tools" [ref=e42] [cursor=pointer]:
+    - img [ref=e43]
+  - alert [ref=e46]
