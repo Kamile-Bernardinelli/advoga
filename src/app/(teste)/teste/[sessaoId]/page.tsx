@@ -3,6 +3,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import ProvaRunner from "./prova-runner";
+import { COLUNAS_QUESTAO_PROVA } from "@/lib/teste/colunas-prova";
+import type { Database } from "@/lib/types/db.types";
 
 interface Props {
   params: Promise<{ sessaoId: string }>;
@@ -40,12 +42,19 @@ export default async function ProvaPage({ params }: Props) {
     redirect("/teste");
   }
 
-  // Busca questões via VIEW sem gabarito (fronteira de segurança)
-  const { data: questoesRaw, error: questoesError } = await supabase
+  // Busca questões via VIEW sem gabarito (fronteira de segurança).
+  // COLUNAS_QUESTAO_PROVA é a única fonte de verdade das colunas permitidas — gabarito nunca entra.
+  // O cast explícito preserva a tipagem após o select com string dinâmica.
+  const questoesResult = await supabase
     .from("questoes_prova")
-    .select("id, enunciado, alt_a, alt_b, alt_c, alt_d, num_prova, validade_status, materia_id, subtema_id")
+    .select(COLUNAS_QUESTAO_PROVA.join(", "))
     .eq("exame_id", sessao.exame_id)
     .order("num_prova", { ascending: true });
+
+  const questoesError = questoesResult.error;
+  const questoesRaw = questoesResult.data as
+    | Database["public"]["Views"]["questoes_prova"]["Row"][]
+    | null;
 
   if (questoesError) {
     console.error("[ProvaPage] Erro ao buscar questões:", questoesError);

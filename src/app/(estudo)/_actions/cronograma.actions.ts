@@ -19,6 +19,7 @@ import { createActionClient } from "@/lib/supabase/action";
 import { gerarCronograma as calcularBlocos } from "@/lib/planner/cronograma";
 import type { CronogramaBloco, BlocoStatus, NoDiagnostico } from "@/lib/types/domain";
 import { dataProva } from "@/lib/planner/config";
+import { hojeDoUsuario } from "@/lib/metas/tz-server";
 
 // ---------------------------------------------------------------------------
 // Schemas Zod
@@ -35,8 +36,6 @@ const BlocoStatusSchema = z.enum(["pendente", "em_andamento", "feito"]);
 // ---------------------------------------------------------------------------
 // Helpers internos
 // ---------------------------------------------------------------------------
-
-const hoje = (): string => new Date().toISOString().slice(0, 10);
 
 /** Adiciona N dias a uma data ISO. */
 function addDaysToDate(dateStr: string, days: number): string {
@@ -160,7 +159,7 @@ async function _carregarBlocos(
   userId: string,
   range: "hoje" | "semana"
 ): Promise<CronogramaBloco[]> {
-  const from = hoje();
+  const from = await hojeDoUsuario(client, userId);
   const to   = range === "semana" ? addDaysToDate(from, 6) : from;
 
   const { data, error } = await client
@@ -215,7 +214,7 @@ export async function gerarCronograma(
       return { ok: false, erro: "Usuária não autenticada." };
     }
     const userId  = user.id;
-    const dataHoje = hoje();
+    const dataHoje = await hojeDoUsuario(client, userId);
 
     // 1. Catálogo + diagnóstico em paralelo
     const [materias, diag] = await Promise.all([

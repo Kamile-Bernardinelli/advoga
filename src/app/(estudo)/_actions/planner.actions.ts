@@ -13,6 +13,7 @@
 import { createActionClient } from "@/lib/supabase/action";
 import { gerarPlano, type SubtemaBoost } from "@/lib/planner/planner";
 import type { NoDiagnostico, PlanoDiario } from "@/lib/types/domain";
+import { hojeDoUsuario } from "@/lib/metas/tz-server";
 
 // Tipo raw da view diag_weakness_score (subset dos campos que o planner precisa)
 interface RawWeaknessScore {
@@ -149,7 +150,7 @@ export async function carregarPlanoDoDia(): Promise<PlanoDiario | null> {
 
   if (!user) return null;
 
-  const hoje = new Date().toISOString().slice(0, 10);
+  const hoje = await hojeDoUsuario(client, user.id);
 
   const { data, error } = await client
     .from("plano_diario")
@@ -196,7 +197,7 @@ export async function gerarPlanoDiario(
     }
 
     const userId = user.id;
-    const hoje = new Date().toISOString().slice(0, 10);
+    const hoje = await hojeDoUsuario(client, userId);
 
     // 1. Busca nós de diagnóstico (matéria level)
     const nos = await fetchNosMateria(client, userId);
