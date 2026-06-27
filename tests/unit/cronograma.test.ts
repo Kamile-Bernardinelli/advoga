@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { gerarCronograma } from "@/lib/planner/cronograma";
+import { gerarCronograma, nomeEhEtica } from "@/lib/planner/cronograma";
 import { maxBlocoMin } from "@/lib/planner/config";
 import type { NoDiagnostico } from "@/lib/types/domain";
 
@@ -439,6 +439,170 @@ describe("gerarCronograma — estrutura dos blocos", () => {
       expect(b.minutosAlvo).toBeGreaterThan(0);
       expect(typeof b.ordem).toBe("number");
       expect(b.ordem).toBeGreaterThanOrEqual(0);
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Drop 2.5 — subtema granular + loop de desempenho
+// ---------------------------------------------------------------------------
+
+// IDs de subtema para fixtures
+const SUB_HONORARIOS_ID   = "sub-0000-0000-0000-000000000001";
+const SUB_INFRACTIONS_ID  = "sub-0000-0000-0000-000000000002";
+const SUB_POSSE_ID        = "sub-0000-0000-0000-000000000003";
+const SUB_CONTRATO_ID     = "sub-0000-0000-0000-000000000004";
+const MAT_FALLBACK_ID     = "mat-0000-0000-0000-0000000000b1";
+
+// ---------------------------------------------------------------------------
+// nomeEhEtica — helper exportado
+// ---------------------------------------------------------------------------
+
+describe("nomeEhEtica — helper Drop 2.5", () => {
+  it("detecta nomes que contêm 'ética'", () => {
+    expect(nomeEhEtica("Ética e Estatuto da OAB")).toBe(true);
+    expect(nomeEhEtica("ética profissional")).toBe(true);
+  });
+
+  it("detecta 'estatuto.*oab' (insensível a maiúsculas)", () => {
+    expect(nomeEhEtica("Estatuto da Advocacia e da OAB, Regulamento Geral e Código de Ética e Disciplina")).toBe(true);
+    expect(nomeEhEtica("Estatuto OAB")).toBe(true);
+  });
+
+  it("detecta 'direitos humanos'", () => {
+    expect(nomeEhEtica("Direitos Humanos")).toBe(true);
+  });
+
+  it("detecta 'filosofia do direito'", () => {
+    expect(nomeEhEtica("Filosofia do Direito")).toBe(true);
+  });
+
+  it("não detecta nomes de subtemas de Ética (subtema por si só)", () => {
+    // Subtemas como "Honorários" ou "Infração disciplinar" NÃO casam — é aí que eEtica entra
+    expect(nomeEhEtica("Honorários advocatícios")).toBe(false);
+    expect(nomeEhEtica("Infração disciplinar")).toBe(false);
+    expect(nomeEhEtica("Sociedade de advogados")).toBe(false);
+  });
+
+  it("não detecta matérias comuns", () => {
+    expect(nomeEhEtica("Cumprimento de sentença")).toBe(false);
+    expect(nomeEhEtica("Direito Civil")).toBe(false);
+    expect(nomeEhEtica("Direito Penal")).toBe(false);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Cold-start com nós de subtema
+// ---------------------------------------------------------------------------
+
+describe("gerarCronograma — Drop 2.5 cold-start subtema", () => {
+  // Subtemas de Ética (eEtica=true via matéria-pai) e demais
+  const nosSubtema: NoDiagnostico[] = [
+    // Subtemas de Ética (matéria-pai = Ética)
+    { noId: SUB_HONORARIOS_ID,  noNome: "Honorários advocatícios", eixo: "subtema", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 8,  volumeOk: false, eEtica: true },
+    { noId: SUB_INFRACTIONS_ID, noNome: "Infrações disciplinares", eixo: "subtema", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 6,  volumeOk: false, eEtica: true },
+    // Subtemas comuns
+    { noId: SUB_POSSE_ID,       noNome: "Posse e propriedade",     eixo: "subtema", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 10, volumeOk: false, eEtica: false },
+    { noId: SUB_CONTRATO_ID,    noNome: "Contratos em geral",      eixo: "subtema", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 7,  volumeOk: false, eEtica: false },
+  ];
+
+  it("cold-start subtema: nós ordenados por incidência DESC (Posse=10 antes de Contratos=7)", () => {
+    const blocos = ordenarComoDB(
+      gerarCronograma({ hoje: HOJE, dataProva: PROVA, horasPorDia: 4, nos: nosSubtema })
+    );
+    const idxPosse    = blocos.findIndex((b) => b.noId === SUB_POSSE_ID);
+    const idxContrato = blocos.findIndex((b) => b.noId === SUB_CONTRATO_ID);
+    // Posse (incidência 10) deve aparecer antes de Contratos (7) — EXCETO quando Ética lida
+    expect(idxPosse).toBeLessThan(idxContrato);
+  });
+
+  it("Ética por flag: subtemas com eEtica=true recebem blocos (dose de Ética)", () => {
+    const blocos = gerarCronograma({ hoje: HOJE, dataProva: PROVA, horasPorDia: 4, nos: nosSubtema });
+    const blocosHonorarios = blocos.filter((b) => b.noId === SUB_HONORARIOS_ID);
+    const blocosInfracoes  = blocos.filter((b) => b.noId === SUB_INFRACTIONS_ID);
+    expect(blocosHonorarios.length).toBeGreaterThan(0);
+    expect(blocosInfracoes.length).toBeGreaterThan(0);
+  });
+
+  it("subtema com eEtica=false NÃO cai no pool de Ética (nome não casa ETICA_RE)", () => {
+    // Sem a flag eEtica, "Honorários advocatícios" NÃO seria detectado como Ética.
+    // Usando nós sem flag: verificamos que subtemas sem flag e sem nome-ética são agendados normalmente.
+    const nosSubtemaSemFlag: NoDiagnostico[] = [
+      { noId: SUB_HONORARIOS_ID, noNome: "Honorários advocatícios", eixo: "subtema", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 8,  volumeOk: false /* sem eEtica */ },
+      { noId: SUB_POSSE_ID,      noNome: "Posse e propriedade",     eixo: "subtema", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 10, volumeOk: false /* sem eEtica */ },
+    ];
+    const blocos = gerarCronograma({ hoje: HOJE, dataProva: PROVA, horasPorDia: 4, nos: nosSubtemaSemFlag });
+    const minHonorarios = blocos.filter((b) => b.noId === SUB_HONORARIOS_ID).reduce((s, b) => s + b.minutosAlvo, 0);
+    const minPosse      = blocos.filter((b) => b.noId === SUB_POSSE_ID).reduce((s, b) => s + b.minutosAlvo, 0);
+    // Sem flag, ambos competem normalmente (nenhum recebe a "dose de Ética" garantida)
+    // Posse (incidência 10) deve ter mais minutos que Honorários (8)
+    expect(minPosse).toBeGreaterThanOrEqual(minHonorarios);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Backward-compat: matéria por nome (sem eEtica) ainda cai em Ética
+// ---------------------------------------------------------------------------
+
+describe("gerarCronograma — Drop 2.5 backward-compat matéria Ética por nome", () => {
+  const nosMateria: NoDiagnostico[] = [
+    { noId: ETICA_ID, noNome: "Estatuto da Advocacia e da OAB, Regulamento Geral e Código de Ética e Disciplina", eixo: "materia", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 8, volumeOk: false },
+    { noId: CIVIL_ID, noNome: "Direito Civil", eixo: "materia", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 6, volumeOk: false },
+  ];
+
+  it("matéria de Ética SEM flag eEtica ainda recebe dose de Ética via ETICA_RE (nome)", () => {
+    const blocos = gerarCronograma({ hoje: HOJE, dataProva: PROVA, horasPorDia: 4, nos: nosMateria });
+    const minEtica = blocos.filter((b) => b.noId === ETICA_ID).reduce((s, b) => s + b.minutosAlvo, 0);
+    const N = new Set(blocos.map((b) => b.dataAlvo)).size;
+    const orcamentoTotal = N * 4 * 60;
+    // Ética ainda recebe pelo menos alguma proporção relevante (regressão)
+    expect(minEtica).toBeGreaterThan(orcamentoTotal * 0.05);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Warm subtema: fraqueza re-prioriza acima de cold-start
+// ---------------------------------------------------------------------------
+
+describe("gerarCronograma — Drop 2.5 warm subtema (fraqueza re-prioriza)", () => {
+  it("subtema com nFeitas>=8 e taxa baixa recebe MAIS minutos que subtema de mesma incidência e taxa alta", () => {
+    const SUB_FRACO_ID = "sub-0000-0000-0000-000000000010";
+    const SUB_FORTE_ID = "sub-0000-0000-0000-000000000011";
+
+    const nosWarm: NoDiagnostico[] = [
+      // Fraco: muitas questões feitas, taxa ruim → weaknessScore alto
+      { noId: SUB_FRACO_ID, noNome: "Subtema Fraco", eixo: "subtema", nFeitas: 20, nAcertos: 5, taxa: 0.25, pesoIncidencia: 6, volumeOk: true, eEtica: false },
+      // Forte: mesma incidência, taxa boa → weaknessScore baixo
+      { noId: SUB_FORTE_ID, noNome: "Subtema Forte", eixo: "subtema", nFeitas: 20, nAcertos: 17, taxa: 0.85, pesoIncidencia: 6, volumeOk: true, eEtica: false },
+    ];
+
+    const blocos = gerarCronograma({ hoje: HOJE, dataProva: PROVA, horasPorDia: 4, nos: nosWarm });
+    const minFraco = blocos.filter((b) => b.noId === SUB_FRACO_ID).reduce((s, b) => s + b.minutosAlvo, 0);
+    const minForte = blocos.filter((b) => b.noId === SUB_FORTE_ID).reduce((s, b) => s + b.minutosAlvo, 0);
+
+    // Fraqueza comprovada → mais minutos alocados (re-priorização)
+    expect(minFraco).toBeGreaterThan(minForte);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Mix eixo: subtemas + matérias-fallback preservam eixo correto
+// ---------------------------------------------------------------------------
+
+describe("gerarCronograma — Drop 2.5 mix eixo subtema+materia", () => {
+  it("cada bloco preserva o eixo do nó que o originou", () => {
+    const nosMix: NoDiagnostico[] = [
+      { noId: SUB_POSSE_ID,    noNome: "Posse e propriedade", eixo: "subtema", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 10, volumeOk: false, eEtica: false },
+      { noId: MAT_FALLBACK_ID, noNome: "Direito Tributário",  eixo: "materia", nFeitas: 0, nAcertos: 0, taxa: 0, pesoIncidencia: 5,  volumeOk: false, eEtica: false },
+    ];
+    const blocos = gerarCronograma({ hoje: HOJE, dataProva: PROVA, horasPorDia: 4, nos: nosMix });
+
+    // Blocos de subtema: eixo="subtema"; blocos de matéria: eixo="materia"
+    for (const b of blocos.filter((b) => b.noId === SUB_POSSE_ID)) {
+      expect(b.eixo).toBe("subtema");
+    }
+    for (const b of blocos.filter((b) => b.noId === MAT_FALLBACK_ID)) {
+      expect(b.eixo).toBe("materia");
     }
   });
 });

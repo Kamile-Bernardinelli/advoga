@@ -10,6 +10,10 @@ export interface NoDiagnostico {
   taxa: number;
   pesoIncidencia: number;
   volumeOk: boolean;
+  /** Drop 2.5: nó pertence ao bloco de Ética (≥15% do edital). Em subtemas é
+   *  setado pela action via matéria-pai (o nome do subtema não casa ETICA_RE).
+   *  Opcional → backward-compat: matéria-level continua caindo no ETICA_RE por nome. */
+  eEtica?: boolean;
 }
 
 export interface Questao {

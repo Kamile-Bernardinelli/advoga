@@ -248,20 +248,24 @@ function BlocoCard({ bloco, onStatusChange, onLogged }: BlocoCardProps) {
               <span className="text-xs text-blue-600 font-medium">em andamento</span>
             )}
           </div>
-          <p className="font-medium text-gray-900 text-sm">
-            {bloco.materiaNome ?? bloco.materiaId.slice(0, 8)}
-          </p>
-          {bloco.subtemaNome && (
-            <p className="text-xs text-gray-500 mt-0.5">{bloco.subtemaNome}</p>
+          {bloco.subtemaNome ? (
+            <>
+              <p className="text-xs text-gray-400">{bloco.materiaNome ?? "Matéria"} ›</p>
+              <p className="font-medium text-gray-900 text-sm">{bloco.subtemaNome}</p>
+            </>
+          ) : (
+            <p className="font-medium text-gray-900 text-sm">
+              {bloco.materiaNome ?? bloco.materiaId.slice(0, 8)}
+            </p>
           )}
 
-          {/* Bloco de questões: link para /treino */}
+          {/* Bloco de questões: deep-link p/ treino filtrado por subtema (Drop 2.5) */}
           {bloco.tipo === "questoes" && (
             <Link
-              href="/treino"
+              href={bloco.subtemaId ? `/treino?subtema=${bloco.subtemaId}` : "/treino"}
               className="inline-block mt-2 text-xs text-purple-700 underline underline-offset-2 hover:text-purple-900"
             >
-              Ir para treino de questoes
+              {bloco.subtemaNome ? "Treinar questões deste subtema" : "Ir para treino de questões"}
             </Link>
           )}
         </div>

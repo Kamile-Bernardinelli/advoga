@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import ProvaRunner from "./prova-runner";
 import { COLUNAS_QUESTAO_PROVA } from "@/lib/teste/colunas-prova";
+import { treinoSubtemaLimite as TREINO_SUBTEMA_LIMITE } from "@/lib/planner/config";
 import type { Database } from "@/lib/types/db.types";
 
 interface Props {
@@ -19,10 +20,10 @@ export default async function ProvaPage({ params }: Props) {
     redirect("/login");
   }
 
-  // Verifica se a sessão existe e pertence ao usuário
+  // Verifica se a sessão existe e pertence ao usuário (inclui subtema_id p/ branch de carga)
   const { data: sessao, error: sessaoError } = await supabase
     .from("sessoes")
-    .select("id, exame_id, tipo, inicio, fim")
+    .select("id, exame_id, subtema_id, tipo, inicio, fim")
     .eq("id", sessaoId)
     .eq("user_id", user.id)
     .single();
@@ -36,20 +37,29 @@ export default async function ProvaPage({ params }: Props) {
     redirect(`/resultado/${sessaoId}`);
   }
 
-  // exame_id é nullable no schema (FK opcional), mas sessões ativas sempre têm exame_id.
-  // Guard defensivo: se por algum motivo for null, redireciona.
-  if (!sessao.exame_id) {
+  // Busca questões via VIEW sem gabarito (fronteira de segurança).
+  // COLUNAS_QUESTAO_PROVA é a única fonte de verdade das colunas permitidas — gabarito nunca entra.
+  // Branch: exame_id → prova/simulado completo; subtema_id → treino focado.
+  // O cast explícito preserva a tipagem após o select com string dinâmica.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let questoesQuery: any = supabase
+    .from("questoes_prova")
+    .select(COLUNAS_QUESTAO_PROVA.join(", "));
+
+  if (sessao.exame_id) {
+    questoesQuery = questoesQuery
+      .eq("exame_id", sessao.exame_id)
+      .order("num_prova", { ascending: true });
+  } else if (sessao.subtema_id) {
+    questoesQuery = questoesQuery
+      .eq("subtema_id", sessao.subtema_id)
+      .order("num_prova", { ascending: true })
+      .limit(TREINO_SUBTEMA_LIMITE);
+  } else {
     redirect("/teste");
   }
 
-  // Busca questões via VIEW sem gabarito (fronteira de segurança).
-  // COLUNAS_QUESTAO_PROVA é a única fonte de verdade das colunas permitidas — gabarito nunca entra.
-  // O cast explícito preserva a tipagem após o select com string dinâmica.
-  const questoesResult = await supabase
-    .from("questoes_prova")
-    .select(COLUNAS_QUESTAO_PROVA.join(", "))
-    .eq("exame_id", sessao.exame_id)
-    .order("num_prova", { ascending: true });
+  const questoesResult = await questoesQuery;
 
   const questoesError = questoesResult.error;
   const questoesRaw = questoesResult.data as

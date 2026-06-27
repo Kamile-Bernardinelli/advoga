@@ -110,6 +110,49 @@ export async function saveResposta(
   return { ok: true };
 }
 
+// ─── startTreinoSubtema ───────────────────────────────────────────────────────
+
+const StartTreinoSubtemaSchema = z.object({ subtemaId: z.string().uuid() });
+
+/** Cria sessão tipo=treino escopada por subtema (exame_id=NULL). Loop do cronograma. */
+export async function startTreinoSubtema(
+  subtemaId: string
+): Promise<{ sessaoId: string } | { error: string }> {
+  const parsed = StartTreinoSubtemaSchema.safeParse({ subtemaId });
+  if (!parsed.success) return { error: "Subtema inválido." };
+
+  const supabase = await createActionClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) return { error: "Usuário não autenticado." };
+
+  // Guard de honestidade: só cria sessão se houver questão respondível (anti-treino-vazio)
+  const { count } = await supabase
+    .from("questoes_prova")
+    .select("id", { count: "exact", head: true })
+    .eq("subtema_id", parsed.data.subtemaId);
+  if (!count || count === 0) {
+    return { error: "Ainda não há questões disponíveis deste subtema." };
+  }
+
+  const { data, error } = await supabase
+    .from("sessoes")
+    .insert({
+      user_id:    user.id,
+      tipo:       "treino",
+      exame_id:   null,
+      subtema_id: parsed.data.subtemaId,
+      inicio:     new Date().toISOString(),
+    })
+    .select("id")
+    .single();
+
+  if (error || !data) {
+    console.error("[startTreinoSubtema] Erro:", error);
+    return { error: "Erro ao iniciar treino. Tente novamente." };
+  }
+  return { sessaoId: data.id };
+}
+
 // ─── finalizeSession ──────────────────────────────────────────────────────────
 
 const FinalizeSchema = z.object({

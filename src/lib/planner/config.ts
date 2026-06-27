@@ -64,3 +64,8 @@ export const minutosTetoCompensacao = Math.round(metaBaseDiariaDefaultMin * fato
 export const taxaBoaEsforco = 0.6;
 /** Minutos a partir dos quais o esforço é "alto" (2× o gate de tempo de 60min). Calibrável. */
 export const tempoAltoEsforcoMin = 120;
+
+// --- Loop de Desempenho (Drop 2.5) --- APPEND
+/** Máx. de questões carregadas num treino de subtema. Cobre o pool dos top subtemas (7–14)
+ *  com folga; calibrável. Subtemas com >limite questões: futuro "menos-recentes primeiro". */
+export const treinoSubtemaLimite = 30;

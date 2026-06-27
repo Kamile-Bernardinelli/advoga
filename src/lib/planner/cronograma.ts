@@ -83,6 +83,11 @@ export interface CronogramaInput {
 /** Regex para identificar matérias de Ética/CED/DH/Filosofia (padrão da casa de planner.ts). */
 const ETICA_RE = /ética|estatuto.*oab|direitos.humanos|filosofia.do.direito/i;
 
+/** Drop 2.5: a action usa isto sobre o NOME DA MATÉRIA-PAI p/ marcar subtemas de Ética. */
+export function nomeEhEtica(nome: string): boolean {
+  return ETICA_RE.test(nome);
+}
+
 /** Soma days a uma data ISO e devolve nova data ISO. */
 function addDays(dateStr: string, days: number): string {
   const d = new Date(dateStr + "T00:00:00");
@@ -180,9 +185,11 @@ export function gerarCronograma(input: CronogramaInput): CronogramaBlocoGerado[]
 
   // -------------------------------------------------------------------------
   // 2. SEPARAR ÉTICA DOS DEMAIS
+  //    Drop 2.5: flag explícita (subtema) com fallback p/ nome (matéria), backward-compat.
   // -------------------------------------------------------------------------
-  const nosEtica = input.nos.filter((n) => ETICA_RE.test(n.noNome));
-  const nosRest  = input.nos.filter((n) => !ETICA_RE.test(n.noNome));
+  const isEtica = (n: NoDiagnostico): boolean => n.eEtica ?? ETICA_RE.test(n.noNome);
+  const nosEtica = input.nos.filter(isEtica);
+  const nosRest  = input.nos.filter((n) => !isEtica(n));
 
   // -------------------------------------------------------------------------
   // 3. DOSE GARANTIDA DE ÉTICA (regra ≥15% do edital — Ética/CED/DH/Filosofia)

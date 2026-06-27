@@ -4,6 +4,7 @@
 // Agrupa blocos por data_alvo e permite marcar como feito.
 
 import { useTransition } from "react";
+import Link from "next/link";
 import { marcarBlocoFeito } from "@/app/(estudo)/_actions/cronograma.actions";
 import type { CronogramaBloco, BlocoStatus } from "@/lib/types/domain";
 
@@ -78,11 +79,26 @@ function BlocoCard({ bloco, onStatusChange }: BlocoCardProps) {
 
         {/* Conteúdo do bloco */}
         <div className="min-w-0">
-          <p className={`text-sm font-medium truncate ${isFeito ? "line-through text-gray-400" : "text-gray-900"}`}>
-            {bloco.materiaNome ?? bloco.materiaId}
-          </p>
-          {bloco.subtemaNome && (
-            <p className="text-xs text-gray-500 truncate">{bloco.subtemaNome}</p>
+          {bloco.subtemaNome ? (
+            <>
+              <p className="text-xs text-gray-400 truncate">{bloco.materiaNome ?? "Matéria"} ›</p>
+              <p className={`text-sm font-medium truncate ${isFeito ? "line-through text-gray-400" : "text-gray-900"}`}>
+                {bloco.subtemaNome}
+              </p>
+            </>
+          ) : (
+            <p className={`text-sm font-medium truncate ${isFeito ? "line-through text-gray-400" : "text-gray-900"}`}>
+              {bloco.materiaNome ?? bloco.materiaId}
+            </p>
+          )}
+          {/* Deep-link para treino filtrado por subtema (Drop 2.5) */}
+          {bloco.tipo === "questoes" && bloco.subtemaId && (
+            <Link
+              href={`/treino?subtema=${bloco.subtemaId}`}
+              className="inline-block mt-1 text-xs text-purple-700 underline underline-offset-2 hover:text-purple-900"
+            >
+              Treinar questões
+            </Link>
           )}
         </div>
       </div>

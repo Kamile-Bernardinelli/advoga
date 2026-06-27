@@ -16,7 +16,7 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createActionClient } from "@/lib/supabase/action";
-import { gerarCronograma as calcularBlocos } from "@/lib/planner/cronograma";
+import { gerarCronograma as calcularBlocos, nomeEhEtica } from "@/lib/planner/cronograma";
 import type { CronogramaBloco, BlocoStatus, NoDiagnostico } from "@/lib/types/domain";
 import { dataProva } from "@/lib/planner/config";
 import { hojeDoUsuario } from "@/lib/metas/tz-server";
@@ -74,6 +74,26 @@ interface RawBlocoRow {
   created_at: string;
   updated_at: string;
   materias: { nome: string } | null;
+  subtemas: { nome: string } | null;
+}
+
+// --- Raw rows de subtema (Drop 2.5) ---
+
+interface RawIncidenciaSubtema {
+  subtema_id: string;
+  subtema_nome: string;
+  materia_id: string;
+  materia_nome: string;
+  n_questoes: number;
+  n_disponiveis: number;
+}
+
+interface RawDiagSubtema {
+  no_id: string | null;        // = subtema_id::text
+  n_feitas: number | null;
+  n_acertos: number | null;
+  taxa: number | null;
+  amostra_suficiente: boolean | null;
 }
 
 /** Busca todas as matérias do catálogo (leitura authenticated). */
@@ -105,6 +125,80 @@ async function fetchDiagMateria(
 
   if (error) throw new Error(`fetchDiagMateria: ${error.message}`);
   return (data ?? []) as RawDiagNo[];
+}
+
+/** Incidência de subtema (fato do corpus — sem user_id). Universo de subtemas COBRADOS. */
+async function fetchIncidenciaSubtema(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  client: any
+): Promise<RawIncidenciaSubtema[]> {
+  const { data, error } = await client
+    .from("v_incidencia_subtema")
+    .select("subtema_id, subtema_nome, materia_id, materia_nome, n_questoes, n_disponiveis");
+  if (error) throw new Error(`fetchIncidenciaSubtema: ${error.message}`);
+  return (data ?? []) as RawIncidenciaSubtema[];
+}
+
+/** Desempenho da usuária por subtema (cold-start = []). */
+async function fetchDiagSubtema(
+  client: Awaited<ReturnType<typeof createActionClient>>,
+  userId: string
+): Promise<RawDiagSubtema[]> {
+  const { data, error } = await client
+    .from("diag_por_no")
+    .select("no_id, n_feitas, n_acertos, taxa, amostra_suficiente")
+    .eq("user_id", userId)
+    .eq("eixo", "subtema");
+  if (error) throw new Error(`fetchDiagSubtema: ${error.message}`);
+  return (data ?? []) as RawDiagSubtema[];
+}
+
+/**
+ * Constrói NoDiagnostico[] de subtema (universo = subtemas cobrados) e o mapa
+ * subtema_id → materia_id (p/ persistir materia_id, que é NOT NULL na tabela).
+ * Cold-start: subtema sem histórico entra com nFeitas=0 → incidência pura.
+ */
+function buildSubtemaNos(
+  incidencia: RawIncidenciaSubtema[],
+  diag: RawDiagSubtema[]
+): { nos: NoDiagnostico[]; subtemaParent: Map<string, string>; materiasComSubtema: Set<string> } {
+  const diagMap = new Map<string, RawDiagSubtema>(
+    diag.filter((d) => d.no_id).map((d) => [d.no_id!, d])
+  );
+  const subtemaParent = new Map<string, string>();
+  const materiasComSubtema = new Set<string>();
+
+  const nos: NoDiagnostico[] = incidencia.map((inc) => {
+    const d = diagMap.get(inc.subtema_id);
+    subtemaParent.set(inc.subtema_id, inc.materia_id);
+    materiasComSubtema.add(inc.materia_id);
+    return {
+      noId:           inc.subtema_id,
+      noNome:         inc.subtema_nome,
+      eixo:           "subtema",
+      nFeitas:        d?.n_feitas  ?? 0,
+      nAcertos:       d?.n_acertos ?? 0,
+      taxa:           Number(d?.taxa ?? 0),
+      pesoIncidencia: inc.n_questoes,                  // D-A: COUNT bruto
+      volumeOk:       d?.amostra_suficiente ?? false,
+      eEtica:         nomeEhEtica(inc.materia_nome),   // D-C: por matéria-pai
+    };
+  });
+
+  return { nos, subtemaParent, materiasComSubtema };
+}
+
+/** Matérias sem nenhum subtema cobrado → nós matéria-level (capability preservation). */
+function buildFallbackMateriaNos(
+  materias: RawMateria[],
+  diagMateria: RawDiagNo[],
+  materiasComSubtema: Set<string>
+): NoDiagnostico[] {
+  const semSubtema = materias.filter((m) => !materiasComSubtema.has(m.id));
+  return mergeNos(semSubtema, diagMateria).map((n) => ({
+    ...n,
+    eEtica: nomeEhEtica(n.noNome),   // nome da própria matéria
+  }));
 }
 
 /**
@@ -147,6 +241,7 @@ function rowToBloco(row: RawBlocoRow): CronogramaBloco {
     createdAt:   row.created_at,
     updatedAt:   row.updated_at,
     materiaNome: row.materias?.nome ?? undefined,
+    subtemaNome: row.subtemas?.nome ?? undefined,
   };
 }
 
@@ -167,7 +262,7 @@ async function _carregarBlocos(
     .select(
       "id, user_id, data_alvo, materia_id, subtema_id, tipo, minutos_alvo, " +
       "status, ordem, origem, created_at, updated_at, " +
-      "materias:materia_id(nome)"
+      "materias:materia_id(nome), subtemas:subtema_id(nome)"
     )
     .eq("user_id", userId)
     .gte("data_alvo", from)
@@ -216,14 +311,19 @@ export async function gerarCronograma(
     const userId  = user.id;
     const dataHoje = await hojeDoUsuario(client, userId);
 
-    // 1. Catálogo + diagnóstico em paralelo
-    const [materias, diag] = await Promise.all([
+    // 1. Fetches em paralelo: incidência subtema + diag subtema + catálogo + diag matéria
+    const [incidencia, diagSubtema, materias, diagMateria] = await Promise.all([
+      fetchIncidenciaSubtema(client),
+      fetchDiagSubtema(client, userId),
       fetchMaterias(client),
       fetchDiagMateria(client, userId),
     ]);
 
-    // 2. Merge cold-start → NoDiagnostico[]
-    const nos = mergeNos(materias, diag);
+    // 2. Nós de subtema (primários) + fallback de matéria (sem subtema cobrado)
+    const { nos: subtemaNos, subtemaParent, materiasComSubtema } =
+      buildSubtemaNos(incidencia, diagSubtema);
+    const fallbackNos = buildFallbackMateriaNos(materias, diagMateria, materiasComSubtema);
+    const nos: NoDiagnostico[] = [...subtemaNos, ...fallbackNos];
 
     // 3a. Carrega metas da usuária para montar metaPorDiaMin + diasEstudo (§4.3 v2)
     //     Fallback gracioso: se sem metas, usa horasPorDia escalar (backward compat)
@@ -292,19 +392,28 @@ export async function gerarCronograma(
       return { ok: false, erro: `Erro ao limpar cronograma anterior: ${delErr.message}` };
     }
 
-    // 5. INSERT novos blocos
+    // 5. INSERT novos blocos: branch eixo='subtema' vs 'materia'
     if (blocosGerados.length > 0) {
-      const rows = blocosGerados.map((b) => ({
-        user_id:    userId,
-        data_alvo:  b.dataAlvo,
-        materia_id: b.noId, // Fatia 1: eixo='materia' → noId = materiaId
-        subtema_id: null as string | null,
-        tipo:       b.tipo,
-        minutos_alvo: b.minutosAlvo,
-        ordem:      b.ordem,
-        status:     "pendente" as const,
-        origem:     "gerado"  as const,
-      }));
+      const rows = blocosGerados
+        .map((b) => {
+          const base = {
+            user_id:      userId,
+            data_alvo:    b.dataAlvo,
+            tipo:         b.tipo,
+            minutos_alvo: b.minutosAlvo,
+            ordem:        b.ordem,
+            status:       "pendente" as const,
+            origem:       "gerado"   as const,
+          };
+          if (b.eixo === "subtema") {
+            const materiaId = subtemaParent.get(b.noId);
+            if (!materiaId) return null;  // guard: FK garante que não ocorre
+            return { ...base, materia_id: materiaId, subtema_id: b.noId };
+          }
+          // fallback matéria (eixo='materia')
+          return { ...base, materia_id: b.noId, subtema_id: null as string | null };
+        })
+        .filter((r): r is NonNullable<typeof r> => r !== null);
 
       const { error: insErr } = await client
         .from("cronograma_blocos")

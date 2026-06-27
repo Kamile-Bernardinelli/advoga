@@ -701,6 +701,7 @@ export type Database = {
           fim: string | null
           id: string
           inicio: string
+          subtema_id: string | null
           tipo: Database["public"]["Enums"]["sessao_tipo"]
           updated_at: string
           user_id: string
@@ -712,6 +713,7 @@ export type Database = {
           fim?: string | null
           id?: string
           inicio?: string
+          subtema_id?: string | null
           tipo?: Database["public"]["Enums"]["sessao_tipo"]
           updated_at?: string
           user_id: string
@@ -723,6 +725,7 @@ export type Database = {
           fim?: string | null
           id?: string
           inicio?: string
+          subtema_id?: string | null
           tipo?: Database["public"]["Enums"]["sessao_tipo"]
           updated_at?: string
           user_id?: string
@@ -733,6 +736,13 @@ export type Database = {
             columns: ["exame_id"]
             isOneToOne: false
             referencedRelation: "exames"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sessoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "subtemas"
             referencedColumns: ["id"]
           },
         ]
@@ -951,6 +961,33 @@ export type Database = {
           user_id: string | null
         }
         Relationships: []
+      }
+      v_incidencia_subtema: {
+        Row: {
+          atualizado_em: string | null
+          materia_id: string | null
+          materia_nome: string | null
+          n_disponiveis: number | null
+          n_questoes: number | null
+          subtema_id: string | null
+          subtema_nome: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subtemas_materia_id_fkey"
+            columns: ["materia_id"]
+            isOneToOne: false
+            referencedRelation: "materias"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "questoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "subtemas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       v_respostas_corrigidas: {
         Row: {
