@@ -86,6 +86,13 @@ Investigação (Opus) refinou o escopo do handoff. @dev (Sonnet) implementou; Or
 - 🔵 Drop-2 cleanup opcional: unificar os 5 call-sites de tz num só helper (saldo.actions.ts ainda inline, mas já correto).
 - ⏭️ Próximo: smoke no browser (quando Chrome liberar) → merge `fix/pontas-...` em master → DEPLOY (keys) ou Drop 2.
 
+### Drop 2 — Profundidade 🔄 (iniciado 2026-06-26, branch `feat/drop2-esforco-resultado`)
+- [x] **Fatia 1 — Esforço × Resultado (commit `69c5513`):** classificador PURO `lib/diagnostico/esforco.ts` (5 estados; anti-chute §4: "medindo" sem o gate duplo ≥60min ∧ ≥8q — nunca veredito sem volume) + `_actions/esforco.actions.ts` (lê `v_esforco_resultado`, coalesce FULL OUTER, classifica na lib pura) + seção quadrantes 2×2 em `/progresso` (esforço sem retorno / dominado / subexposto / eficiente) + bloco "Ainda medindo" + empty-state + 11 testes. Limiares calibráveis em `config.ts` (`taxaBoaEsforco=0.6` acima do corte OAB 50%; `tempoAltoEsforcoMin=120` = 2× o gate). Verificado: tsc limpo + **62/62 testes**; view real consultada (hoje Kamile = tudo "medindo", volume fino → UI honesta).
+  - ⚠️ Render visual pendente (extensão Chrome travada); lógica + dados verificados sem browser.
+  - 🔧 Calibração p/ o owner: `taxaBoaEsforco` (0.6) e `tempoAltoEsforcoMin` (120) — 1 arquivo, sem migration.
+- [ ] Fatia 2 — cross-axis subtema×estilo (view `diag_cross_subtema_dimensao` existe; `fetchDiagnosticoDimensao` já repontado; falta UI).
+- [ ] Fatia 3 — Motor de Descoberta de Variáveis (§8.5): minerar erros → propor dimensões. [ULTRACODE fan-out — esperar volume; hoje só 36 erros].
+
 ## DoD Drop 1
 Kamile abre prova recente real → responde sem gabarito → finaliza → vê acertos/erros por matéria+subtema em gráfico → vê dias restantes → recebe o plano de questões do dia. Ponta-a-ponta com dados reais (local).
 
