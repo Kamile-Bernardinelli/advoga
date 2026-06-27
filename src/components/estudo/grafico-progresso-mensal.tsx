@@ -61,37 +61,39 @@ export function GraficoProgressoMensal({ saldoMes }: GraficoProgressoMensalProps
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <ResponsiveContainer width="100%" height={160}>
-        <RadialBarChart
-          cx="50%"
-          cy="50%"
-          innerRadius="55%"
-          outerRadius="80%"
-          barSize={14}
-          data={chartData}
-          startAngle={90}
-          endAngle={-270}
-        >
-          <RadialBar
-            background
-            dataKey="value"
-            isAnimationActive={false}
-          />
-          <Tooltip
-            formatter={(value) => [typeof value === "number" ? `${value}%` : `${value}`, "Progresso"]}
-            contentStyle={{ fontSize: 12, borderRadius: 6 }}
-          />
-        </RadialBarChart>
-      </ResponsiveContainer>
+      <div className="relative w-full" style={{ height: 160 }}>
+        <ResponsiveContainer width="100%" height={160}>
+          <RadialBarChart
+            cx="50%"
+            cy="50%"
+            innerRadius="55%"
+            outerRadius="80%"
+            barSize={14}
+            data={chartData}
+            startAngle={90}
+            endAngle={-270}
+          >
+            <RadialBar
+              background
+              dataKey="value"
+              isAnimationActive={false}
+            />
+            <Tooltip
+              formatter={(value) => [typeof value === "number" ? `${value}%` : `${value}`, "Progresso"]}
+              contentStyle={{ fontSize: 12, borderRadius: 6 }}
+            />
+          </RadialBarChart>
+        </ResponsiveContainer>
 
-      {/* Texto central (sobre o anel) */}
-      <div className="text-center -mt-12 mb-8">
-        <span className="text-2xl font-bold" style={{ color: cor }}>
-          {pctDisplay}%
-        </span>
-        <p className="text-xs text-gray-500 mt-0.5">
-          {formatarMin(realMin)} de {formatarMin(metaMin)}
-        </p>
+        {/* Texto central — sobreposto exatamente no centro do anel (não colide com o traço). */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+          <span className="text-2xl font-bold leading-none" style={{ color: cor }}>
+            {pctDisplay}%
+          </span>
+          <p className="text-xs text-gray-500 mt-1">
+            {formatarMin(realMin)} de {formatarMin(metaMin)}
+          </p>
+        </div>
       </div>
     </div>
   );

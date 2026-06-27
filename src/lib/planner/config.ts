@@ -58,3 +58,9 @@ export const fatorTetoCompensacao = 1.5;
 
 /** Teto absoluto de compensação diária (min). Usado como cap máximo de override proposto. */
 export const minutosTetoCompensacao = Math.round(metaBaseDiariaDefaultMin * fatorTetoCompensacao); // 270 min
+
+// --- Esforço × Resultado (Drop 2) --- APPEND — não alterar as constantes acima
+/** Taxa de acerto a partir da qual o resultado é "bom" (margem acima da nota de corte OAB 50%). Calibrável. */
+export const taxaBoaEsforco = 0.6;
+/** Minutos a partir dos quais o esforço é "alto" (2× o gate de tempo de 60min). Calibrável. */
+export const tempoAltoEsforcoMin = 120;

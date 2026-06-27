@@ -70,7 +70,34 @@
 - ⚠️ Disco data-volume **99%** (7,4 GB livres) → deploy OK (escreve no cloud); OCR/backfill Drop 3 SÓ no drive externo (`/Volumes/Seagate 1` atualmente NÃO montado; backup `advoga-db-backup.sql` lá → inacessível agora).
 - ✅ Deploy pronto p/ disparar: `scripts/deploy/migrate-to-cloud.mjs` + `data/tags/all-tags.json` presentes.
 - 🔹 Loose end menor: `exames.edicao/numero_romano/ano` aparecem nulos na tabela (identidade da edição vem do all-tags.json).
-- ⏭️ Aguardando OK do owner: **DEPLOY** (keys da Kamile) vs **Drop 2** vs **Pontas de correção**.
+- ✅ Owner decidiu (2026-06-26): git init AGORA + **Pontas de correção** (sem keys de deploy ainda).
+
+### Git safety net (2026-06-26)
+- ✅ Repo git inicializado (não havia VCS). Baseline `ffb3282` (master) + branch `fix/pontas-fuso-queries-guard`. Secrets fora do stage; `docs/setup/deploy-credentials.html` agora gitignored. SEM push (push = @devops).
+
+### Pontas de correção — CONCLUÍDAS + verificadas (2026-06-26, commit `1660f16`)
+Investigação (Opus) refinou o escopo do handoff. @dev (Sonnet) implementou; Orion verificou.
+- **Ponta 2 (BUG REAL — fuso UTC):** `planner.actions.ts` (carregarPlanoDoDia, gerarPlanoDiario) + `cronograma.actions.ts` (_carregarBlocos, gerarCronograma) usavam `new Date().toISOString()` em UTC → na Vercel (UTC) com Kamile UTC−3, plano/cronograma do **dia errado após 21h**. FIX: helper compartilhado `lib/metas/tz-server.ts` (`carregarTimezone`+`hojeDoUsuario`) sobre o `hojeLocal(tz)` existente; os 4 sites trocados. Kamile.timezone=America/Sao_Paulo (confirmado).
+- **Ponta 1 (código morto):** `lib/diagnostico/queries.ts` apontava p/ views inexistentes `v_diagnostico_*` mas NÃO era importado por ninguém (não há rota /diagnostico; telas vivas já leem views reais). Repontado p/ `diag_weakness_score` + `diag_cross_subtema_dimensao` (sem deletar — há git agora, mas owner escolheu repoint).
+- **Ponta 3 (guard, NÃO era bug):** gabarito NÃO vaza (view `questoes_prova` exclui `gabarito`; `saveResposta` força `correta=null`; finalize via service_role). Trava anti-regressão: `lib/teste/colunas-prova.ts` + select via constante + `tests/unit/gabarito-nao-vaza.test.ts`.
+- **Ponta 4 (re-plan no override):** JÁ estava feita (override revalida /plano + /cronograma).
+- Verificação: `tsc --noEmit` limpo; **51/51 testes do projeto** verdes (inclui o novo guard); diff revisado; saldo.actions.ts e db.types.ts intocados.
+- ⚠️ PENDENTE: render *logado* (/plano,/metas,/cronograma) no browser — extensão Chrome travada em prompt de permissão (Marcos libera no side-panel). Fix é code-only/baixo risco; verificado por tsc + testes + diff + dependência DB (timezone).
+- 🔵 Drop-2 cleanup opcional: unificar os 5 call-sites de tz num só helper (saldo.actions.ts ainda inline, mas já correto).
+- ⏭️ Próximo: smoke no browser (quando Chrome liberar) → merge `fix/pontas-...` em master → DEPLOY (keys) ou Drop 2.
+
+### Drop 2 — Profundidade 🔄 (iniciado 2026-06-26, branch `feat/drop2-esforco-resultado`)
+- [x] **Fatia 1 — Esforço × Resultado (commit `69c5513`):** classificador PURO `lib/diagnostico/esforco.ts` (5 estados; anti-chute §4: "medindo" sem o gate duplo ≥60min ∧ ≥8q — nunca veredito sem volume) + `_actions/esforco.actions.ts` (lê `v_esforco_resultado`, coalesce FULL OUTER, classifica na lib pura) + seção quadrantes 2×2 em `/progresso` (esforço sem retorno / dominado / subexposto / eficiente) + bloco "Ainda medindo" + empty-state + 11 testes. Limiares calibráveis em `config.ts` (`taxaBoaEsforco=0.6` acima do corte OAB 50%; `tempoAltoEsforcoMin=120` = 2× o gate). Verificado: tsc limpo + **62/62 testes**; view real consultada (hoje Kamile = tudo "medindo", volume fino → UI honesta).
+  - ⚠️ Render visual pendente (extensão Chrome travada); lógica + dados verificados sem browser.
+  - 🔧 Calibração p/ o owner: `taxaBoaEsforco` (0.6) e `tempoAltoEsforcoMin` (120) — 1 arquivo, sem migration.
+- [ ] Fatia 2 — cross-axis subtema×estilo (view `diag_cross_subtema_dimensao` existe; `fetchDiagnosticoDimensao` já repontado; falta UI).
+- [ ] Fatia 3 — Motor de Descoberta de Variáveis (§8.5): minerar erros → propor dimensões. [ULTRACODE fan-out — esperar volume; hoje só 36 erros].
+
+### Deploy-readiness + insight estratégico (2026-06-27)
+- ✅ Script `scripts/deploy/migrate-to-cloud.mjs` AUDITADO ponta-a-ponta: deps existem (9 `oab*_tipo1.json` em `data/structured/` — ed40 pulada de propósito via allowlist; `load-exam.mjs` + `seed-user.mjs` presentes; `materias/subtemas.slug` + 6 valores `estilo_cognitivo` no banco). Idempotente, sem hardcode de secret. **Pronto p/ disparar quando vierem as keys.**
+- ✅ Regressão do fuso travada: `tests/unit/hoje-local.test.ts` (fake timers; prova dia local vs UTC à noite). **65/65 testes**, tsc limpo.
+- 🔑 **INSIGHT (anti-chute): o Drop 2 analítico está FAMINTO de dados.** Esforço (0 nós confiáveis) e cross-axis (0/134 células batem o gate ≥8) ficam 100% "medindo" até a Kamile USAR o app deployado e gerar volume. O gargalo real de valor é **DEPLOY** (keys da Kamile). Construir mais analytics agora = salas vazias. Sequência certa: keys → deploy → uso real → aí cross-axis/motor-de-erros viram significativos.
+- ⏭️ Pré-deploy final (quando o dev server estiver livre): `pnpm build` (prod) — gate que o tsc não cobre 100%.
 
 ## DoD Drop 1
 Kamile abre prova recente real → responde sem gabarito → finaliza → vê acertos/erros por matéria+subtema em gráfico → vê dias restantes → recebe o plano de questões do dia. Ponta-a-ponta com dados reais (local).
