@@ -20,7 +20,12 @@ git add -A
 git commit -m "chore: pre-deploy snapshot" || echo "(nada novo a commitar)"
 if git remote get-url origin >/dev/null 2>&1; then
   echo "remote 'origin' já existe → push"
-  git push -u origin master
+  git push -u origin master --force
+elif gh repo view advoga >/dev/null 2>&1; then
+  REPO_URL="$(gh repo view advoga --json url -q .url).git"
+  echo "repo 'advoga' já existe na conta → set origin + push (force: popula o repo de deploy)"
+  git remote add origin "$REPO_URL" 2>/dev/null || git remote set-url origin "$REPO_URL"
+  git push -u origin master --force
 else
   echo "criando repo PRIVADO 'advoga' + push"
   gh repo create advoga --private --source=. --remote=origin --push
