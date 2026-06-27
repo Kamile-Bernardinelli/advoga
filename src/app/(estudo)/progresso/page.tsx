@@ -1,11 +1,17 @@
 // [RSC] Progresso de Estudo — tempo por matéria (Fatia B) + Esforço × Resultado (Drop 2)
-// Lê v_tempo_por_no (Fatia B) e v_esforco_resultado (Drop 2) e exibe os dados.
+//       + Desempenho por Característica (Drop 2 Cross-axis)
+// Lê v_tempo_por_no (Fatia B), v_esforco_resultado (Drop 2) e diag_cross_subtema_dimensao (Drop 2).
 
 import { createActionClient } from "@/lib/supabase/action";
 import { GraficoTempoPorMateria } from "./grafico-tempo-por-materia";
 import type { TempoPorNo } from "@/lib/types/domain";
 import { carregarEsforcoResultado } from "@/app/(estudo)/_actions/esforco.actions";
 import type { EsforcoNo, QuadranteEsforco } from "@/lib/diagnostico/esforco";
+import { carregarDesempenhoPorCaracteristica } from "@/app/(estudo)/_actions/cross.actions";
+import type {
+  CaracteristicaDesempenho,
+  VeredictoCaracteristica,
+} from "@/lib/diagnostico/cross";
 
 // ---------------------------------------------------------------------------
 // Fetch direto (RSC — sem Server Action wrapper pois é só leitura)
@@ -152,14 +158,51 @@ function CardQuadrante({
 }
 
 // ---------------------------------------------------------------------------
+// Cross-axis — badges de veredito por característica
+// ---------------------------------------------------------------------------
+
+const BADGE_CROSS: Record<VeredictoCaracteristica, string> = {
+  forte:   "bg-green-100 text-green-800",
+  fraco:   "bg-amber-100 text-amber-800",
+  medindo: "bg-gray-100 text-gray-600",
+};
+
+const ROTULO_CROSS: Record<VeredictoCaracteristica, string> = {
+  forte:   "forte",
+  fraco:   "fraco",
+  medindo: "medindo",
+};
+
+/** Linha de uma característica dentro das listas de cross-axis. */
+function LinhaCaracteristica({ c }: { c: CaracteristicaDesempenho }) {
+  return (
+    <li className="flex items-center gap-2 text-xs text-gray-700 leading-snug">
+      <span className="flex-1">{c.label}</span>
+      {c.confiavel && (
+        <span className="text-gray-500 tabular-nums">
+          {Math.round(c.taxa * 100)}%
+        </span>
+      )}
+      <span className="text-gray-400 tabular-nums">{c.nFeitas}q</span>
+      <span
+        className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${BADGE_CROSS[c.veredicto]}`}
+      >
+        {ROTULO_CROSS[c.veredicto]}
+      </span>
+    </li>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
 
 export default async function ProgressoPage() {
-  // Carrega os dois conjuntos de dados em paralelo
-  const [dados, esforcos] = await Promise.all([
+  // Carrega os três conjuntos de dados em paralelo
+  const [dados, esforcos, caracteristicas] = await Promise.all([
     carregarTempoPorMateria(),
     carregarEsforcoResultado("materia"),
+    carregarDesempenhoPorCaracteristica(),
   ]);
 
   const totalMin = dados.reduce((s, d) => s + d.totalMin, 0);
@@ -303,6 +346,100 @@ export default async function ProgressoPage() {
           </div>
         )}
       </div>
+
+      {/* ================================================================
+          SECAO: Desempenho por característica da questão (Drop 2 Cross-axis)
+          Anti-chute §4: veredito ("forte"/"fraco") APENAS quando nFeitas >= gate (8).
+          Abaixo do gate → badge "medindo", sem forte/fraco.
+          ================================================================ */}
+      <SecaoCaracteristicas caracteristicas={caracteristicas} />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Componente da seção Cross-axis (RSC — sem "use client")
+// ---------------------------------------------------------------------------
+
+function SecaoCaracteristicas({
+  caracteristicas,
+}: {
+  caracteristicas: CaracteristicaDesempenho[];
+}) {
+  // Split: estilo_cognitivo em lista própria; restante = traços/características
+  const estilos = caracteristicas.filter(
+    (c) => c.dimensaoChave === "estilo_cognitivo"
+  );
+  const tracos = caracteristicas.filter(
+    (c) => c.dimensaoChave !== "estilo_cognitivo"
+  );
+
+  return (
+    <div className="mt-10">
+      <div className="mb-4">
+        <h2 className="text-xl font-bold text-gray-900">
+          Desempenho por caracteristica da questao
+        </h2>
+        <p className="text-sm text-gray-500 mt-1">
+          Como voce vai em cada estilo e traco de questao do edital OAB.
+        </p>
+      </div>
+
+      {/* Legenda */}
+      <div className="mb-4 flex flex-wrap gap-3 text-xs">
+        <span className="flex items-center gap-1">
+          <span className="px-1.5 py-0.5 rounded-full bg-green-100 text-green-800 font-semibold text-[10px]">forte</span>
+          <span className="text-gray-500">taxa &ge; 60%</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold text-[10px]">fraco</span>
+          <span className="text-gray-500">taxa &lt; 60%</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-600 font-semibold text-[10px]">medindo</span>
+          <span className="text-gray-500">volume &lt; 8 questoes — sem veredito</span>
+        </span>
+      </div>
+
+      {/* Empty state total */}
+      {caracteristicas.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
+          <p className="text-gray-500 text-sm">
+            Sem dados de caracteristicas ainda — responda mais questoes para ver onde
+            os estilos/tracos te pegam.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-5">
+          {/* Lista 1: Por estilo de questão */}
+          {estilos.length > 0 && (
+            <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">
+                Por estilo de questao
+              </h3>
+              <ul className="space-y-2">
+                {estilos.map((c) => (
+                  <LinhaCaracteristica key={c.chave} c={c} />
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Lista 2: Por característica / traço */}
+          {tracos.length > 0 && (
+            <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">
+                Por caracteristica
+              </h3>
+              <ul className="space-y-2">
+                {tracos.map((c) => (
+                  <LinhaCaracteristica key={c.chave} c={c} />
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
