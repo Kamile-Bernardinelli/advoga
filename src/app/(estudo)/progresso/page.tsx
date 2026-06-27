@@ -1,9 +1,11 @@
-// [RSC] Progresso de Estudo — tempo por matéria (Fatia B)
-// Lê v_tempo_por_no (eixo=materia) e exibe barras de tempo com Recharts.
+// [RSC] Progresso de Estudo — tempo por matéria (Fatia B) + Esforço × Resultado (Drop 2)
+// Lê v_tempo_por_no (Fatia B) e v_esforco_resultado (Drop 2) e exibe os dados.
 
 import { createActionClient } from "@/lib/supabase/action";
 import { GraficoTempoPorMateria } from "./grafico-tempo-por-materia";
 import type { TempoPorNo } from "@/lib/types/domain";
+import { carregarEsforcoResultado } from "@/app/(estudo)/_actions/esforco.actions";
+import type { EsforcoNo, QuadranteEsforco } from "@/lib/diagnostico/esforco";
 
 // ---------------------------------------------------------------------------
 // Fetch direto (RSC — sem Server Action wrapper pois é só leitura)
@@ -47,7 +49,7 @@ async function carregarTempoPorMateria(): Promise<TempoPorNo[]> {
 }
 
 // ---------------------------------------------------------------------------
-// Page
+// Helpers
 // ---------------------------------------------------------------------------
 
 function formatarMin(min: number): string {
@@ -58,9 +60,115 @@ function formatarMin(min: number): string {
   return `${h}h${m}min`;
 }
 
+// Linha de resumo de um nó dentro do card de quadrante
+function linhaNo(no: EsforcoNo): string {
+  return `${no.noNome} · ${Math.round(no.taxa * 100)}% · ${formatarMin(no.totalMin)} · ${no.nFeitas}q`;
+}
+
+// ---------------------------------------------------------------------------
+// Configuração dos quadrantes — posição, cor, eixo e significado
+// ---------------------------------------------------------------------------
+
+interface ConfigQuadrante {
+  quadrante: QuadranteEsforco;
+  rotulo: string;
+  significado: string;
+  // Classes Tailwind de cor de fundo/borda/texto
+  bg: string;
+  border: string;
+  badge: string;
+}
+
+const QUADRANTES: ConfigQuadrante[] = [
+  // Linha 1 — tempo alto
+  {
+    quadrante: "esforco_sem_retorno",
+    rotulo: "Esforço sem retorno",
+    significado: "Muito tempo, resultado baixo — revisar método.",
+    bg: "bg-amber-50",
+    border: "border-amber-200",
+    badge: "bg-amber-100 text-amber-800",
+  },
+  {
+    quadrante: "dominado",
+    rotulo: "Dominado",
+    significado: "Muito tempo, resultado ótimo — matéria consolidada.",
+    bg: "bg-green-50",
+    border: "border-green-200",
+    badge: "bg-green-100 text-green-800",
+  },
+  // Linha 2 — tempo baixo
+  {
+    quadrante: "subexposto",
+    rotulo: "Subexposto",
+    significado: "Pouco tempo, resultado baixo — aumentar exposição.",
+    bg: "bg-gray-50",
+    border: "border-gray-200",
+    badge: "bg-gray-100 text-gray-700",
+  },
+  {
+    quadrante: "eficiente",
+    rotulo: "Eficiente",
+    significado: "Pouco tempo, resultado ótimo — aproveitar o ritmo.",
+    bg: "bg-blue-50",
+    border: "border-blue-200",
+    badge: "bg-blue-100 text-blue-800",
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Componente de card de quadrante (RSC — sem "use client")
+// ---------------------------------------------------------------------------
+
+function CardQuadrante({
+  config,
+  nos,
+}: {
+  config: ConfigQuadrante;
+  nos: EsforcoNo[];
+}) {
+  return (
+    <div className={`rounded-xl border ${config.border} ${config.bg} p-4`}>
+      <div className="flex items-center gap-2 mb-1">
+        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${config.badge}`}>
+          {config.rotulo}
+        </span>
+        <span className="text-xs text-gray-400">({nos.length})</span>
+      </div>
+      <p className="text-xs text-gray-500 mb-3">{config.significado}</p>
+      {nos.length === 0 ? (
+        <p className="text-xs text-gray-400 italic">Nenhuma materia neste quadrante.</p>
+      ) : (
+        <ul className="space-y-1">
+          {nos.map((no) => (
+            <li key={no.noId} className="text-xs text-gray-700 leading-snug">
+              {linhaNo(no)}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
+
 export default async function ProgressoPage() {
-  const dados = await carregarTempoPorMateria();
+  // Carrega os dois conjuntos de dados em paralelo
+  const [dados, esforcos] = await Promise.all([
+    carregarTempoPorMateria(),
+    carregarEsforcoResultado("materia"),
+  ]);
+
   const totalMin = dados.reduce((s, d) => s + d.totalMin, 0);
+
+  // Separa nós por quadrante para o grid
+  const porQuadrante = (q: QuadranteEsforco) =>
+    esforcos.filter((e) => e.quadrante === q);
+  const medindo = esforcos.filter((e) => e.quadrante === "medindo");
+  const comVeredito = esforcos.filter((e) => e.quadrante !== "medindo");
 
   return (
     <div className="p-8 max-w-2xl mx-auto">
@@ -127,6 +235,74 @@ export default async function ProgressoPage() {
           </div>
         </div>
       )}
+
+      {/* ================================================================
+          SECAO: Esforço × Resultado (Drop 2)
+          Anti-chute §4: veredito de quadrante APENAS para padraoConfiavel=true.
+          Nós com "medindo" ficam em bloco separado, sem veredito.
+          ================================================================ */}
+      <div className="mt-10">
+        <div className="mb-4">
+          <h2 className="text-xl font-bold text-gray-900">Esforco x Resultado</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Onde cada materia esta no espectro de esforco (tempo) e efetividade (taxa de acerto).
+          </p>
+        </div>
+
+        {/* Empty state — sem dados ou tudo "medindo" */}
+        {esforcos.length === 0 || comVeredito.length === 0 ? (
+          <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
+            <p className="text-gray-500 text-sm">
+              Continue estudando e registrando tempo — os quadrantes aparecem quando houver
+              volume (≥60min e ≥8 questoes por materia).
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Legenda dos eixos */}
+            <div className="mb-3 flex items-center gap-6 text-xs text-gray-400">
+              <span>
+                <span className="font-medium text-gray-600">Vertical:</span> Tempo (cima = muito tempo)
+              </span>
+              <span>
+                <span className="font-medium text-gray-600">Horizontal:</span> Taxa de acerto (direita = boa)
+              </span>
+            </div>
+
+            {/* Grid 2×2 de quadrantes */}
+            <div className="grid grid-cols-2 gap-3">
+              {QUADRANTES.map((cfg) => (
+                <CardQuadrante
+                  key={cfg.quadrante}
+                  config={cfg}
+                  nos={porQuadrante(cfg.quadrante)}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Bloco "Ainda medindo" — sem veredito de quadrante (anti-chute §4) */}
+        {medindo.length > 0 && (
+          <div className="mt-4 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4">
+            <p className="text-xs font-semibold text-gray-500 mb-2">
+              Ainda medindo ({medindo.length})
+            </p>
+            <p className="text-xs text-gray-400 mb-3">
+              Volume insuficiente (tempo &lt;60min ou &lt;8 questoes) — sem veredito ainda.
+            </p>
+            <ul className="space-y-1">
+              {medindo.map((no) => (
+                <li key={no.noId} className="text-xs text-gray-600">
+                  {no.noNome}
+                  {no.totalMin > 0 && ` · ${formatarMin(no.totalMin)}`}
+                  {no.nFeitas > 0 && ` · ${no.nFeitas}q`}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
