@@ -93,6 +93,12 @@ Investigação (Opus) refinou o escopo do handoff. @dev (Sonnet) implementou; Or
 - [ ] Fatia 2 — cross-axis subtema×estilo (view `diag_cross_subtema_dimensao` existe; `fetchDiagnosticoDimensao` já repontado; falta UI).
 - [ ] Fatia 3 — Motor de Descoberta de Variáveis (§8.5): minerar erros → propor dimensões. [ULTRACODE fan-out — esperar volume; hoje só 36 erros].
 
+### Deploy-readiness + insight estratégico (2026-06-27)
+- ✅ Script `scripts/deploy/migrate-to-cloud.mjs` AUDITADO ponta-a-ponta: deps existem (9 `oab*_tipo1.json` em `data/structured/` — ed40 pulada de propósito via allowlist; `load-exam.mjs` + `seed-user.mjs` presentes; `materias/subtemas.slug` + 6 valores `estilo_cognitivo` no banco). Idempotente, sem hardcode de secret. **Pronto p/ disparar quando vierem as keys.**
+- ✅ Regressão do fuso travada: `tests/unit/hoje-local.test.ts` (fake timers; prova dia local vs UTC à noite). **65/65 testes**, tsc limpo.
+- 🔑 **INSIGHT (anti-chute): o Drop 2 analítico está FAMINTO de dados.** Esforço (0 nós confiáveis) e cross-axis (0/134 células batem o gate ≥8) ficam 100% "medindo" até a Kamile USAR o app deployado e gerar volume. O gargalo real de valor é **DEPLOY** (keys da Kamile). Construir mais analytics agora = salas vazias. Sequência certa: keys → deploy → uso real → aí cross-axis/motor-de-erros viram significativos.
+- ⏭️ Pré-deploy final (quando o dev server estiver livre): `pnpm build` (prod) — gate que o tsc não cobre 100%.
+
 ## DoD Drop 1
 Kamile abre prova recente real → responde sem gabarito → finaliza → vê acertos/erros por matéria+subtema em gráfico → vê dias restantes → recebe o plano de questões do dia. Ponta-a-ponta com dados reais (local).
 
