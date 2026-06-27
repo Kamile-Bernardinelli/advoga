@@ -31,7 +31,7 @@ else
   gh repo create advoga --private --source=. --remote=origin --push
 fi
 echo "→ repo: $(gh repo view --json url -q .url 2>/dev/null || echo '??')"
-if git ls-files | grep -qE '(^|/)\.env'; then echo "ABORTADO: um arquivo .env foi versionado!"; exit 1; fi
+if git ls-files | grep -E '(^|/)\.env' | grep -qvE '\.env\.example$'; then echo "ABORTADO: arquivo .env com SEGREDO foi versionado!"; exit 1; fi
 echo "✓ nenhum .env versionado"
 
 echo ""

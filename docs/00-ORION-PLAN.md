@@ -101,6 +101,15 @@ Investigação (Opus) refinou o escopo do handoff. @dev (Sonnet) implementou; Or
 - 🔑 **INSIGHT (anti-chute): o Drop 2 analítico está FAMINTO de dados.** Esforço (0 nós confiáveis) e cross-axis (0/134 células batem o gate ≥8) ficam 100% "medindo" até a Kamile USAR o app deployado e gerar volume. O gargalo real de valor é **DEPLOY** (keys da Kamile). Construir mais analytics agora = salas vazias. Sequência certa: keys → deploy → uso real → aí cross-axis/motor-de-erros viram significativos.
 - ⏭️ Pré-deploy final (quando o dev server estiver livre): `pnpm build` (prod) — gate que o tsc não cobre 100%.
 
+### 🚀 DEPLOY AO AR — EXECUTADO 2026-06-27 (Orion como @devops, autorizado pelo Marcos via `!`)
+- ✅ **GitHub:** https://github.com/Kamile-Bernardinelli/advoga (privado, 1986 objetos). Anti-leak verificado: só `.env.example` versionado; nenhum segredo real no repo.
+- ✅ **Supabase cloud** (ref `wxuvcttiohpakyvjbkvy`, us-west-2): 9 migrations · **640/640 questões tagueadas** · 1204 questao_tags · Kamile no auth (cloud id `72c98bcd-f047-498c-9bea-5e7b557fa005`) · metas_estudo (240/3000/todos-dias/America-Sao_Paulo) · `questoes_prova` SEM gabarito (boundary OK).
+- ✅ **Vercel:** produção READY em **https://advoga-mu.vercel.app** (team kamile-bernardinelli-s-projects, 3 env vars de prod). /login 200, protegidas 307→login (auth-guard via curl).
+- ⏳ PENDENTE: render LOGADO (/plano,/cronograma,/teste) — Chrome ext + Playwright ambos travados na máquina → Marcos faz o visual.
+- 🐛 Bugs do deploy corrigidos no caminho: run-deploy.sh (repo existente→set origin+force-push; falso-positivo .env.example no anti-leak). `seed-user.mjs` tem bug (.env.local precede process.env → foi pro local) — NÃO corrigido no script; contornado criando user+metas direto no cloud (Admin API + psql). TODO: swap precedência se re-deployar.
+- ⚠️ Hygiene: rotacionar VERCEL_TOKEN (o CLI ecoou no output); conectar repo↔Vercel no dashboard p/ auto-deploy (opcional).
+- ❌ WIPE local: NÃO executado — aguarda visual OK + autorização explícita do Marcos (regra inegociável).
+
 ## DoD Drop 1
 Kamile abre prova recente real → responde sem gabarito → finaliza → vê acertos/erros por matéria+subtema em gráfico → vê dias restantes → recebe o plano de questões do dia. Ponta-a-ponta com dados reais (local).
 
