@@ -49,3 +49,6 @@ yarn-error.log*
 
 # Deploy credential cockpit — owner fills with real keys; NEVER track
 docs/setup/deploy-credentials.html
+
+# Backups locais (contêm gabarito) — NUNCA versionar
+backups/

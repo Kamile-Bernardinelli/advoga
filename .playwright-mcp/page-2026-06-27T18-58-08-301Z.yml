@@ -1,0 +1,55 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: Ambiente de Estudo
+        - navigation [ref=e6]:
+          - link "Plano do dia" [ref=e7] [cursor=pointer]:
+            - /url: /plano
+          - link "Cronograma" [ref=e8] [cursor=pointer]:
+            - /url: /cronograma
+          - link "Metas" [ref=e9] [cursor=pointer]:
+            - /url: /metas
+          - link "Registro" [ref=e10] [cursor=pointer]:
+            - /url: /registro
+          - link "Materiais" [ref=e11] [cursor=pointer]:
+            - /url: /materiais
+          - link "Progresso" [ref=e12] [cursor=pointer]:
+            - /url: /progresso
+          - link "Treino" [ref=e13] [cursor=pointer]:
+            - /url: /treino
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - heading "Plano do Dia" [level=1] [ref=e17]
+          - paragraph [ref=e18]: 2026-06-27 · Meta, saldo e blocos de hoje
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]:
+                - paragraph [ref=e23]: Meta de hoje
+                - generic [ref=e24]:
+                  - generic [ref=e25]: 240min
+                  - button "ajustar" [ref=e26]
+              - generic [ref=e27]:
+                - paragraph [ref=e28]: Hoje
+                - generic [ref=e29]: 0min
+                - paragraph [ref=e30]: −4h
+            - generic [ref=e31]:
+              - generic [ref=e32]: "No mês:"
+              - generic [ref=e33]: −4h
+              - generic [ref=e34]: ·
+              - generic [ref=e35]: Atrasada
+            - generic [ref=e37]:
+              - generic [ref=e38]: 0min de 3000min (0%)
+              - generic [ref=e39]: faltam 3000min em 4d = 750min/dia
+          - generic [ref=e41]:
+            - paragraph [ref=e42]: Sem blocos para hoje.
+            - paragraph [ref=e43]:
+              - text: Gere seu roteiro em
+              - link "Cronograma" [ref=e44] [cursor=pointer]:
+                - /url: /cronograma
+              - text: .
+          - link "Registrar sessao manualmente" [ref=e46] [cursor=pointer]:
+            - /url: /registro
+  - alert [ref=e47]

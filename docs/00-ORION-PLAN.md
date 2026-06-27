@@ -105,10 +105,10 @@ Investigação (Opus) refinou o escopo do handoff. @dev (Sonnet) implementou; Or
 - ✅ **GitHub:** https://github.com/Kamile-Bernardinelli/advoga (privado, 1986 objetos). Anti-leak verificado: só `.env.example` versionado; nenhum segredo real no repo.
 - ✅ **Supabase cloud** (ref `wxuvcttiohpakyvjbkvy`, us-west-2): 9 migrations · **640/640 questões tagueadas** · 1204 questao_tags · Kamile no auth (cloud id `72c98bcd-f047-498c-9bea-5e7b557fa005`) · metas_estudo (240/3000/todos-dias/America-Sao_Paulo) · `questoes_prova` SEM gabarito (boundary OK).
 - ✅ **Vercel:** produção READY em **https://advoga-mu.vercel.app** (team kamile-bernardinelli-s-projects, 3 env vars de prod). /login 200, protegidas 307→login (auth-guard via curl).
-- ⏳ PENDENTE: render LOGADO (/plano,/cronograma,/teste) — Chrome ext + Playwright ambos travados na máquina → Marcos faz o visual.
+- ✅ VERIFICADO NO AR (Playwright destravado, logado como Kamile): /plano (metas 240/3000 + fuso 2026-06-27), /cronograma, /teste (80q **SEM gabarito** — payload RSC sem chaves de resposta), /progresso (3 seções Drop 2). Prints `advoga-prod-*.png`. Sessão de teste limpa → cloud pristine (sessoes=0).
 - 🐛 Bugs do deploy corrigidos no caminho: run-deploy.sh (repo existente→set origin+force-push; falso-positivo .env.example no anti-leak). `seed-user.mjs` tem bug (.env.local precede process.env → foi pro local) — NÃO corrigido no script; contornado criando user+metas direto no cloud (Admin API + psql). TODO: swap precedência se re-deployar.
 - ⚠️ Hygiene: rotacionar VERCEL_TOKEN (o CLI ecoou no output); conectar repo↔Vercel no dashboard p/ auto-deploy (opcional).
-- ❌ WIPE local: NÃO executado — aguarda visual OK + autorização explícita do Marcos (regra inegociável).
+- ✅ DISCO LIBERADO (autorizado pelo Marcos): `supabase stop` + remoção das 15 imagens Docker do Supabase (~12GB, re-baixáveis) → **2,4GB→14GB livres** (100%→97%). DB local era redundante (cloud + reproduzível dos data files); backup pg_dump falhou por version mismatch (PG17 vs pg_dump16) mas era desnecessário (só imagens re-baixáveis foram removidas, não dados). Recuperável via `supabase start` (re-baixa imagens + migrations + re-seed). App/cloud intocados + online (provado 3×).
 
 ## DoD Drop 1
 Kamile abre prova recente real → responde sem gabarito → finaliza → vê acertos/erros por matéria+subtema em gráfico → vê dias restantes → recebe o plano de questões do dia. Ponta-a-ponta com dados reais (local).

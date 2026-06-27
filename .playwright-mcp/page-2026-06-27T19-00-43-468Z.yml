@@ -1,0 +1,49 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: Ambiente de Estudo
+        - navigation [ref=e6]:
+          - link "Plano do dia" [ref=e7] [cursor=pointer]:
+            - /url: /plano
+          - link "Cronograma" [ref=e8] [cursor=pointer]:
+            - /url: /cronograma
+          - link "Metas" [ref=e9] [cursor=pointer]:
+            - /url: /metas
+          - link "Registro" [ref=e10] [cursor=pointer]:
+            - /url: /registro
+          - link "Materiais" [ref=e11] [cursor=pointer]:
+            - /url: /materiais
+          - link "Progresso" [ref=e12] [cursor=pointer]:
+            - /url: /progresso
+          - link "Treino" [ref=e13] [cursor=pointer]:
+            - /url: /treino
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - heading "Progresso de Estudo" [level=1] [ref=e17]
+          - paragraph [ref=e18]: Tempo total registrado por materia. Cruzamento esforco x resultado (Drop 2).
+        - generic [ref=e19]:
+          - paragraph [ref=e20]: Nenhuma sessao de estudo registrada ainda.
+          - paragraph [ref=e21]: Use o Registro ou o Timer nos blocos do Plano para comecar a capturar dados.
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - heading "Esforco x Resultado" [level=2] [ref=e24]
+            - paragraph [ref=e25]: Onde cada materia esta no espectro de esforco (tempo) e efetividade (taxa de acerto).
+          - paragraph [ref=e27]: Continue estudando e registrando tempo — os quadrantes aparecem quando houver volume (≥60min e ≥8 questoes por materia).
+        - generic [ref=e28]:
+          - generic [ref=e29]:
+            - heading "Desempenho por caracteristica da questao" [level=2] [ref=e30]
+            - paragraph [ref=e31]: Como voce vai em cada estilo e traco de questao do edital OAB.
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - generic [ref=e34]: forte
+              - generic [ref=e35]: taxa ≥ 60%
+            - generic [ref=e36]:
+              - generic [ref=e37]: fraco
+              - generic [ref=e38]: taxa < 60%
+            - generic [ref=e39]:
+              - generic [ref=e40]: medindo
+              - generic [ref=e41]: volume < 8 questoes — sem veredito
+          - paragraph [ref=e43]: Sem dados de caracteristicas ainda — responda mais questoes para ver onde os estilos/tracos te pegam.
+  - alert [ref=e44]

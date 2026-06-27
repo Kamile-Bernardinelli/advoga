@@ -1,0 +1,23 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e16]
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]: "71"
+      - generic [ref=e20]: dias até a OAB 1ª fase — 06/09/2026
+    - generic [ref=e21]:
+      - link "Teste Simule provas sem ver o gabarito — timer ativo, foco total." [ref=e22] [cursor=pointer]:
+        - /url: /teste
+        - heading "Teste" [level=2] [ref=e23]
+        - paragraph [ref=e24]: Simule provas sem ver o gabarito — timer ativo, foco total.
+      - 'link "Estudo Plano do dia gerado pelo motor: horas → questões priorizadas." [ref=e25] [cursor=pointer]':
+        - /url: /plano
+        - heading "Estudo" [level=2] [ref=e26]
+        - paragraph [ref=e27]: "Plano do dia gerado pelo motor: horas → questões priorizadas."
+      - link "Consulta Busque questões e legislação — com gabarito, modo estudo." [ref=e28] [cursor=pointer]:
+        - /url: /questoes
+        - heading "Consulta" [level=2] [ref=e29]
+        - paragraph [ref=e30]: Busque questões e legislação — com gabarito, modo estudo.
+      - 'link "Verificação Dashboard de diagnóstico: pontos fracos, tendência, alvos." [ref=e31] [cursor=pointer]':
+        - /url: /dashboard
+        - heading "Verificação" [level=2] [ref=e32]
+        - paragraph [ref=e33]: "Dashboard de diagnóstico: pontos fracos, tendência, alvos."

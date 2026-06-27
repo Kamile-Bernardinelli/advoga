@@ -1,0 +1,34 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: Ambiente de Estudo
+        - navigation [ref=e6]:
+          - link "Plano do dia" [ref=e7] [cursor=pointer]:
+            - /url: /plano
+          - link "Cronograma" [ref=e8] [cursor=pointer]:
+            - /url: /cronograma
+          - link "Metas" [ref=e9] [cursor=pointer]:
+            - /url: /metas
+          - link "Registro" [ref=e10] [cursor=pointer]:
+            - /url: /registro
+          - link "Materiais" [ref=e11] [cursor=pointer]:
+            - /url: /materiais
+          - link "Progresso" [ref=e12] [cursor=pointer]:
+            - /url: /progresso
+          - link "Treino" [ref=e13] [cursor=pointer]:
+            - /url: /treino
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - heading "Roteiro de Estudo" [level=1] [ref=e16]
+        - paragraph [ref=e17]: Blocos de conteúdo e questões gerados pelo planner, priorizados por incidência FGV e fraqueza diagnosticada (gate ≥ 8 questões). Marque cada bloco como feito ao concluir.
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - generic [ref=e20]:
+              - generic [ref=e21]: Meta base diaria (horas/dia)
+              - spinbutton "Meta base diaria (horas/dia)" [ref=e22]: "4"
+            - button "Gerar roteiro" [ref=e23]
+          - generic [ref=e24]:
+            - text: Nenhum bloco de estudo agendado para esta semana.
+            - text: Informe as horas disponíveis e gere o roteiro.
+  - alert [ref=e25]
