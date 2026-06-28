@@ -52,3 +52,7 @@ docs/setup/deploy-credentials.html
 
 # Backups locais (contêm gabarito) — NUNCA versionar
 backups/
+
+# playwright + prod screenshots (runtime artifacts)
+.playwright-mcp/
+advoga-prod-*.png

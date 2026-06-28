@@ -481,12 +481,12 @@
     },
     {
       "num": 44,
-      "enunciado": "[NÃO EXTRAÍDO — Q44]",
+      "enunciado": "Rafael, de 16 anos, foi apreendido após invadir uma loja de cosméticos e, mediante o emprego de arma de fogo, subtrair os pertences do caixa. Devidamente processado, o juízo da infância aplicou a medida de semiliberdade ao adolescente, tendo ocorrido o trânsito em julgado. Depois de dois meses de cumprimento da medida, Laura, mãe de Rafael, procura você, como advogado(a), buscando sua orientação acerca da possibilidade de o adolescente realizar atividades externas, considerando que foi inaugurado estabelecimento que oferece diversos cursos profissionalizantes em local próximo à unidade socioeducativa. Sobre o caso narrado, levando em conta o Estatuto da Criança e do Adolescente, assinale a orientação que, corretamente, você deu a Laura.",
       "alternativas": {
-        "A": "",
-        "B": "",
-        "C": "",
-        "D": ""
+        "A": "No regime de semiliberdade é possível realizar atividades externas, desde que haja autorização do juízo competente para a execução da medida socioeducativa.",
+        "B": "A semiliberdade só admite atividades externas após um ano de cumprimento da medida. Dessa forma, por ora, Rafael não poderá ser incluído no curso profissionalizante almejado.",
+        "C": "É possível que Rafael realize atividades externas, independentemente de autorização judicial.",
+        "D": "Durante a semiliberdade é inviável a realização de atividades externas, pois elas são cabíveis apenas nas medidas socioeducativas de liberdade assistida e de prestação de serviços à comunidade."
       },
       "gabarito": "C"
     },
@@ -891,11 +891,12 @@
     "parsed_at": "2026-06-22T04:43:34.805Z",
     "source_pdf": "/Volumes/Seagate 1/advoga-ingest/raw/oab40_tipo1.pdf",
     "gabarito_pdf": "/Volumes/Seagate 1/advoga-ingest/raw/oab40_gabarito.pdf",
-    "warnings": [
-      "Q44: não encontrada na segmentação OCR"
-    ],
+    "warnings": [],
     "engine": "OCR: pdftoppm 300dpi + tesseract -l por (2 colunas por página)",
     "ocr_seconds": 137.7,
-    "total_seconds": 138
+    "total_seconds": 138,
+    "manual_fixes": [
+      "Q44: enunciado+alternativas extraídos por leitura visual (pdftoppm p13 + Claude vision) 2026-06-28 — OCR original falhou na segmentação; gabarito C inalterado"
+    ]
   }
 }

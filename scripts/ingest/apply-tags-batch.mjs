@@ -14,7 +14,8 @@ import { readFileSync } from 'fs';
 const { Pool } = pg;
 
 const outFile = process.argv[2];
-if (!outFile) { console.error('Uso: node apply-tags-batch.mjs <workflow-output-file>'); process.exit(1); }
+const dbUrlArg = process.argv[3];
+if (!outFile) { console.error('Uso: node apply-tags-batch.mjs <workflow-output-file> [db-url]'); process.exit(1); }
 
 // Extrai o objeto-resultado {count,...,tags:[...]} de dentro do output (pode ter texto ao redor)
 function extractResult(raw) {
@@ -33,7 +34,7 @@ function extractResult(raw) {
 
 const normalizeEstiloSlug = (raw) => (raw || '').replace(/_/g, '-');
 
-const pool = new Pool({ connectionString: 'postgresql://postgres:postgres@127.0.0.1:54322/postgres' });
+const pool = new Pool({ connectionString: dbUrlArg || process.env.DATABASE_URL || 'postgresql://postgres:postgres@127.0.0.1:54322/postgres' });
 
 async function main() {
   const result = extractResult(readFileSync(outFile, 'utf8'));
