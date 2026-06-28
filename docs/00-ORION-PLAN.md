@@ -115,3 +115,19 @@ Kamile abre prova recente real → responde sem gabarito → finaliza → vê ac
 
 ## Regras inegociáveis
 Anti-chute (§4, gate volume ≥8); segredo só em `.env`; só @devops dá push; handoff documentado ao fim de cada fase.
+
+---
+
+## DROP 2.5 — LIVE + VERIFICADO (2026-06-28) ✅
+Feedback da Kamile (usuária real) atendido: cronograma **SUBTEMA-granular**, data-driven por incidência OAB, com loop de desempenho.
+- Migrations no cloud (`v_incidencia_subtema` = COUNT q/subtema + `sessoes.subtema_id`). Deploy Vercel prod → **https://advoga-mu.vercel.app**.
+- **VERIFICADO no ar** (Playwright, logado Kamile): cronograma com **415 blocos, TODOS com subtema**, ordem = incidência real (Penal›Teoria do crime 14q → Estatuto›Prerrogativas 14q → Const›Controle 11q → … → Proc.Civil›Cumprimento de sentença 10q); conteúdo antes de questões; Ética dosada; loop "Treinar questões" → `/treino?subtema=ID` → sessão filtrada **SEM gabarito** (payload limpo, verificado). tsc + 92 testes.
+- Autonomia de prod habilitada: o owner adicionou permission rules em `settings.local.json` → `supabase db push` + `vercel deploy` autônomos (git push segue só via @devops/`!`).
+- Commits: `7e33f28` (feat) + migrations aplicadas + deploy. Spec: `docs/architecture/drop-2.5-subtema-granular.md`.
+
+## DROP 3 — bloqueado por SOURCING dos PDFs históricos (2026-06-28)
+- Infra PRONTA: Seagate montado, disco ~30GB, `parse-fgv.mjs` OK (OCR pdftoppm+tesseract).
+- 🔴 BLOQUEIO: backfill histórico (ed1–36, ~2880q) precisa dos PDFs em `/Volumes/Seagate 1/advoga-ingest/raw/oab{N}_{tipo1,gabarito}.pdf`. Só há **ed37–46** lá. `parse-fgv` NÃO baixa — exige os PDFs presentes.
+- Doável agora (PDFs presentes): ed37 (re-parse; gabarito 267p sem grid Tipo-1) + ed40 (parseado 79/80; falta fix Q44 + load + tag).
+- 3b Validity Engine: downstream do backfill (recentes ≈ vigentes); precisa legal-chief + research Planalto (corte 25/05/2026).
+- ⏭️ Decisão do owner: como sourcear os PDFs históricos antes do ultracode de tagging.
