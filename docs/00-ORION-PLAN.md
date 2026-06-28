@@ -131,3 +131,12 @@ Feedback da Kamile (usuária real) atendido: cronograma **SUBTEMA-granular**, da
 - Doável agora (PDFs presentes): ed37 (re-parse; gabarito 267p sem grid Tipo-1) + ed40 (parseado 79/80; falta fix Q44 + load + tag).
 - 3b Validity Engine: downstream do backfill (recentes ≈ vigentes); precisa legal-chief + research Planalto (corte 25/05/2026).
 - ⏭️ Decisão do owner: como sourcear os PDFs históricos antes do ultracode de tagging.
+
+## DECISÃO-CHAVE — JANELA DE DADOS: recente (ed37–46) vs histórico completo (2026-06-28)
+Pergunta: usar TODO o histórico (Exame I/2010→46, ~3680q, visão do Marcos = mais dado → padrões) ou só os últimos ~5 anos / 10 exames (ed37–46, ~800q, visão da Kamile = recência + lei atual)?
+**RECOMENDAÇÃO do Orion: janela RECENTE (ed37–46). A Kamile está certa.** Três razões decisivas:
+1. **Não-estacionariedade (a razão DE DADOS, na língua do Marcos):** a "prova" mudou de regime — CPC/2015, Pacote Anticrime/2019, LGPD/2020, reforma trabalhista/2017, jurisprudência STF, + a FGV REESTRUTUROU a prova (incluiu Previdenciário/Financeiro/Eleitoral). Dado antigo é de OUTRA distribuição → adicioná-lo ENVIESA a estimativa de incidência ATUAL. "Mais dado" só reduz variância se for o MESMO jogo; aqui o jogo mudou → adiciona viés.
+2. **Rótulos velhos (qualidade > quantidade):** questão pré-reforma tem a "resposta certa" pela lei ANTIGA → estudar nela ensina direito obsoleto (dano ativo p/ a Kamile). Quantidade não conserta rótulo errado.
+3. **Tempo/volume:** 800q (ed37–46) já é mais do que ela faz em ~70 dias; o valor do sistema é FOCO, não volume bruto.
+**Honra a visão do Marcos SEM os antigos:** a janela recente tem 3+ anos → permite detectar TENDÊNCIA por subtema (subindo/caindo) e TESTAR empiricamente a hipótese de "rotação ~3 anos" dele — com dado atual, sem viés. Se a tendência existir, o cronograma pondera; se não, não assumimos (anti-chute — sem evidência de rotação no R-05, que mostra distribuição estável).
+**Drop 3 REESCOPADO:** (a) recuperar **ed37 + ed40** (completa a janela ~800q); (b) camada de **TENDÊNCIA por subtema** (ideia do Marcos, dado recente) = Drop 2 analytics; (c) Validity Engine escopado à janela recente (staleness mínima). **DESCARTAR backfill ed1–36.** Fonte confirmada (R-02): portal OAB/FGV grátis tem as 47 edições, mas não vale ingerir as antigas.
