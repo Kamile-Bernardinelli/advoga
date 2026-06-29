@@ -225,3 +225,36 @@ export interface TempoPorNo {
   nSessoes: number;
   ultimoTs: string;
 }
+
+// ============================================================
+// Incidência & Tendência por subtema (painel descritivo /incidencia) — APPEND (Drop 4)
+// Fato do corpus (views SEM user_id, aggregate-safe). NENHUM juízo preditivo.
+// ============================================================
+
+/** Linha crua de v_incidencia_subtema (cumulativa, fato do corpus). */
+export interface IncidenciaRow {
+  subtema_id: string | null;
+  subtema_nome: string | null;
+  materia_id: string | null;
+  materia_nome: string | null;
+  n_questoes: number | null;
+  n_disponiveis: number | null;
+}
+
+/** Linha crua de v_tendencia_subtema (1 por subtema×edição, só células não-zero). */
+export interface TendenciaRow {
+  subtema_id: string | null;
+  exame_numero: number | null;
+  ano: number | null;
+  n_questoes: number | null;
+}
+
+/** View-model de uma linha do ranking, com série temporal JÁ densificada. */
+export interface SubtemaTendencia {
+  subtemaId: string;
+  subtemaNome: string;
+  materiaNome: string;
+  incidencia: number;   // n_questoes cumulativo (a métrica do ranking)
+  disponiveis: number;  // n_disponiveis (respondíveis agora)
+  serie: number[];      // alinhada a `edicoes`, com zeros reintroduzidos
+}

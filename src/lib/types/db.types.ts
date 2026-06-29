@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -91,6 +96,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subtemas"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cronograma_blocos_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_incidencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
+          {
+            foreignKeyName: "cronograma_blocos_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_tendencia_subtema"
+            referencedColumns: ["subtema_id"]
           },
         ]
       }
@@ -242,6 +261,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subtemas"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "estudo_sessoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_incidencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
+          {
+            foreignKeyName: "estudo_sessoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_tendencia_subtema"
+            referencedColumns: ["subtema_id"]
           },
         ]
       }
@@ -433,6 +466,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subtemas"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "micro_topicos_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_incidencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
+          {
+            foreignKeyName: "micro_topicos_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_tendencia_subtema"
+            referencedColumns: ["subtema_id"]
           },
         ]
       }
@@ -630,6 +677,20 @@ export type Database = {
             referencedRelation: "subtemas"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "questoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_incidencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
+          {
+            foreignKeyName: "questoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_tendencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
         ]
       }
       respostas: {
@@ -745,6 +806,20 @@ export type Database = {
             referencedRelation: "subtemas"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "sessoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_incidencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
+          {
+            foreignKeyName: "sessoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_tendencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
         ]
       }
       subtemas: {
@@ -809,6 +884,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subtemas"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "questoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_incidencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
+          {
+            foreignKeyName: "questoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_tendencia_subtema"
+            referencedColumns: ["subtema_id"]
           },
           {
             foreignKeyName: "subtemas_materia_id_fkey"
@@ -942,6 +1031,20 @@ export type Database = {
             referencedRelation: "subtemas"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "questoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_incidencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
+          {
+            foreignKeyName: "questoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_tendencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
         ]
       }
       v_esforco_resultado: {
@@ -978,13 +1081,6 @@ export type Database = {
             columns: ["materia_id"]
             isOneToOne: false
             referencedRelation: "materias"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "questoes_subtema_id_fkey"
-            columns: ["subtema_id"]
-            isOneToOne: false
-            referencedRelation: "subtemas"
             referencedColumns: ["id"]
           },
         ]
@@ -1024,6 +1120,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subtemas"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "questoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_incidencia_subtema"
+            referencedColumns: ["subtema_id"]
+          },
+          {
+            foreignKeyName: "questoes_subtema_id_fkey"
+            columns: ["subtema_id"]
+            isOneToOne: false
+            referencedRelation: "v_tendencia_subtema"
+            referencedColumns: ["subtema_id"]
           },
           {
             foreignKeyName: "respostas_questao_id_fkey"
@@ -1085,6 +1195,26 @@ export type Database = {
           user_id: string | null
         }
         Relationships: []
+      }
+      v_tendencia_subtema: {
+        Row: {
+          ano: number | null
+          exame_numero: number | null
+          materia_id: string | null
+          materia_nome: string | null
+          n_questoes: number | null
+          subtema_id: string | null
+          subtema_nome: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subtemas_materia_id_fkey"
+            columns: ["materia_id"]
+            isOneToOne: false
+            referencedRelation: "materias"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {

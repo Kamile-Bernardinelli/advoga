@@ -2,6 +2,7 @@
 // Lê views de diagnóstico via Supabase (server) e passa dados para charts (client)
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import GraficoMaterias from "./grafico-materias";
 import GraficoEvolucao from "./grafico-evolucao";
 import CountdownWidget from "./countdown";
@@ -182,6 +183,19 @@ export default async function DashboardPage() {
           </a>
         </div>
       )}
+
+      {/* Descoberta: link para o painel de incidência do corpus (Drop 4) */}
+      <Link
+        href="/incidencia"
+        className="block bg-blue-50 rounded-xl border border-blue-200 p-4 mb-8 hover:bg-blue-100 transition-colors"
+      >
+        <p className="text-sm font-medium text-blue-900">
+          Incidência &amp; tendência por subtema →
+        </p>
+        <p className="text-sm text-blue-700">
+          O que a prova mais cobra, por subtema — fato do corpus (descritivo, não preditivo).
+        </p>
+      </Link>
 
       {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
