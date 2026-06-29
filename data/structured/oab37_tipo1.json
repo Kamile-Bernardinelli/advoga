@@ -81,7 +81,7 @@
         "C": "Se Pedro efetuar colaboração premiada contra Antônio, tal ato importará em processo disciplinar, que poderá culminar com a aplicação da sanção de exclusão.",
         "D": "Se Pedro efetuar colaboração premiada contra Matheus, não estará sujeito às penas relativas ao crime de violação do segredo profissional."
       },
-      "gabarito": "D"
+      "gabarito": "ANULADA"
     },
     {
       "num": 8,
@@ -763,7 +763,7 @@
         "C": "Após o trânsito em julgado da sentença, apesar de omissa quanto à condenação em honorários de sucumbência, Marco Aurélio poderá executar somente o valor mínimo de dez por cento sobre o valor da condenação.",
         "D": "Marco Aurélio poderá opor embargos de declaração em face da sentença omissa, pois a matéria de honorários de sucumbência não transita em julgado."
       },
-      "gabarito": "B"
+      "gabarito": "ANULADA"
     },
     {
       "num": 70,
@@ -896,7 +896,8 @@
     "ocr_seconds": 200.8,
     "total_seconds": 201.2,
     "manual_fixes": [
-      "14 questões OCR-missed extraídas por leitura visual (workflow pdftoppm+Claude vision) 2026-06-28: 26,33,38,41,44,47,50,52,55,59,62,67,70,73"
+      "14 questões OCR-missed extraídas por leitura visual (workflow pdftoppm+Claude vision) 2026-06-28: 26,33,38,41,44,47,50,52,55,59,62,67,70,73",
+      "q7,q69 ANULADA conforme gabarito DEFINITIVO (Comunicado OAB 16/03/2023)"
     ]
   }
 }
