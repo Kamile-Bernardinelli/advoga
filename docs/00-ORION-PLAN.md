@@ -150,3 +150,15 @@ Estado: **Drop 2.5 LIVE + verificado** (https://advoga-mu.vercel.app). Decisão 
 3. **Load + tag ed40 e ed37 no CLOUD:** `load-exam` → adicionar a `data/tags/all-tags.json` → aplicar tags (matéria/subtema/dimensões) via classificador (ultracode, 1 exame=80q cada). Aplicar no cloud (`supabase`/migrate) — autorizado.
 4. **Camada de TENDÊNCIA por subtema (ideia do Marcos):** incidência por subtema AO LONGO de ed37→46 (série temporal) → detectar subindo/caindo + **testar empiricamente** a hipótese de "rotação ~3 anos" (sem assumir). Feature analytics estilo Drop 2; cronograma pondera tendência se o dado mostrar. @architect → @dev.
 5. 640q já LIVE — ed37/ed40 = completude (~800q), não bloqueiam.
+
+## DROP 3 — CONCLUÍDO (2026-06-29) ✅
+Tudo autônomo (workflows ULTRACODE + agentes AIOX). **Janela recente COMPLETA: 10 edições (37–46), 800 questões, 800/800 tagueadas.**
+- **ed40:** Q44 (OCR pulou a segmentação) extraída por leitura visual (pdftoppm + Claude vision) → 80/80; loaded + tagged (workflow classify→verify).
+- **ed37:** descoberto que `oab37_gabarito.pdf` era a **lista de aprovados (267p, doc errado)** → baixado o gabarito oficial FGV (3p, grade Tipo-1 limpa, conferida) + **14 questões OCR-missed** extraídas por workflow de visão (8 agentes lendo páginas) → 80/80; loaded + tagged. Arquivo errado preservado como `oab37_resultado-preliminar.pdf`.
+- **Tagging:** workflows classify→verify por lote (prior posição→matéria das 8 eds + taxonomia 192 subtemas). 100% dos slugs/pares validados contra a taxonomia antes de aplicar em prod (anti-chute). +266 questao_tags.
+- **Infra:** `apply-tags-batch.mjs` aceita db-url (cloud); novo `scripts/ingest/export-all-tags.mjs`; `all-tags.json` re-exportado do cloud.
+- **Anuladas:** 9 (ed38=3, 39=3, 40=1, 43=2) — oficiais FGV, excluídas da prática → `questoes_prova`=791. Gabarito-free intacto (verificado).
+- **Tendência/rotação (bloco 4):** hipótese do Marcos testada (permutação 5000×) → **NÃO suportada**; incidência ESTÁVEL; `v_tendencia_subtema` live; planner mantém **incidência cumulativa**. Análise: `docs/analysis/tendencia-subtema-findings.md`.
+- **Cronograma da Kamile regenerado** (10 edições): 422 blocos (235 conteúdo + 187 questões subtema-targeted = loop intacto), até 2026-08-30. App lê cloud em runtime → **LIVE sem redeploy**.
+- Commits: 9110a6f, 0736fcd, 0a73f1b.
+- ⏭️ OPCIONAL (bloco 4 produto): display visual de incidência/estabilidade. Deferido — oferecer ao owner.
