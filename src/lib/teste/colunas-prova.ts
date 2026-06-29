@@ -5,6 +5,8 @@ export const COLUNAS_QUESTAO_PROVA = [
 ] as const;
 
 // Colunas que JAMAIS podem chegar ao client antes do finalize.
+// "comentario" entra aqui porque a explicação REVELA a resposta correta —
+// mesmo regime do gabarito (tabela public.comentarios, lida só pós-resposta em /resultado).
 export const COLUNAS_RESPOSTA_PROIBIDAS = [
-  "gabarito", "correta", "resposta_correta", "alternativa_correta",
+  "gabarito", "correta", "resposta_correta", "alternativa_correta", "comentario",
 ] as const;

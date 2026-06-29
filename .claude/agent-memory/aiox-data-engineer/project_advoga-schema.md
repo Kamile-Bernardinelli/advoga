@@ -42,5 +42,25 @@ Canonical source: `the-brain/.../kamile-oab/01-BRIEF.md` §8.
 5. **Enums for closed domains, EAV for open.** Enums: `grupo_materia`, `dimensao_tipo`,
    `validade_status`, `tipo_prova`, `sessao_tipo`, `tag_origem`. Dimensions are NOT enum.
 
+6. **Comentário (explicação) = answer-revealing, treated EXACTLY like `gabarito`** (migration
+   `20260629153405_comentarios.sql`). Stored in its OWN table `public.comentarios`
+   (`questao_id` UNIQUE FK 1:1, `comentario` NOT NULL, `fonte` null, `gerado_por` text
+   default 'llm'), NOT a column on `questoes` — so it has an independent GRANT surface and
+   can never leak via a `SELECT * FROM questoes` or via `questoes_prova`. RLS mirrors
+   `questoes` 1:1: RLS ON+FORCE, single policy `comentarios_read_authenticated`
+   (SELECT/authenticated/USING true), NO write policy → writes only via service_role
+   (the legal-generation workflow). **Generator INSERTs into `public.comentarios
+   (questao_id, comentario, fonte, gerado_por)` with `ON CONFLICT (questao_id) DO UPDATE`,
+   using service_role.** Read surface for `/resultado` = view `v_resultado_comentario`
+   (security_invoker=on) built on `respostas JOIN sessoes ON fim IS NOT NULL` → structurally
+   post-answer, own-rows-only. `questoes_prova` is unchanged (16 cols, no gabarito/comentário)
+   and `comentario` is in `COLUNAS_RESPOSTA_PROIBIDAS` (test-enforced by
+   `tests/unit/gabarito-nao-vaza.test.ts`).
+   **Non-obvious security reality (verified 2026-06-29):** `authenticated` HAS `SELECT` on
+   `questoes` incl. `gabarito` (no column REVOKE). Test-time protection is the
+   `questoes_prova` view convention + the `/resultado` redirect when `sessoes.fim IS NULL`,
+   NOT a hard column grant. Hardening (REVOKE SELECT during active session) is DEFERRED to
+   Drop 2+ — when applied, do it symmetrically to BOTH `gabarito` and `comentarios`.
+
 Open alignment items with @architect: re-gabaritagem policy on question annulment;
 when to promote `diag_por_no` to MATERIALIZED VIEW. See SCHEMA.md §8.

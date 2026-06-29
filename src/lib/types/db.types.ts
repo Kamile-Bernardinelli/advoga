@@ -39,6 +39,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      comentarios: {
+        Row: {
+          comentario: string
+          created_at: string
+          fonte: string | null
+          gerado_por: string
+          id: string
+          questao_id: string
+          updated_at: string
+        }
+        Insert: {
+          comentario: string
+          created_at?: string
+          fonte?: string | null
+          gerado_por?: string
+          id?: string
+          questao_id: string
+          updated_at?: string
+        }
+        Update: {
+          comentario?: string
+          created_at?: string
+          fonte?: string | null
+          gerado_por?: string
+          id?: string
+          questao_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comentarios_questao_id_fkey"
+            columns: ["questao_id"]
+            isOneToOne: true
+            referencedRelation: "questoes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comentarios_questao_id_fkey"
+            columns: ["questao_id"]
+            isOneToOne: true
+            referencedRelation: "questoes_prova"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cronograma_blocos: {
         Row: {
           created_at: string
@@ -1135,6 +1180,50 @@ export type Database = {
             referencedRelation: "v_tendencia_subtema"
             referencedColumns: ["subtema_id"]
           },
+          {
+            foreignKeyName: "respostas_questao_id_fkey"
+            columns: ["questao_id"]
+            isOneToOne: false
+            referencedRelation: "questoes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "respostas_questao_id_fkey"
+            columns: ["questao_id"]
+            isOneToOne: false
+            referencedRelation: "questoes_prova"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "respostas_sessao_id_fkey"
+            columns: ["sessao_id"]
+            isOneToOne: false
+            referencedRelation: "sessoes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_resultado_comentario: {
+        Row: {
+          alt_a: string | null
+          alt_b: string | null
+          alt_c: string | null
+          alt_d: string | null
+          comentario: string | null
+          correta: boolean | null
+          enunciado: string | null
+          fonte: string | null
+          gabarito: string | null
+          gerado_por: string | null
+          num_prova: number | null
+          questao_id: string | null
+          resposta_dada: string | null
+          resposta_id: string | null
+          sessao_id: string | null
+          user_id: string | null
+          validade_status: Database["public"]["Enums"]["validade_status"] | null
+        }
+        Relationships: [
           {
             foreignKeyName: "respostas_questao_id_fkey"
             columns: ["questao_id"]
