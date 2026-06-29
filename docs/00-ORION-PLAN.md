@@ -162,3 +162,16 @@ Tudo autônomo (workflows ULTRACODE + agentes AIOX). **Janela recente COMPLETA: 
 - **Cronograma da Kamile regenerado** (10 edições): 422 blocos (235 conteúdo + 187 questões subtema-targeted = loop intacto), até 2026-08-30. App lê cloud em runtime → **LIVE sem redeploy**.
 - Commits: 9110a6f, 0736fcd, 0a73f1b.
 - ⏭️ OPCIONAL (bloco 4 produto): display visual de incidência/estabilidade. Deferido — oferecer ao owner.
+
+## DROP 4 — Display + ed37 definitivo CONCLUÍDO (2026-06-29) ✅
+- **Display `/incidencia`** (route group `(verificacao)`): Top 15 por incidência + ranking com sparklines por edição (densificação de zeros → mostra a estabilidade real, não ruído). Banner honesto (descritivo, NÃO preditivo; rotação rejeitada por permutação). @architect spec → @dev build. typecheck 0, 14/14 testes, `npm run build` OK, **verificado live**. Nav nova (Dashboard | Incidência). Commits `a2f1bd4` + `525142d`.
+- **Motor de Validade Legal:** workflow `validade-legal-reform-sensitive` (17 agentes @legal-chief) → **17/17 vigentes, 0 desatualizadas**. Mecanismo (`validade_status='desatualizada'` → fora de `questoes_prova`) existe e pronto.
+- **ed37 reconciliada com o gabarito DEFINITIVO** (Comunicado OAB 16/03/2023): única mudança preliminar→definitivo = **anulação q7 e q69** → aplicada. Flags dos agentes em q28/29/34/77 eram **FALSOS POSITIVOS** (opinião jurídica LLM ≠ gabarito oficial FGV) → mantidas. Doc: `docs/data-quality/ed37-gabarito-definitivo.md`. Cloud: 11 anuladas, **789 praticáveis**.
+- **GitHub sincronizado** (push @devops via CezarinniMedia; emails = noreply, repo público).
+
+## PENDÊNCIAS REAIS (auditoria honesta 2026-06-29)
+- **micro_topico_id: 0/800** — 3º nível da taxonomia (matéria→subtema→micro_topico) nunca foi populado (pré-existente, não regressão). Subtema já é granular o suficiente; aprofundar = refino OPCIONAL.
+- **Débito pré-existente (NÃO deste trabalho):** ~1860 erros de lint (quase todos em `.aiox-core/`/`scripts` do framework) + 3 suites de teste de framework falhando (jest-em-vitest; `@aiox/testing` ausente). Fora do app; baixo valor; não toquei config de lint nem framework.
+- **`git config user.email` local = noreply do GitHub** (mudei p/ não vazar email em repo público). Trocar se quiser outra identidade.
+- **Hygiene do owner:** rotacionar VERCEL_TOKEN (vazou em log no deploy inicial); `GITHUB_TOKEN` do `.env` inválido (push usa auth da CezarinniMedia).
+- **Não é tarefa, é uso:** loop diagnóstico frio (0 sessões/respostas) — eixos de esforço/cross + cronograma adaptativo só acendem com o dado real da Kamile.
