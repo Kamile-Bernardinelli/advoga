@@ -18,3 +18,15 @@ Os agentes `@legal-chief` (workflow de validade) flagaram **q28, q29, q34, q77**
 ## Cobertura
 - Demais edições (38–46): sourceadas de gabarito definitivo/correto (os agentes confirmaram explicitamente os gabaritos da ed40 em q40/50/60/70/71/77).
 - Total cloud pós-fix: 800 questões, 11 anuladas (ed37=2, ed38=3, ed39=3, ed40=1, ed43=2), 789 em `questoes_prova`.
+
+## Atualização 2026-06-29 (2ª rodada) — gabaritos VERIFICADOS + conteúdo corrompido descoberto
+
+### Gabaritos: 100% corretos (verificado vs grade DEFINITIVA oficial)
+Baixei o **gabarito definitivo completo** (`s.oab.org.br`/qconcursos, Tipo 1) e comparei as 80 da ed37 programaticamente: **batem 100%** (a definitiva = preliminar exceto q7/q69 anuladas, já aplicadas). Confirmado: nenhuma mudança de resposta no recurso além das 2 anulações.
+
+**Padrão de FALSO POSITIVO dos agentes LLM (3 rodadas):** validade (q28/29/34/77), piloto de explicações (q42/q78) — todos flagaram "gabarito errado" e **todos estavam errados**. O LLM jurista confunde a opinião dele com a resposta oficial da banca. **Regra:** nunca alterar gabarito de produção por análise de LLM; só por grade oficial. Anti-chute venceu 3×.
+
+### Conteúdo corrompido: 8 questões da recuperação por visão
+O dedup (md5 do enunciado) revelou 8 pares idênticos na ed37: **26≡27, 33≡35, 38≡42, 47≡56, 50≡60, 55≡68, 59≡74, 73≡77**. As "primeiras" (26,33,38,47,50,55,59,73) são todas da minha recuperação por visão das 14 OCR-missed → o workflow retornou o conteúdo da questão VIZINHA (gabarito certo, conteúdo errado). Outras edições (38–46): sem duplicatas.
+- **Ação imediata:** as 8 marcadas `validade_status='desatualizada'` (fora de `questoes_prova` → 781 praticáveis, sem duplicatas) com motivo de corrupção. Gabaritos delas continuam corretos.
+- **Pendente (re-recuperação):** re-extrair o conteúdo REAL das 8 do PDF da prova com verificação de número (a tentativa via agente bateu rate-limit do servidor). Ao corrigir o conteúdo, restaurar para `vigente`. JSON `data/structured/oab37_tipo1.json` ainda tem o conteúdo corrompido nessas 8.
