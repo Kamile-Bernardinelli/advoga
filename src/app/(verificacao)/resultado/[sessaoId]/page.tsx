@@ -172,72 +172,72 @@ export default async function ResultadoPage({ params }: ResultadoPageProps) {
     <div className="p-6 max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Resultado da Prova</h1>
-        <p className="text-sm text-gray-500">Duração: {duracaoFormatada}</p>
+        <h1 className="text-2xl font-bold text-foreground mb-1">Resultado da Prova</h1>
+        <p className="text-sm text-muted-foreground">Duração: {duracaoFormatada}</p>
       </div>
 
       {/* Cards de resumo */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-3xl font-bold text-green-600">{totalAcertos}</div>
-          <div className="text-sm text-gray-500 mt-1">Acertos</div>
+        <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="text-3xl font-bold text-green-600 dark:text-green-400">{totalAcertos}</div>
+          <div className="text-sm text-muted-foreground mt-1">Acertos</div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-3xl font-bold text-red-500">{totalErros}</div>
-          <div className="text-sm text-gray-500 mt-1">Erros</div>
+        <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="text-3xl font-bold text-red-500 dark:text-red-400">{totalErros}</div>
+          <div className="text-sm text-muted-foreground mt-1">Erros</div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-3xl font-bold text-blue-600">{percentualGeral}%</div>
-          <div className="text-sm text-gray-500 mt-1">Acertos geral</div>
+        <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{percentualGeral}%</div>
+          <div className="text-sm text-muted-foreground mt-1">Acertos geral</div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-3xl font-bold text-yellow-600">{totalAnuladas}</div>
-          <div className="text-sm text-gray-500 mt-1">Anuladas</div>
+        <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{totalAnuladas}</div>
+          <div className="text-sm text-muted-foreground mt-1">Anuladas</div>
         </div>
       </div>
 
       {/* Gráfico por matéria */}
       {materiasOrdenadas.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Desempenho por Matéria</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Desempenho por Matéria</h2>
           <ResultadoGrafico materias={materiasOrdenadas} />
         </div>
       )}
 
       {/* Breakdown por matéria com subtemas */}
       <div className="space-y-4 mb-8">
-        <h2 className="text-lg font-semibold text-gray-800">Detalhe por Matéria</h2>
+        <h2 className="text-lg font-semibold text-foreground">Detalhe por Matéria</h2>
         {materiasOrdenadas.map((m) => (
-          <div key={m.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div key={m.id} className="bg-card rounded-xl border border-border overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4">
               <div>
-                <span className="font-medium text-gray-900">{m.nome}</span>
-                <span className="text-sm text-gray-500 ml-2">({m.total} questões)</span>
+                <span className="font-medium text-foreground">{m.nome}</span>
+                <span className="text-sm text-muted-foreground ml-2">({m.total} questões)</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-muted-foreground">
                   {m.acertos}/{m.total}
                 </span>
-                <span className={`font-bold text-lg ${m.taxa >= 0.7 ? "text-green-600" : m.taxa >= 0.5 ? "text-amber-600" : "text-red-600"}`}>
+                <span className={`font-bold text-lg ${m.taxa >= 0.7 ? "text-green-600 dark:text-green-400" : m.taxa >= 0.5 ? "text-amber-600 dark:text-amber-400" : "text-red-600 dark:text-red-400"}`}>
                   {Math.round(m.taxa * 100)}%
                 </span>
               </div>
             </div>
             {m.subtemas.length > 0 && (
-              <div className="border-t border-gray-100 divide-y divide-gray-50">
+              <div className="border-t border-border divide-y divide-border">
                 {m.subtemas.map((s) => (
                   <div key={s.id} className="flex items-center justify-between px-5 py-2.5 pl-8">
                     <div>
-                      <span className="text-sm text-gray-700">{s.nome}</span>
+                      <span className="text-sm text-foreground">{s.nome}</span>
                       {s.total < 8 && (
-                        <span className="ml-2 text-xs text-amber-600 bg-amber-50 rounded px-1.5 py-0.5">
+                        <span className="ml-2 text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 rounded px-1.5 py-0.5">
                           amostra insuficiente ({s.total}/8 questões)
                         </span>
                       )}
                     </div>
                     <div className="text-sm">
-                      <span className="text-gray-500">{s.acertos}/{s.total}</span>
-                      <span className={`ml-2 font-medium ${s.taxa >= 0.7 ? "text-green-600" : s.taxa >= 0.5 ? "text-amber-600" : "text-red-600"}`}>
+                      <span className="text-muted-foreground">{s.acertos}/{s.total}</span>
+                      <span className={`ml-2 font-medium ${s.taxa >= 0.7 ? "text-green-600 dark:text-green-400" : s.taxa >= 0.5 ? "text-amber-600 dark:text-amber-400" : "text-red-600 dark:text-red-400"}`}>
                         {Math.round(s.taxa * 100)}%
                       </span>
                     </div>
@@ -251,7 +251,7 @@ export default async function ResultadoPage({ params }: ResultadoPageProps) {
 
       {/* Revisão questão-a-questão */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Revisão Questão-a-Questão</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Revisão Questão-a-Questão</h2>
         <div className="space-y-4">
           {lista.map((r, idx) => {
             const q = r.questoes;
@@ -261,30 +261,30 @@ export default async function ResultadoPage({ params }: ResultadoPageProps) {
             return (
               <div
                 key={r.id}
-                className={`bg-white rounded-xl border p-5 ${
-                  anulada ? "border-yellow-300" :
-                  r.correta ? "border-green-300" : "border-red-300"
+                className={`bg-card rounded-xl border p-5 ${
+                  anulada ? "border-yellow-300 dark:border-yellow-800" :
+                  r.correta ? "border-green-300 dark:border-green-800" : "border-red-300 dark:border-red-900"
                 }`}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                     Questão {idx + 1}
                   </span>
                   <div className="flex gap-2">
                     {anulada && (
-                      <span className="rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">
+                      <span className="rounded-full bg-yellow-100 dark:bg-yellow-950/50 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:text-yellow-300">
                         Anulada (FGV)
                       </span>
                     )}
                     {!anulada && (
-                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${r.correta ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${r.correta ? "bg-green-100 dark:bg-green-950/50 text-green-800 dark:text-green-300" : "bg-red-100 dark:bg-red-950/50 text-red-800 dark:text-red-300"}`}>
                         {r.correta ? "Correto" : "Errado"}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-800 mb-3 leading-relaxed">{q.enunciado}</p>
+                <p className="text-sm text-foreground mb-3 leading-relaxed">{q.enunciado}</p>
 
                 <div className="space-y-1.5">
                   {(["A", "B", "C", "D"] as const).map((letra) => {
@@ -296,18 +296,18 @@ export default async function ResultadoPage({ params }: ResultadoPageProps) {
                       <div
                         key={letra}
                         className={`rounded-lg px-3 py-2 text-sm flex items-start gap-2 ${
-                          isGabarito ? "bg-green-50 border border-green-300" :
-                          isResposta && !isGabarito ? "bg-red-50 border border-red-200" :
-                          "bg-gray-50 border border-gray-100"
+                          isGabarito ? "bg-green-50 dark:bg-green-950/30 border border-green-300 dark:border-green-800" :
+                          isResposta && !isGabarito ? "bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900" :
+                          "bg-muted border border-border"
                         }`}
                       >
-                        <span className={`font-bold flex-shrink-0 ${isGabarito ? "text-green-700" : isResposta ? "text-red-600" : "text-gray-400"}`}>
+                        <span className={`font-bold flex-shrink-0 ${isGabarito ? "text-green-700 dark:text-green-300" : isResposta ? "text-red-600 dark:text-red-400" : "text-muted-foreground"}`}>
                           {letra})
                         </span>
-                        <span className={isGabarito ? "text-green-800" : isResposta ? "text-red-700" : "text-gray-600"}>
+                        <span className={isGabarito ? "text-green-800 dark:text-green-200" : isResposta ? "text-red-700 dark:text-red-300" : "text-muted-foreground"}>
                           {texto}
-                          {isGabarito && <span className="ml-2 text-xs font-semibold text-green-700">(Gabarito)</span>}
-                          {isResposta && !isGabarito && <span className="ml-2 text-xs font-semibold text-red-600">(Sua resposta)</span>}
+                          {isGabarito && <span className="ml-2 text-xs font-semibold text-green-700 dark:text-green-300">(Gabarito)</span>}
+                          {isResposta && !isGabarito && <span className="ml-2 text-xs font-semibold text-red-600 dark:text-red-400">(Sua resposta)</span>}
                         </span>
                       </div>
                     );
@@ -323,7 +323,7 @@ export default async function ResultadoPage({ params }: ResultadoPageProps) {
       <div className="mt-8 text-center">
         <Link
           href="/teste"
-          className="inline-flex items-center rounded-lg bg-blue-600 text-white px-6 py-2.5 text-sm font-medium hover:bg-blue-700 transition-colors"
+          className="inline-flex items-center rounded-lg bg-primary text-white px-6 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           Fazer outra prova
         </Link>

@@ -62,26 +62,26 @@ function FormCriar({ onCriado }: FormCriarProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 p-4 border border-dashed border-gray-300 rounded-xl bg-gray-50">
-      <h3 className="text-sm font-semibold text-gray-700">Adicionar material</h3>
+    <form onSubmit={handleSubmit} className="space-y-3 p-4 border border-dashed border-border rounded-xl bg-muted">
+      <h3 className="text-sm font-semibold text-foreground">Adicionar material</h3>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="sm:col-span-2 flex flex-col gap-1">
-          <label className="text-xs font-medium text-gray-600">Nome *</label>
+          <label className="text-xs font-medium text-muted-foreground">Nome *</label>
           <input
             required
             maxLength={200}
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             placeholder="Ex: Código Civil 2024"
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-gray-600">Tipo</label>
+          <label className="text-xs font-medium text-muted-foreground">Tipo</label>
           <select
             value={tipo}
             onChange={(e) => setTipo(e.target.value as MaterialTipo)}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none"
           >
             {TIPO_OPCOES.map((t) => (
               <option key={t.value} value={t.value}>{t.label}</option>
@@ -90,19 +90,19 @@ function FormCriar({ onCriado }: FormCriarProps) {
         </div>
       </div>
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-medium text-gray-600">
-          Referência <span className="text-gray-400">(url, edição, capítulo — opcional)</span>
+        <label className="text-xs font-medium text-muted-foreground">
+          Referência <span className="text-muted-foreground">(url, edição, capítulo — opcional)</span>
         </label>
         <input
           maxLength={500}
           value={ref}
           onChange={(e) => setRef(e.target.value)}
           placeholder="Ex: https://… ou Cap. 3, ed. 5"
-          className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none"
+          className="rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none"
         />
       </div>
       {erro && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{erro}</p>
+        <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg px-3 py-2">{erro}</p>
       )}
       <Button type="submit" disabled={isPending || !nome.trim()}>
         {isPending ? "Salvando…" : "Adicionar"}
@@ -150,20 +150,20 @@ function LinhaMaterial({ material, onAtualizado, onRemovido }: LinhaProps) {
 
   if (editando) {
     return (
-      <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 space-y-3">
+      <div className="rounded-lg border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/30 p-4 space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <div className="sm:col-span-2">
             <input
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               maxLength={200}
-              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-ring focus:outline-none"
             />
           </div>
           <select
             value={tipo}
             onChange={(e) => setTipo(e.target.value as MaterialTipo)}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-ring focus:outline-none"
           >
             {TIPO_OPCOES.map((t) => (
               <option key={t.value} value={t.value}>{t.label}</option>
@@ -175,9 +175,9 @@ function LinhaMaterial({ material, onAtualizado, onRemovido }: LinhaProps) {
           onChange={(e) => setRef(e.target.value)}
           maxLength={500}
           placeholder="Referência (opcional)"
-          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+          className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-ring focus:outline-none"
         />
-        {erro && <p className="text-xs text-red-600">{erro}</p>}
+        {erro && <p className="text-xs text-red-600 dark:text-red-400">{erro}</p>}
         <div className="flex gap-2">
           <Button type="button" onClick={handleSalvar} disabled={isPending || !nome.trim()}>
             {isPending ? "…" : "Salvar"}
@@ -185,7 +185,7 @@ function LinhaMaterial({ material, onAtualizado, onRemovido }: LinhaProps) {
           <button
             type="button"
             onClick={() => { setEditando(false); setErro(null); setNome(material.nome); setTipo(material.tipo); setRef(material.referencia ?? ""); }}
-            className="text-sm text-gray-500 hover:text-gray-700 underline"
+            className="text-sm text-muted-foreground hover:text-foreground underline"
           >
             Cancelar
           </button>
@@ -195,18 +195,18 @@ function LinhaMaterial({ material, onAtualizado, onRemovido }: LinhaProps) {
   }
 
   return (
-    <div className="flex items-start justify-between gap-3 rounded-lg border border-gray-100 bg-white p-4">
+    <div className="flex items-start justify-between gap-3 rounded-lg border border-border bg-card p-4">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-medium text-gray-900 text-sm">{material.nome}</span>
-          <span className="text-xs text-gray-500 bg-gray-100 rounded px-1.5 py-0.5">
+          <span className="font-medium text-foreground text-sm">{material.nome}</span>
+          <span className="text-xs text-muted-foreground bg-muted rounded px-1.5 py-0.5">
             {TIPO_LABEL[material.tipo]}
           </span>
         </div>
         {material.referencia && (
-          <p className="text-xs text-gray-400 mt-0.5 truncate max-w-xs">
+          <p className="text-xs text-muted-foreground mt-0.5 truncate max-w-xs">
             {material.referencia.startsWith("http") ? (
-              <a href={material.referencia} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+              <a href={material.referencia} target="_blank" rel="noopener noreferrer" className="text-blue-500 dark:text-blue-400 underline">
                 {material.referencia}
               </a>
             ) : material.referencia}
@@ -217,7 +217,7 @@ function LinhaMaterial({ material, onAtualizado, onRemovido }: LinhaProps) {
         <button
           type="button"
           onClick={() => setEditando(true)}
-          className="text-xs text-gray-500 hover:text-gray-700 underline"
+          className="text-xs text-muted-foreground hover:text-foreground underline"
         >
           Editar
         </button>
@@ -225,7 +225,7 @@ function LinhaMaterial({ material, onAtualizado, onRemovido }: LinhaProps) {
           type="button"
           onClick={handleRemover}
           disabled={isPending}
-          className="text-xs text-red-500 hover:text-red-700 underline disabled:opacity-50"
+          className="text-xs text-red-500 dark:text-red-400 hover:text-red-700 underline disabled:opacity-50"
         >
           Remover
         </button>
@@ -262,7 +262,7 @@ export function MateriaisForm({ inicial }: MateriaisFormProps) {
       <FormCriar onCriado={handleCriado} />
 
       {materiais.length === 0 ? (
-        <p className="text-sm text-gray-400 italic text-center py-4">
+        <p className="text-sm text-muted-foreground italic text-center py-4">
           Nenhum material ainda. Adicione o primeiro acima.
         </p>
       ) : (

@@ -41,11 +41,11 @@ export default function IniciarProvaForm({ exameId, tipo }: Props) {
       <button
         onClick={handleIniciar}
         disabled={loading}
-        className="rounded-lg bg-blue-600 text-white px-4 py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-60 transition-colors whitespace-nowrap"
+        className="rounded-lg bg-primary text-white px-4 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-60 transition-colors whitespace-nowrap"
       >
         {loading ? "Iniciando..." : "Iniciar Prova"}
       </button>
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-xs text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
 }

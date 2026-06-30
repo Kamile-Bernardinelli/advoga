@@ -26,8 +26,8 @@ export function Nav() {
             className={[
               "px-3 py-1.5 rounded text-sm font-medium transition-colors",
               isActive
-                ? "bg-gray-900 text-white"
-                : "text-gray-600 hover:bg-gray-100",
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground",
             ].join(" ")}
           >
             {link.label}

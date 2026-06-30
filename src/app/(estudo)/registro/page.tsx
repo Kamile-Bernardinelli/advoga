@@ -73,7 +73,7 @@ const TIPO_LABEL: Record<string, string> = {
 function ListaRecente({ sessoes }: { sessoes: EstudoSessao[] }) {
   if (sessoes.length === 0) {
     return (
-      <p className="text-sm text-gray-400 italic">
+      <p className="text-sm text-muted-foreground italic">
         Nenhum registro ainda. Use o formulário acima para começar a capturar seu tempo de estudo.
       </p>
     );
@@ -84,21 +84,21 @@ function ListaRecente({ sessoes }: { sessoes: EstudoSessao[] }) {
       {sessoes.map((s) => (
         <div
           key={s.id}
-          className="flex items-start justify-between rounded-lg border border-gray-100 bg-gray-50 px-4 py-3"
+          className="flex items-start justify-between rounded-lg border border-border bg-muted px-4 py-3"
         >
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">
+            <p className="text-sm font-medium text-foreground truncate">
               {s.materiaNome ?? s.materiaId}
             </p>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               {TIPO_LABEL[s.tipoEstudo] ?? s.tipoEstudo}
               {s.local ? ` · ${s.local}` : ""}
               {s.anotacao ? ` · ${s.anotacao.slice(0, 60)}${s.anotacao.length > 60 ? "…" : ""}` : ""}
             </p>
           </div>
           <div className="ml-3 shrink-0 text-right">
-            <span className="text-sm font-bold text-gray-900">{s.duracaoMin} min</span>
-            <p className="text-xs text-gray-400">
+            <span className="text-sm font-bold text-foreground">{s.duracaoMin} min</span>
+            <p className="text-xs text-muted-foreground">
               {new Date(s.ts).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}
             </p>
           </div>
@@ -121,8 +121,8 @@ export default async function RegistroPage() {
 
   return (
     <div className="p-8 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-1 text-gray-900">Registrar Estudo</h1>
-      <p className="text-gray-500 mb-6 text-sm">
+      <h1 className="text-2xl font-bold mb-1 text-foreground">Registrar Estudo</h1>
+      <p className="text-muted-foreground mb-6 text-sm">
         Informe o que estudou, por quanto tempo e onde. O sensor captura seu esforço
         para cruzar com os resultados das questões.
       </p>
@@ -132,7 +132,7 @@ export default async function RegistroPage() {
 
       {/* Lista de registros recentes */}
       <section className="mt-10">
-        <h2 className="text-base font-semibold text-gray-700 mb-3">Registros recentes</h2>
+        <h2 className="text-base font-semibold text-foreground mb-3">Registros recentes</h2>
         <ListaRecente sessoes={sessoes} />
       </section>
     </div>

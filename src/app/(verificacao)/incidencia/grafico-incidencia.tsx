@@ -35,7 +35,7 @@ export default function GraficoIncidencia({ dados }: Props) {
   }));
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4">
+    <div className="bg-card rounded-xl border border-border p-4">
       <ResponsiveContainer width="100%" height={360}>
         <BarChart
           data={data}
@@ -71,7 +71,7 @@ export default function GraficoIncidencia({ dados }: Props) {
           />
         </BarChart>
       </ResponsiveContainer>
-      <p className="text-xs text-gray-400 mt-2 text-center">
+      <p className="text-xs text-muted-foreground mt-2 text-center">
         Volume histórico de questões por subtema (o que já caiu). Cor única = sem juízo de
         direção.
       </p>

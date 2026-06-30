@@ -28,8 +28,8 @@ export default async function MetasPage() {
   return (
     <div className="p-8 max-w-2xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Metas de Estudo</h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Metas de Estudo</h1>
+        <p className="text-muted-foreground text-sm mt-1">
           Configure meta diaria, mensal, dias de estudo e overrides por dia.
           Use a compensacao para redistribuir deficit do mes.
         </p>

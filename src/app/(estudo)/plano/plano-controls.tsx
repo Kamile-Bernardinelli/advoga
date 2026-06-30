@@ -22,10 +22,10 @@ const MOTIVO_LABEL: Record<ItemPlano["motivo"], string> = {
 };
 
 const MOTIVO_COR: Record<ItemPlano["motivo"], string> = {
-  reforco: "bg-red-50 text-red-700 border-red-200",
-  etica: "bg-amber-50 text-amber-700 border-amber-200",
-  medir: "bg-blue-50 text-blue-700 border-blue-200",
-  espacado: "bg-purple-50 text-purple-700 border-purple-200",
+  reforco: "bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border-red-200 dark:border-red-900",
+  etica: "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900",
+  medir: "bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900",
+  espacado: "bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-900",
 };
 
 function abreviaNome(nome: string): string {
@@ -71,12 +71,12 @@ function ExplicacaoPlano({ plano }: { plano: PlanoDiario }) {
   return (
     <div className="mt-6 space-y-4">
       {/* Resumo principal — AC-1.6.6 */}
-      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-        <p className="text-sm text-gray-500 mb-1">Plano de hoje</p>
-        <p className="text-xl font-bold text-gray-900">
+      <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <p className="text-sm text-muted-foreground mb-1">Plano de hoje</p>
+        <p className="text-xl font-bold text-foreground">
           {hora} — {plano.questoesAlvo} questões
         </p>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Gerado em {new Date(plano.geradoEm).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
         </p>
       </div>
@@ -86,14 +86,14 @@ function ExplicacaoPlano({ plano }: { plano: PlanoDiario }) {
         {distribOrdenada.map((item, i) => (
           <div
             key={i}
-            className="flex items-start justify-between rounded-lg border border-gray-100 bg-gray-50 px-4 py-3"
+            className="flex items-start justify-between rounded-lg border border-border bg-muted px-4 py-3"
           >
             <div className="flex-1 min-w-0">
-              <span className="font-medium text-gray-900 text-sm">
+              <span className="font-medium text-foreground text-sm">
                 {abreviaNome(item.materia)}
               </span>
               {expandido && (
-                <p className="text-xs text-gray-500 mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   Motivo: {MOTIVO_LABEL[item.motivo]}
                 </p>
               )}
@@ -110,7 +110,7 @@ function ExplicacaoPlano({ plano }: { plano: PlanoDiario }) {
                   ? "espaçado"
                   : "reforço"}
               </span>
-              <span className="text-base font-bold text-gray-900 w-8 text-right">
+              <span className="text-base font-bold text-foreground w-8 text-right">
                 {item.n}
               </span>
             </div>
@@ -122,14 +122,14 @@ function ExplicacaoPlano({ plano }: { plano: PlanoDiario }) {
       <button
         type="button"
         onClick={() => setExpandido((v) => !v)}
-        className="text-xs text-gray-400 hover:text-gray-600 underline underline-offset-2 transition-colors"
+        className="text-xs text-muted-foreground hover:text-muted-foreground underline underline-offset-2 transition-colors"
       >
         {expandido ? "Ocultar justificativas" : "Por que essas matérias? (ver justificativa)"}
       </button>
 
       {expandido && (
-        <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4 text-xs text-gray-600 space-y-1">
-          <p className="font-semibold text-gray-700 mb-2">Legenda dos motivos:</p>
+        <div className="rounded-lg border border-dashed border-border bg-muted p-4 text-xs text-muted-foreground space-y-1">
+          <p className="font-semibold text-foreground mb-2">Legenda dos motivos:</p>
           <p><span className="font-medium">reforço</span> — matéria com amostra ≥ 8 questões; score = incidência FGV × fraqueza (1 − taxa de acerto) × confiança do volume.</p>
           <p><span className="font-medium">medir</span> — amostra &lt; 8 questões; não há dado suficiente para declarar fraqueza. Peso por incidência pura (anti-chute §4).</p>
           <p><span className="font-medium">espaçado</span> — matéria com erros nas últimas 2 sessões; peso aumentado em +20% para repetição espaçada.</p>
@@ -167,7 +167,7 @@ export function PlanoControls({ planoInicial }: PlanoControlsProps) {
         <div className="flex flex-col gap-1">
           <label
             htmlFor="horas"
-            className="text-sm font-medium text-gray-700"
+            className="text-sm font-medium text-foreground"
           >
             Horas disponíveis hoje
           </label>
@@ -179,7 +179,7 @@ export function PlanoControls({ planoInicial }: PlanoControlsProps) {
             step={0.5}
             value={horas}
             onChange={(e) => setHoras(Number(e.target.value))}
-            className="w-28 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-28 rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
             required
           />
         </div>
@@ -198,7 +198,7 @@ export function PlanoControls({ planoInicial }: PlanoControlsProps) {
 
       {/* Erro */}
       {erro && (
-        <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+        <p className="mt-3 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg px-3 py-2">
           {erro}
         </p>
       )}
@@ -208,7 +208,7 @@ export function PlanoControls({ planoInicial }: PlanoControlsProps) {
 
       {/* Estado de loading */}
       {isPending && (
-        <div className="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-8 text-center text-gray-400 text-sm">
+        <div className="mt-6 rounded-xl border border-border bg-muted p-8 text-center text-muted-foreground text-sm">
           Calculando distribuição…
         </div>
       )}

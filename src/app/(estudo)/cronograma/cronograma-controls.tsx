@@ -51,7 +51,7 @@ export function CronogramaControls({ blocosIniciais }: CronogramaControlsProps) 
       {/* Formulário de geração */}
       <form onSubmit={handleSubmit} className="flex items-end gap-3">
         <div className="flex flex-col gap-1">
-          <label htmlFor="horas-dia" className="text-sm font-medium text-gray-700">
+          <label htmlFor="horas-dia" className="text-sm font-medium text-foreground">
             Meta base diaria (horas/dia)
           </label>
           <input
@@ -62,7 +62,7 @@ export function CronogramaControls({ blocosIniciais }: CronogramaControlsProps) 
             step={0.5}
             value={horas}
             onChange={(e) => setHoras(Number(e.target.value))}
-            className="w-28 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-28 rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
             required
           />
         </div>
@@ -78,21 +78,21 @@ export function CronogramaControls({ blocosIniciais }: CronogramaControlsProps) 
 
       {/* Nota sobre regeneração */}
       {temBlocos && !isPending && (
-        <p className="text-xs text-gray-400 mt-2">
+        <p className="text-xs text-muted-foreground mt-2">
           Regenerar preserva blocos marcados como feitos e os agendados manualmente.
         </p>
       )}
 
       {/* Erro */}
       {erro && (
-        <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+        <p className="mt-3 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg px-3 py-2">
           {erro}
         </p>
       )}
 
       {/* Estado de loading */}
       {isPending && (
-        <div className="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-8 text-center text-gray-400 text-sm">
+        <div className="mt-6 rounded-xl border border-border bg-muted p-8 text-center text-muted-foreground text-sm">
           Calculando roteiro até 06/09/2026…
         </div>
       )}

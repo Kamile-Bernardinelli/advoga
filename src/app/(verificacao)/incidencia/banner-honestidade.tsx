@@ -7,7 +7,7 @@ export function BannerHonestidade({ edMin, edMax }: { edMin: number; edMax: numb
   return (
     <div
       role="note"
-      className="rounded-xl border border-amber-200 bg-amber-50 p-4 mb-6 text-sm text-amber-900"
+      className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-950/30 p-4 mb-6 text-sm text-amber-900 dark:text-amber-200"
     >
       <p className="font-semibold">Incidência estável — sem rotação detectável.</p>
       <p className="mt-1.5 leading-relaxed">
@@ -25,7 +25,7 @@ export function BannerHonestidade({ edMin, edMax }: { edMin: number; edMax: numb
         prevê o que <strong>vai cair</strong>. Use a incidência para priorizar{" "}
         <strong>volume histórico</strong>; <strong>não existe subtema &ldquo;na vez&rdquo;</strong>.
       </p>
-      <p className="mt-2 text-xs text-amber-700">
+      <p className="mt-2 text-xs text-amber-700 dark:text-amber-300">
         Base: análise <code>docs/analysis/tendencia-subtema-findings.md</code> (ed38–46, 640
         questões).
       </p>

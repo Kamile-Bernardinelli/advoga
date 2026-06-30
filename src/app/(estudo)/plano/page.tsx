@@ -26,8 +26,8 @@ export default async function PlanoPage() {
   return (
     <div className="p-8 max-w-2xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Plano do Dia</h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Plano do Dia</h1>
+        <p className="text-muted-foreground text-sm mt-1">
           {hoje} · Meta, saldo e blocos de hoje
         </p>
       </div>

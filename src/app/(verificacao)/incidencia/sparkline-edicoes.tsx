@@ -14,7 +14,7 @@ export function SparklineEdicoes({
 }) {
   return (
     <div
-      className="flex items-end gap-0.5 h-9 border-b border-gray-100"
+      className="flex items-end gap-0.5 h-9 border-b border-border"
       role="img"
       aria-label={`Questões por edição: ${serie.join(", ")}`}
     >
@@ -22,7 +22,7 @@ export function SparklineEdicoes({
         <div
           key={edicoes[i]}
           title={`Ed. ${edicoes[i]}: ${v} ${v === 1 ? "questão" : "questões"}`}
-          className="w-2 bg-slate-300 rounded-t-sm shrink-0"
+          className="w-2 bg-muted-foreground/40 rounded-t-sm shrink-0"
           style={{ height: max > 0 ? `${(v / max) * 100}%` : "0%" }}
         />
       ))}

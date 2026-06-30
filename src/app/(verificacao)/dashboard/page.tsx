@@ -136,30 +136,30 @@ export default async function DashboardPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">Dashboard</h1>
 
       {/* Countdown hero (client) */}
       <CountdownWidget diasRestantes={diasRestantes} />
 
       {/* Cards de resumo */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-2xl font-bold text-gray-900">{totalFeitas}</div>
-          <div className="text-xs text-gray-500 mt-1">Questões feitas</div>
+        <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="text-2xl font-bold text-foreground">{totalFeitas}</div>
+          <div className="text-xs text-muted-foreground mt-1">Questões feitas</div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-2xl font-bold text-blue-600">{taxaHistorica}%</div>
-          <div className="text-xs text-gray-500 mt-1">Taxa geral</div>
+        <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{taxaHistorica}%</div>
+          <div className="text-xs text-muted-foreground mt-1">Taxa geral</div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-2xl font-bold text-gray-900">{totalSessoes}</div>
-          <div className="text-xs text-gray-500 mt-1">Sessões</div>
+        <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="text-2xl font-bold text-foreground">{totalSessoes}</div>
+          <div className="text-xs text-muted-foreground mt-1">Sessões</div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-          <div className="text-2xl font-bold text-gray-900">
+        <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="text-2xl font-bold text-foreground">
             {tendencia === "melhora" ? "▲" : tendencia === "piora" ? "▼" : tendencia === "estabilidade" ? "→" : "–"}
           </div>
-          <div className={`text-xs mt-1 ${tendencia === "melhora" ? "text-green-600" : tendencia === "piora" ? "text-red-600" : "text-gray-500"}`}>
+          <div className={`text-xs mt-1 ${tendencia === "melhora" ? "text-green-600 dark:text-green-400" : tendencia === "piora" ? "text-red-600 dark:text-red-400" : "text-muted-foreground"}`}>
             {tendencia === "melhora" ? "Melhorando" : tendencia === "piora" ? "Piorando" : tendencia === "estabilidade" ? "Estável" : "Sem dados"}
           </div>
         </div>
@@ -167,17 +167,17 @@ export default async function DashboardPage() {
 
       {/* Última sessão */}
       {ultimaSessaoInfo && (
-        <div className="bg-blue-50 rounded-xl border border-blue-200 p-4 mb-8 flex items-center justify-between">
+        <div className="bg-blue-50 dark:bg-blue-950/30 rounded-xl border border-blue-200 dark:border-blue-900 p-4 mb-8 flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-blue-900">Última sessão — {ultimaSessaoInfo.data}</p>
-            <p className="text-sm text-blue-700">
+            <p className="text-sm font-medium text-blue-900 dark:text-blue-200">Última sessão — {ultimaSessaoInfo.data}</p>
+            <p className="text-sm text-blue-700 dark:text-blue-300">
               {ultimaSessaoInfo.acertos}/{ultimaSessaoInfo.total} acertos (
               {Math.round((ultimaSessaoInfo.acertos / ultimaSessaoInfo.total) * 100)}%)
             </p>
           </div>
           <a
             href={`/resultado/${ultimaSessaoInfo.sessaoId}`}
-            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
           >
             Ver resultado →
           </a>
@@ -187,12 +187,12 @@ export default async function DashboardPage() {
       {/* Descoberta: link para o painel de incidência do corpus (Drop 4) */}
       <Link
         href="/incidencia"
-        className="block bg-blue-50 rounded-xl border border-blue-200 p-4 mb-8 hover:bg-blue-100 transition-colors"
+        className="block bg-blue-50 dark:bg-blue-950/30 rounded-xl border border-blue-200 dark:border-blue-900 p-4 mb-8 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
       >
-        <p className="text-sm font-medium text-blue-900">
+        <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
           Incidência &amp; tendência por subtema →
         </p>
-        <p className="text-sm text-blue-700">
+        <p className="text-sm text-blue-700 dark:text-blue-300">
           O que a prova mais cobra, por subtema — fato do corpus (descritivo, não preditivo).
         </p>
       </Link>
@@ -201,26 +201,26 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {materiasChart.length > 0 ? (
           <div>
-            <h2 className="text-base font-semibold text-gray-800 mb-3">
+            <h2 className="text-base font-semibold text-foreground mb-3">
               Acerto por Matéria
             </h2>
             <GraficoMaterias materias={materiasChart} />
           </div>
         ) : (
-          <div className="bg-white rounded-xl border border-dashed border-gray-300 p-6 text-center text-gray-400">
+          <div className="bg-card rounded-xl border border-dashed border-border p-6 text-center text-muted-foreground">
             Complete provas para ver diagnóstico por matéria
           </div>
         )}
 
         {evolucao.length > 0 ? (
           <div>
-            <h2 className="text-base font-semibold text-gray-800 mb-3">
+            <h2 className="text-base font-semibold text-foreground mb-3">
               Evolução Temporal
             </h2>
             <GraficoEvolucao dados={evolucao} />
           </div>
         ) : (
-          <div className="bg-white rounded-xl border border-dashed border-gray-300 p-6 text-center text-gray-400">
+          <div className="bg-card rounded-xl border border-dashed border-border p-6 text-center text-muted-foreground">
             Complete provas para ver evolução temporal
           </div>
         )}

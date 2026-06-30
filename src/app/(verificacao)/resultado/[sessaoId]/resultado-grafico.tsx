@@ -38,7 +38,7 @@ export default function ResultadoGrafico({ materias }: Props) {
   }));
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
+    <div className="bg-card rounded-xl border border-border p-5">
       <ResponsiveContainer width="100%" height={280}>
         <BarChart
           data={dados}
@@ -70,7 +70,7 @@ export default function ResultadoGrafico({ materias }: Props) {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <div className="flex items-center gap-4 mt-3 justify-center text-xs text-gray-500">
+      <div className="flex items-center gap-4 mt-3 justify-center text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-sm inline-block bg-green-600" /> ≥ 70%
         </span>

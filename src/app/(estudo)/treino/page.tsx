@@ -18,10 +18,10 @@ export default async function TreinoPage({ searchParams }: Props) {
     return (
       <div className="p-8 max-w-3xl mx-auto">
         <h1 className="text-2xl font-bold mb-2">Treino Focado</h1>
-        <p className="text-gray-500 mb-4">
+        <p className="text-muted-foreground mb-4">
           Abra um bloco de <strong>Questões</strong> no seu{" "}
-          <Link href="/plano" className="text-blue-600 underline">plano do dia</Link> para treinar o subtema priorizado,
-          ou faça uma <Link href="/teste" className="text-blue-600 underline">prova/simulado completo</Link>.
+          <Link href="/plano" className="text-blue-600 dark:text-blue-400 underline">plano do dia</Link> para treinar o subtema priorizado,
+          ou faça uma <Link href="/teste" className="text-blue-600 dark:text-blue-400 underline">prova/simulado completo</Link>.
         </p>
       </div>
     );
@@ -45,15 +45,15 @@ export default async function TreinoPage({ searchParams }: Props) {
 
   return (
     <div className="p-8 max-w-3xl mx-auto">
-      <p className="text-xs text-gray-400">{materiaNome} ›</p>
+      <p className="text-xs text-muted-foreground">{materiaNome} ›</p>
       <h1 className="text-2xl font-bold mb-2">{sub?.nome ?? "Subtema"}</h1>
       {disponiveis > 0 ? (
         <>
-          <p className="text-gray-500 mb-6">{disponiveis} questões disponíveis deste subtema.</p>
+          <p className="text-muted-foreground mb-6">{disponiveis} questões disponíveis deste subtema.</p>
           <IniciarTreinoForm subtemaId={subtema} />
         </>
       ) : (
-        <div className="rounded-lg border border-dashed border-amber-300 bg-amber-50 p-6 text-amber-800 text-sm">
+        <div className="rounded-lg border border-dashed border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-6 text-amber-800 dark:text-amber-300 text-sm">
           Ainda não há questões respondíveis deste subtema (serão adensadas no próximo backfill).
           Estude o conteúdo e volte depois.
         </div>

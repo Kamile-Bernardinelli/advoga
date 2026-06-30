@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 
 // Prova OAB 1ª fase: 06/09/2026
 const EXAM_DATE = new Date("2026-09-06T00:00:00-03:00");
@@ -14,25 +15,25 @@ const ambientes = [
     href: "/teste",
     nome: "Teste",
     descricao: "Simule provas sem ver o gabarito — timer ativo, foco total.",
-    cor: "bg-blue-50 border-blue-200 hover:bg-blue-100",
+    cor: "bg-blue-50 border-blue-200 hover:bg-blue-100 dark:bg-blue-950/30 dark:border-blue-900 dark:hover:bg-blue-900/40",
   },
   {
     href: "/plano",
     nome: "Estudo",
     descricao: "Plano do dia gerado pelo motor: horas → questões priorizadas.",
-    cor: "bg-green-50 border-green-200 hover:bg-green-100",
+    cor: "bg-green-50 border-green-200 hover:bg-green-100 dark:bg-green-950/30 dark:border-green-900 dark:hover:bg-green-900/40",
   },
   {
     href: "/questoes",
     nome: "Consulta",
     descricao: "Busque questões e legislação — com gabarito, modo estudo.",
-    cor: "bg-amber-50 border-amber-200 hover:bg-amber-100",
+    cor: "bg-amber-50 border-amber-200 hover:bg-amber-100 dark:bg-amber-950/30 dark:border-amber-900 dark:hover:bg-amber-900/40",
   },
   {
     href: "/dashboard",
     nome: "Verificação",
     descricao: "Dashboard de diagnóstico: pontos fracos, tendência, alvos.",
-    cor: "bg-purple-50 border-purple-200 hover:bg-purple-100",
+    cor: "bg-purple-50 border-purple-200 hover:bg-purple-100 dark:bg-purple-950/30 dark:border-purple-900 dark:hover:bg-purple-900/40",
   },
 ];
 
@@ -40,13 +41,16 @@ export default function HomePage() {
   const diasRestantes = getDaysUntilExam();
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-8">
+    <main className="relative min-h-screen flex flex-col items-center justify-center p-8">
+      <div className="absolute right-4 top-4">
+        <ThemeToggle />
+      </div>
       {/* Countdown */}
       <section className="mb-10 text-center">
-        <div className="text-6xl font-bold tabular-nums text-gray-900">
+        <div className="text-6xl font-bold tabular-nums text-foreground">
           {diasRestantes}
         </div>
-        <div className="text-lg text-gray-500 mt-1">
+        <div className="text-lg text-muted-foreground mt-1">
           dias até a OAB 1ª fase — 06/09/2026
         </div>
       </section>
@@ -59,8 +63,8 @@ export default function HomePage() {
             href={a.href}
             className={`rounded-xl border p-6 transition-colors ${a.cor}`}
           >
-            <h2 className="text-xl font-semibold text-gray-900">{a.nome}</h2>
-            <p className="mt-1 text-sm text-gray-600">{a.descricao}</p>
+            <h2 className="text-xl font-semibold text-foreground">{a.nome}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{a.descricao}</p>
           </Link>
         ))}
       </section>

@@ -132,15 +132,15 @@ export function RegistroForm({ materias, subtemas, materiais }: RegistroFormProp
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Matéria (obrigatória) */}
       <div className="flex flex-col gap-1">
-        <label htmlFor="materia" className="text-sm font-medium text-gray-700">
-          Matéria <span className="text-red-500">*</span>
+        <label htmlFor="materia" className="text-sm font-medium text-foreground">
+          Matéria <span className="text-red-500 dark:text-red-400">*</span>
         </label>
         <select
           id="materia"
           value={form.materiaId}
           onChange={(e) => setField("materiaId", e.target.value)}
           required
-          className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
         >
           <option value="">Selecione uma matéria…</option>
           {materias.map((m) => (
@@ -154,14 +154,14 @@ export function RegistroForm({ materias, subtemas, materiais }: RegistroFormProp
       {/* Subtema (opcional — só aparece se a matéria tiver subtemas) */}
       {subtemasFiltrados.length > 0 && (
         <div className="flex flex-col gap-1">
-          <label htmlFor="subtema" className="text-sm font-medium text-gray-700">
-            Subtema <span className="text-gray-400 font-normal">(opcional)</span>
+          <label htmlFor="subtema" className="text-sm font-medium text-foreground">
+            Subtema <span className="text-muted-foreground font-normal">(opcional)</span>
           </label>
           <select
             id="subtema"
             value={form.subtemaId}
             onChange={(e) => setField("subtemaId", e.target.value)}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
           >
             <option value="">Selecione um subtema…</option>
             {subtemasFiltrados.map((s) => (
@@ -176,14 +176,14 @@ export function RegistroForm({ materias, subtemas, materiais }: RegistroFormProp
       {/* Material (opcional) */}
       {materiais.length > 0 && (
         <div className="flex flex-col gap-1">
-          <label htmlFor="material" className="text-sm font-medium text-gray-700">
-            Material <span className="text-gray-400 font-normal">(opcional)</span>
+          <label htmlFor="material" className="text-sm font-medium text-foreground">
+            Material <span className="text-muted-foreground font-normal">(opcional)</span>
           </label>
           <select
             id="material"
             value={form.materialId}
             onChange={(e) => setField("materialId", e.target.value)}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
           >
             <option value="">Selecione um material…</option>
             {materiais.map((m) => (
@@ -198,14 +198,14 @@ export function RegistroForm({ materias, subtemas, materiais }: RegistroFormProp
       {/* Tipo de estudo + Local — linha dupla */}
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1">
-          <label htmlFor="tipo" className="text-sm font-medium text-gray-700">
+          <label htmlFor="tipo" className="text-sm font-medium text-foreground">
             Tipo de estudo
           </label>
           <select
             id="tipo"
             value={form.tipoEstudo}
             onChange={(e) => setField("tipoEstudo", e.target.value as TipoEstudo)}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
           >
             {TIPO_OPCOES.map((t) => (
               <option key={t.value} value={t.value}>
@@ -216,8 +216,8 @@ export function RegistroForm({ materias, subtemas, materiais }: RegistroFormProp
         </div>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="local" className="text-sm font-medium text-gray-700">
-            Local <span className="text-gray-400 font-normal">(opcional)</span>
+          <label htmlFor="local" className="text-sm font-medium text-foreground">
+            Local <span className="text-muted-foreground font-normal">(opcional)</span>
           </label>
           <input
             id="local"
@@ -226,15 +226,15 @@ export function RegistroForm({ materias, subtemas, materiais }: RegistroFormProp
             maxLength={200}
             value={form.local}
             onChange={(e) => setField("local", e.target.value)}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
           />
         </div>
       </div>
 
       {/* Minutos (obrigatório) */}
       <div className="flex flex-col gap-1">
-        <label htmlFor="minutos" className="text-sm font-medium text-gray-700">
-          Tempo estudado (minutos) <span className="text-red-500">*</span>
+        <label htmlFor="minutos" className="text-sm font-medium text-foreground">
+          Tempo estudado (minutos) <span className="text-red-500 dark:text-red-400">*</span>
         </label>
         <input
           id="minutos"
@@ -246,15 +246,15 @@ export function RegistroForm({ materias, subtemas, materiais }: RegistroFormProp
           value={form.minutos}
           onChange={(e) => setField("minutos", e.target.value)}
           required
-          className="w-40 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-40 rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
         />
-        <p className="text-xs text-gray-400">Use o timer nos blocos do Plano do Dia para registrar automaticamente.</p>
+        <p className="text-xs text-muted-foreground">Use o timer nos blocos do Plano do Dia para registrar automaticamente.</p>
       </div>
 
       {/* Anotação (opcional) */}
       <div className="flex flex-col gap-1">
-        <label htmlFor="anotacao" className="text-sm font-medium text-gray-700">
-          Anotação <span className="text-gray-400 font-normal">(opcional)</span>
+        <label htmlFor="anotacao" className="text-sm font-medium text-foreground">
+          Anotação <span className="text-muted-foreground font-normal">(opcional)</span>
         </label>
         <textarea
           id="anotacao"
@@ -263,18 +263,18 @@ export function RegistroForm({ materias, subtemas, materiais }: RegistroFormProp
           placeholder="O que você estudou? Dificuldades? Próximos passos?"
           value={form.anotacao}
           onChange={(e) => setField("anotacao", e.target.value)}
-          className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
+          className="rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring resize-none"
         />
       </div>
 
       {/* Feedback */}
       {erro && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+        <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg px-3 py-2">
           {erro}
         </p>
       )}
       {sucesso && (
-        <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+        <p className="text-sm text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 rounded-lg px-3 py-2">
           Sessão registrada com sucesso.
         </p>
       )}

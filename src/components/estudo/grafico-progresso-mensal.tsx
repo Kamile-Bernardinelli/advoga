@@ -43,8 +43,8 @@ export function GraficoProgressoMensal({ saldoMes }: GraficoProgressoMensalProps
   if (!metaMin || metaMin === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-32 text-center">
-        <p className="text-sm text-gray-400">Sem meta mensal definida.</p>
-        <p className="text-xs text-gray-400 mt-1">
+        <p className="text-sm text-muted-foreground">Sem meta mensal definida.</p>
+        <p className="text-xs text-muted-foreground mt-1">
           Defina abaixo para ver o progresso do contrato.
         </p>
       </div>
@@ -90,7 +90,7 @@ export function GraficoProgressoMensal({ saldoMes }: GraficoProgressoMensalProps
           <span className="text-2xl font-bold leading-none" style={{ color: cor }}>
             {pctDisplay}%
           </span>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             {formatarMin(realMin)} de {formatarMin(metaMin)}
           </p>
         </div>

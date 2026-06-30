@@ -11,8 +11,8 @@ export default async function CronogramaPage() {
 
   return (
     <div className="p-8 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-1 text-gray-900">Roteiro de Estudo</h1>
-      <p className="text-gray-500 mb-6 text-sm">
+      <h1 className="text-2xl font-bold mb-1 text-foreground">Roteiro de Estudo</h1>
+      <p className="text-muted-foreground mb-6 text-sm">
         Blocos de conteúdo e questões gerados pelo planner, priorizados por
         incidência FGV e fraqueza diagnosticada (gate ≥ 8 questões). Marque cada
         bloco como feito ao concluir.

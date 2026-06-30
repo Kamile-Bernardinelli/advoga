@@ -41,7 +41,7 @@ export default function GraficoMaterias({ materias }: Props) {
     }));
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4">
+    <div className="bg-card rounded-xl border border-border p-4">
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
           data={dados}
@@ -77,7 +77,7 @@ export default function GraficoMaterias({ materias }: Props) {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <p className="text-xs text-gray-400 mt-2 text-center">
+      <p className="text-xs text-muted-foreground mt-2 text-center">
         Cinza = amostra insuficiente ({"<"} 8 questões)
       </p>
     </div>

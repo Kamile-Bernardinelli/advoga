@@ -28,11 +28,11 @@ export default function IniciarTreinoForm({ subtemaId }: { subtemaId: string }) 
       <button
         onClick={handleIniciar}
         disabled={loading}
-        className="rounded-lg bg-purple-600 text-white px-4 py-2 text-sm font-medium hover:bg-purple-700 disabled:opacity-60"
+        className="rounded-lg bg-primary text-white px-4 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-60"
       >
         {loading ? "Iniciando..." : "Iniciar treino do subtema"}
       </button>
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && <p className="text-xs text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
 }

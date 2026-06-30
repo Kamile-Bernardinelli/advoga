@@ -40,7 +40,7 @@ function formatarDia(iso: string): string {
 export function GraficoSaldoDias({ dados }: GraficoSaldoDiasProps) {
   if (dados.length === 0) {
     return (
-      <p className="text-sm text-gray-400 italic text-center py-4">
+      <p className="text-sm text-muted-foreground italic text-center py-4">
         Sem dados de saldo ainda.
       </p>
     );

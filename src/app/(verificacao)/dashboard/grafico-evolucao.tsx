@@ -24,7 +24,7 @@ interface Props {
 
 export default function GraficoEvolucao({ dados }: Props) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4">
+    <div className="bg-card rounded-xl border border-border p-4">
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           data={dados}
@@ -59,7 +59,7 @@ export default function GraficoEvolucao({ dados }: Props) {
           />
         </LineChart>
       </ResponsiveContainer>
-      <p className="text-xs text-gray-400 mt-2 text-center">
+      <p className="text-xs text-muted-foreground mt-2 text-center">
         Linha verde = meta de 70% de acerto
       </p>
     </div>

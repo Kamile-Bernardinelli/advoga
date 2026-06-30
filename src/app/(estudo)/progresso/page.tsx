@@ -91,34 +91,34 @@ const QUADRANTES: ConfigQuadrante[] = [
     quadrante: "esforco_sem_retorno",
     rotulo: "Esforço sem retorno",
     significado: "Muito tempo, resultado baixo — revisar método.",
-    bg: "bg-amber-50",
-    border: "border-amber-200",
-    badge: "bg-amber-100 text-amber-800",
+    bg: "bg-amber-50 dark:bg-amber-950/30",
+    border: "border-amber-200 dark:border-amber-900",
+    badge: "bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300",
   },
   {
     quadrante: "dominado",
     rotulo: "Dominado",
     significado: "Muito tempo, resultado ótimo — matéria consolidada.",
-    bg: "bg-green-50",
-    border: "border-green-200",
-    badge: "bg-green-100 text-green-800",
+    bg: "bg-green-50 dark:bg-green-950/30",
+    border: "border-green-200 dark:border-green-900",
+    badge: "bg-green-100 dark:bg-green-950/50 text-green-800 dark:text-green-300",
   },
   // Linha 2 — tempo baixo
   {
     quadrante: "subexposto",
     rotulo: "Subexposto",
     significado: "Pouco tempo, resultado baixo — aumentar exposição.",
-    bg: "bg-gray-50",
-    border: "border-gray-200",
-    badge: "bg-gray-100 text-gray-700",
+    bg: "bg-muted",
+    border: "border-border",
+    badge: "bg-muted text-foreground",
   },
   {
     quadrante: "eficiente",
     rotulo: "Eficiente",
     significado: "Pouco tempo, resultado ótimo — aproveitar o ritmo.",
-    bg: "bg-blue-50",
-    border: "border-blue-200",
-    badge: "bg-blue-100 text-blue-800",
+    bg: "bg-blue-50 dark:bg-blue-950/30",
+    border: "border-blue-200 dark:border-blue-900",
+    badge: "bg-blue-100 dark:bg-blue-950/50 text-blue-800 dark:text-blue-300",
   },
 ];
 
@@ -139,15 +139,15 @@ function CardQuadrante({
         <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${config.badge}`}>
           {config.rotulo}
         </span>
-        <span className="text-xs text-gray-400">({nos.length})</span>
+        <span className="text-xs text-muted-foreground">({nos.length})</span>
       </div>
-      <p className="text-xs text-gray-500 mb-3">{config.significado}</p>
+      <p className="text-xs text-muted-foreground mb-3">{config.significado}</p>
       {nos.length === 0 ? (
-        <p className="text-xs text-gray-400 italic">Nenhuma materia neste quadrante.</p>
+        <p className="text-xs text-muted-foreground italic">Nenhuma materia neste quadrante.</p>
       ) : (
         <ul className="space-y-1">
           {nos.map((no) => (
-            <li key={no.noId} className="text-xs text-gray-700 leading-snug">
+            <li key={no.noId} className="text-xs text-foreground leading-snug">
               {linhaNo(no)}
             </li>
           ))}
@@ -162,9 +162,9 @@ function CardQuadrante({
 // ---------------------------------------------------------------------------
 
 const BADGE_CROSS: Record<VeredictoCaracteristica, string> = {
-  forte:   "bg-green-100 text-green-800",
-  fraco:   "bg-amber-100 text-amber-800",
-  medindo: "bg-gray-100 text-gray-600",
+  forte:   "bg-green-100 dark:bg-green-950/50 text-green-800 dark:text-green-300",
+  fraco:   "bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300",
+  medindo: "bg-muted text-muted-foreground",
 };
 
 const ROTULO_CROSS: Record<VeredictoCaracteristica, string> = {
@@ -176,14 +176,14 @@ const ROTULO_CROSS: Record<VeredictoCaracteristica, string> = {
 /** Linha de uma característica dentro das listas de cross-axis. */
 function LinhaCaracteristica({ c }: { c: CaracteristicaDesempenho }) {
   return (
-    <li className="flex items-center gap-2 text-xs text-gray-700 leading-snug">
+    <li className="flex items-center gap-2 text-xs text-foreground leading-snug">
       <span className="flex-1">{c.label}</span>
       {c.confiavel && (
-        <span className="text-gray-500 tabular-nums">
+        <span className="text-muted-foreground tabular-nums">
           {Math.round(c.taxa * 100)}%
         </span>
       )}
-      <span className="text-gray-400 tabular-nums">{c.nFeitas}q</span>
+      <span className="text-muted-foreground tabular-nums">{c.nFeitas}q</span>
       <span
         className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${BADGE_CROSS[c.veredicto]}`}
       >
@@ -216,59 +216,59 @@ export default async function ProgressoPage() {
   return (
     <div className="p-8 max-w-2xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Progresso de Estudo</h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Progresso de Estudo</h1>
+        <p className="text-muted-foreground text-sm mt-1">
           Tempo total registrado por materia. Cruzamento esforco x resultado (Drop 2).
         </p>
       </div>
 
       {dados.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
-          <p className="text-gray-500">Nenhuma sessao de estudo registrada ainda.</p>
-          <p className="text-xs text-gray-400 mt-1">
+        <div className="rounded-xl border border-dashed border-border bg-muted p-8 text-center">
+          <p className="text-muted-foreground">Nenhuma sessao de estudo registrada ainda.</p>
+          <p className="text-xs text-muted-foreground mt-1">
             Use o Registro ou o Timer nos blocos do Plano para comecar a capturar dados.
           </p>
         </div>
       ) : (
         <div className="space-y-6">
           {/* Resumo */}
-          <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-            <p className="text-sm text-gray-500">Total registrado</p>
-            <p className="text-3xl font-bold text-gray-900 mt-1">{formatarMin(totalMin)}</p>
-            <p className="text-xs text-gray-400 mt-0.5">em {dados.reduce((s, d) => s + d.nSessoes, 0)} sessoes · {dados.length} materia(s)</p>
+          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <p className="text-sm text-muted-foreground">Total registrado</p>
+            <p className="text-3xl font-bold text-foreground mt-1">{formatarMin(totalMin)}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">em {dados.reduce((s, d) => s + d.nSessoes, 0)} sessoes · {dados.length} materia(s)</p>
           </div>
 
           {/* Grafico */}
-          <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-            <h2 className="text-base font-semibold text-gray-900 mb-4">Tempo por materia</h2>
+          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <h2 className="text-base font-semibold text-foreground mb-4">Tempo por materia</h2>
             <GraficoTempoPorMateria dados={dados} />
           </div>
 
           {/* Tabela */}
-          <div className="rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm">
+          <div className="rounded-xl border border-border bg-card overflow-hidden shadow-sm">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-100">
+              <thead className="bg-muted border-b border-border">
                 <tr>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Materia</th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">Tempo</th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">Sessoes</th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600 hidden sm:table-cell">Ultima sessao</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Materia</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Tempo</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Sessoes</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">Ultima sessao</th>
                 </tr>
               </thead>
               <tbody>
                 {dados.map((d, i) => (
                   <tr
                     key={d.noId}
-                    className={`border-b border-gray-50 ${i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}
+                    className={`border-b border-border ${i % 2 === 0 ? "bg-card" : "bg-muted/50"}`}
                   >
-                    <td className="px-4 py-3 text-gray-800 font-medium">
+                    <td className="px-4 py-3 text-foreground font-medium">
                       {d.noNome.length > 50 ? d.noNome.slice(0, 48) + "…" : d.noNome}
                     </td>
-                    <td className="px-4 py-3 text-right font-semibold text-gray-900">
+                    <td className="px-4 py-3 text-right font-semibold text-foreground">
                       {formatarMin(d.totalMin)}
                     </td>
-                    <td className="px-4 py-3 text-right text-gray-500">{d.nSessoes}</td>
-                    <td className="px-4 py-3 text-right text-gray-400 text-xs hidden sm:table-cell">
+                    <td className="px-4 py-3 text-right text-muted-foreground">{d.nSessoes}</td>
+                    <td className="px-4 py-3 text-right text-muted-foreground text-xs hidden sm:table-cell">
                       {new Date(d.ultimoTs).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" })}
                     </td>
                   </tr>
@@ -286,16 +286,16 @@ export default async function ProgressoPage() {
           ================================================================ */}
       <div className="mt-10">
         <div className="mb-4">
-          <h2 className="text-xl font-bold text-gray-900">Esforco x Resultado</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <h2 className="text-xl font-bold text-foreground">Esforco x Resultado</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Onde cada materia esta no espectro de esforco (tempo) e efetividade (taxa de acerto).
           </p>
         </div>
 
         {/* Empty state — sem dados ou tudo "medindo" */}
         {esforcos.length === 0 || comVeredito.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
-            <p className="text-gray-500 text-sm">
+          <div className="rounded-xl border border-dashed border-border bg-muted p-8 text-center">
+            <p className="text-muted-foreground text-sm">
               Continue estudando e registrando tempo — os quadrantes aparecem quando houver
               volume (≥60min e ≥8 questoes por materia).
             </p>
@@ -303,12 +303,12 @@ export default async function ProgressoPage() {
         ) : (
           <>
             {/* Legenda dos eixos */}
-            <div className="mb-3 flex items-center gap-6 text-xs text-gray-400">
+            <div className="mb-3 flex items-center gap-6 text-xs text-muted-foreground">
               <span>
-                <span className="font-medium text-gray-600">Vertical:</span> Tempo (cima = muito tempo)
+                <span className="font-medium text-muted-foreground">Vertical:</span> Tempo (cima = muito tempo)
               </span>
               <span>
-                <span className="font-medium text-gray-600">Horizontal:</span> Taxa de acerto (direita = boa)
+                <span className="font-medium text-muted-foreground">Horizontal:</span> Taxa de acerto (direita = boa)
               </span>
             </div>
 
@@ -327,16 +327,16 @@ export default async function ProgressoPage() {
 
         {/* Bloco "Ainda medindo" — sem veredito de quadrante (anti-chute §4) */}
         {medindo.length > 0 && (
-          <div className="mt-4 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4">
-            <p className="text-xs font-semibold text-gray-500 mb-2">
+          <div className="mt-4 rounded-xl border border-dashed border-border bg-muted p-4">
+            <p className="text-xs font-semibold text-muted-foreground mb-2">
               Ainda medindo ({medindo.length})
             </p>
-            <p className="text-xs text-gray-400 mb-3">
+            <p className="text-xs text-muted-foreground mb-3">
               Volume insuficiente (tempo &lt;60min ou &lt;8 questoes) — sem veredito ainda.
             </p>
             <ul className="space-y-1">
               {medindo.map((no) => (
-                <li key={no.noId} className="text-xs text-gray-600">
+                <li key={no.noId} className="text-xs text-muted-foreground">
                   {no.noNome}
                   {no.totalMin > 0 && ` · ${formatarMin(no.totalMin)}`}
                   {no.nFeitas > 0 && ` · ${no.nFeitas}q`}
@@ -377,10 +377,10 @@ function SecaoCaracteristicas({
   return (
     <div className="mt-10">
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-900">
+        <h2 className="text-xl font-bold text-foreground">
           Desempenho por caracteristica da questao
         </h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Como voce vai em cada estilo e traco de questao do edital OAB.
         </p>
       </div>
@@ -388,23 +388,23 @@ function SecaoCaracteristicas({
       {/* Legenda */}
       <div className="mb-4 flex flex-wrap gap-3 text-xs">
         <span className="flex items-center gap-1">
-          <span className="px-1.5 py-0.5 rounded-full bg-green-100 text-green-800 font-semibold text-[10px]">forte</span>
-          <span className="text-gray-500">taxa &ge; 60%</span>
+          <span className="px-1.5 py-0.5 rounded-full bg-green-100 dark:bg-green-950/50 text-green-800 dark:text-green-300 font-semibold text-[10px]">forte</span>
+          <span className="text-muted-foreground">taxa &ge; 60%</span>
         </span>
         <span className="flex items-center gap-1">
-          <span className="px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold text-[10px]">fraco</span>
-          <span className="text-gray-500">taxa &lt; 60%</span>
+          <span className="px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 font-semibold text-[10px]">fraco</span>
+          <span className="text-muted-foreground">taxa &lt; 60%</span>
         </span>
         <span className="flex items-center gap-1">
-          <span className="px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-600 font-semibold text-[10px]">medindo</span>
-          <span className="text-gray-500">volume &lt; 8 questoes — sem veredito</span>
+          <span className="px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground font-semibold text-[10px]">medindo</span>
+          <span className="text-muted-foreground">volume &lt; 8 questoes — sem veredito</span>
         </span>
       </div>
 
       {/* Empty state total */}
       {caracteristicas.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
-          <p className="text-gray-500 text-sm">
+        <div className="rounded-xl border border-dashed border-border bg-muted p-8 text-center">
+          <p className="text-muted-foreground text-sm">
             Sem dados de caracteristicas ainda — responda mais questoes para ver onde
             os estilos/tracos te pegam.
           </p>
@@ -413,8 +413,8 @@ function SecaoCaracteristicas({
         <div className="space-y-5">
           {/* Lista 1: Por estilo de questão */}
           {estilos.length > 0 && (
-            <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+              <h3 className="text-sm font-semibold text-foreground mb-3">
                 Por estilo de questao
               </h3>
               <ul className="space-y-2">
@@ -427,8 +427,8 @@ function SecaoCaracteristicas({
 
           {/* Lista 2: Por característica / traço */}
           {tracos.length > 0 && (
-            <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+              <h3 className="text-sm font-semibold text-foreground mb-3">
                 Por caracteristica
               </h3>
               <ul className="space-y-2">

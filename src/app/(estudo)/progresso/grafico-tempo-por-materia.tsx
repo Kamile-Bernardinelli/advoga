@@ -56,7 +56,7 @@ export function GraficoTempoPorMateria({ dados }: GraficoTempoPorMateriaProps) {
           type="category"
           dataKey="nome"
           width={140}
-          tick={{ fontSize: 11, fill: "#374151" }}
+          tick={{ fontSize: 11, fill: "#6b7280" }}
           axisLine={false}
           tickLine={false}
         />

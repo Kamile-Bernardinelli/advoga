@@ -159,11 +159,11 @@ export function TimerEstudo({
       {/* Timer display */}
       {esteRodando && (
         <div className="flex items-center gap-3">
-          <span className="font-mono text-lg font-semibold text-gray-900 tabular-nums">
+          <span className="font-mono text-lg font-semibold text-foreground tabular-nums">
             {formatarTempo(elapsed)}
           </span>
           {progressoPct !== null && (
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-muted-foreground">
               {progressoPct}% de {minutosAlvo}min
             </span>
           )}
@@ -172,9 +172,9 @@ export function TimerEstudo({
 
       {/* Barra de progresso */}
       {esteRodando && progressoPct !== null && (
-        <div className="h-1.5 w-full rounded-full bg-gray-200 overflow-hidden">
+        <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
           <div
-            className="h-full rounded-full bg-blue-500 transition-all duration-1000"
+            className="h-full rounded-full bg-primary transition-all duration-1000"
             style={{ width: `${progressoPct}%` }}
           />
         </div>
@@ -182,7 +182,7 @@ export function TimerEstudo({
 
       {/* Meta atingida — sugestao de parar (Fatia B) */}
       {metaAtingida && !aviso && (
-        <p className="text-xs text-green-700 bg-green-50 border border-green-200 rounded px-2 py-1">
+        <p className="text-xs text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 rounded px-2 py-1">
           Meta atingida! Pare o timer e marque como feito quando terminar.
         </p>
       )}
@@ -195,7 +195,7 @@ export function TimerEstudo({
             onClick={handleIniciar}
             disabled={isPending || outroRodando}
             title={outroRodando ? `Outro timer ativo (${timerMateriaId?.slice(0, 8)}…). Pare antes.` : `Iniciar timer — ${materiaNome}`}
-            className="inline-flex items-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground shadow-sm hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <span className="text-xs">▶</span>
             {outroRodando ? "Outro ativo" : "Iniciar"}
@@ -205,7 +205,7 @@ export function TimerEstudo({
             type="button"
             onClick={handleParar}
             disabled={isPending}
-            className="inline-flex items-center gap-1.5 rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 shadow-sm hover:bg-red-100 disabled:opacity-50 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-md border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/40 px-3 py-1.5 text-sm font-medium text-red-700 dark:text-red-300 shadow-sm hover:bg-red-100 dark:hover:bg-red-900/40 disabled:opacity-50 transition-colors"
           >
             <span className="text-xs">■</span>
             {isPending ? "Registrando…" : "Parar"}
@@ -216,7 +216,7 @@ export function TimerEstudo({
           <button
             type="button"
             onClick={() => resetarTimer()}
-            className="text-xs text-gray-400 hover:text-gray-600 underline underline-offset-2"
+            className="text-xs text-muted-foreground hover:text-muted-foreground underline underline-offset-2"
           >
             Cancelar
           </button>
@@ -225,7 +225,7 @@ export function TimerEstudo({
 
       {/* Aviso */}
       {aviso && (
-        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">
+        <p className="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 rounded px-2 py-1">
           {aviso}
         </p>
       )}

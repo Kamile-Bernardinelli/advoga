@@ -19,15 +19,15 @@ const TIPO_LABEL: Record<string, string> = {
 };
 
 const TIPO_COR: Record<string, string> = {
-  conteudo: "bg-blue-50 text-blue-700 border-blue-200",
-  questoes: "bg-purple-50 text-purple-700 border-purple-200",
-  revisao:  "bg-amber-50 text-amber-700 border-amber-200",
+  conteudo: "bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900",
+  questoes: "bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-900",
+  revisao:  "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900",
 };
 
 const STATUS_COR: Record<string, string> = {
-  pendente:    "border-gray-200 bg-white",
-  em_andamento: "border-yellow-200 bg-yellow-50",
-  feito:       "border-green-200 bg-green-50",
+  pendente:    "border-border bg-card",
+  em_andamento: "border-yellow-200 dark:border-yellow-900 bg-yellow-50 dark:bg-yellow-950/40",
+  feito:       "border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/40",
 };
 
 // ---------------------------------------------------------------------------
@@ -67,7 +67,7 @@ function BlocoCard({ bloco, onStatusChange }: BlocoCardProps) {
           className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
             isFeito
               ? "border-green-500 bg-green-500"
-              : "border-gray-300 bg-white hover:border-blue-400"
+              : "border-border bg-card hover:border-ring"
           } ${isPending ? "opacity-50 cursor-wait" : "cursor-pointer"}`}
         >
           {isFeito && (
@@ -81,13 +81,13 @@ function BlocoCard({ bloco, onStatusChange }: BlocoCardProps) {
         <div className="min-w-0">
           {bloco.subtemaNome ? (
             <>
-              <p className="text-xs text-gray-400 truncate">{bloco.materiaNome ?? "Matéria"} ›</p>
-              <p className={`text-sm font-medium truncate ${isFeito ? "line-through text-gray-400" : "text-gray-900"}`}>
+              <p className="text-xs text-muted-foreground truncate">{bloco.materiaNome ?? "Matéria"} ›</p>
+              <p className={`text-sm font-medium truncate ${isFeito ? "line-through text-muted-foreground" : "text-foreground"}`}>
                 {bloco.subtemaNome}
               </p>
             </>
           ) : (
-            <p className={`text-sm font-medium truncate ${isFeito ? "line-through text-gray-400" : "text-gray-900"}`}>
+            <p className={`text-sm font-medium truncate ${isFeito ? "line-through text-muted-foreground" : "text-foreground"}`}>
               {bloco.materiaNome ?? bloco.materiaId}
             </p>
           )}
@@ -95,7 +95,7 @@ function BlocoCard({ bloco, onStatusChange }: BlocoCardProps) {
           {bloco.tipo === "questoes" && bloco.subtemaId && (
             <Link
               href={`/treino?subtema=${bloco.subtemaId}`}
-              className="inline-block mt-1 text-xs text-purple-700 underline underline-offset-2 hover:text-purple-900"
+              className="inline-block mt-1 text-xs text-purple-700 dark:text-purple-300 underline underline-offset-2 hover:text-purple-900"
             >
               Treinar questões
             </Link>
@@ -105,10 +105,10 @@ function BlocoCard({ bloco, onStatusChange }: BlocoCardProps) {
 
       {/* Badges direita */}
       <div className="flex items-center gap-2 shrink-0">
-        <span className={`inline-flex items-center rounded border px-1.5 py-0.5 text-xs font-medium ${TIPO_COR[bloco.tipo] ?? "bg-gray-50 text-gray-600 border-gray-200"}`}>
+        <span className={`inline-flex items-center rounded border px-1.5 py-0.5 text-xs font-medium ${TIPO_COR[bloco.tipo] ?? "bg-muted text-muted-foreground border-border"}`}>
           {TIPO_LABEL[bloco.tipo] ?? bloco.tipo}
         </span>
-        <span className="text-xs font-bold text-gray-700 w-14 text-right">
+        <span className="text-xs font-bold text-foreground w-14 text-right">
           {bloco.minutosAlvo} min
         </span>
       </div>
@@ -156,7 +156,7 @@ interface CronogramaViewProps {
 export function CronogramaView({ blocos, onStatusChange }: CronogramaViewProps) {
   if (blocos.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-8 text-center text-gray-400 text-sm">
+      <div className="rounded-xl border border-dashed border-border bg-muted p-8 text-center text-muted-foreground text-sm">
         Nenhum bloco de estudo agendado para esta semana.
         <br />
         Informe as horas disponíveis e gere o roteiro.
@@ -190,10 +190,10 @@ export function CronogramaView({ blocos, onStatusChange }: CronogramaViewProps) 
           <section key={data}>
             {/* Cabeçalho do dia */}
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-sm font-semibold text-foreground">
                 {formatarData(data)}
               </h3>
-              <div className="flex items-center gap-3 text-xs text-gray-400">
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
                 <span>{minTotal} min</span>
                 <span>
                   {feitos}/{total} feitos
@@ -203,7 +203,7 @@ export function CronogramaView({ blocos, onStatusChange }: CronogramaViewProps) 
 
             {/* Barra de progresso do dia */}
             {total > 0 && (
-              <div className="w-full h-1 rounded bg-gray-100 mb-3">
+              <div className="w-full h-1 rounded bg-muted mb-3">
                 <div
                   className="h-1 rounded bg-green-400 transition-all"
                   style={{ width: `${Math.round((feitos / total) * 100)}%` }}
