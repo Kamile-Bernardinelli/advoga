@@ -3,34 +3,55 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const links = [
-  { href: "/teste", label: "Teste" },
-  { href: "/plano", label: "Estudo" },
-  { href: "/questoes", label: "Consulta" },
-  { href: "/dashboard", label: "Verificação" },
+// Tier 1: os 4 ambientes. `match` cobre TODAS as sub-rotas de cada ambiente,
+// para que o estado ativo destaque o ambiente correto em qualquer sub-página
+// (ex.: em /cronograma o ambiente ativo continua sendo "Estudo").
+const AMBIENTES = [
+  { href: "/teste", label: "Teste", match: ["/teste"] },
+  {
+    href: "/plano",
+    label: "Estudo",
+    match: [
+      "/plano",
+      "/cronograma",
+      "/metas",
+      "/registro",
+      "/materiais",
+      "/progresso",
+      "/treino",
+    ],
+  },
+  { href: "/questoes", label: "Consulta", match: ["/questoes", "/legislacao"] },
+  {
+    href: "/dashboard",
+    label: "Verificação",
+    match: ["/dashboard", "/incidencia", "/resultado"],
+  },
 ];
 
-// Nav desktop-first dos 4 ambientes.
-// Usado pelo AppShell e pelos layouts de cada route group.
+// Nav dos 4 ambientes. Usado pelo AppShell (Tier 1). Ativo = accent de marca.
 export function Nav() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
 
   return (
-    <nav className="flex gap-1">
-      {links.map((link) => {
-        const isActive = pathname?.startsWith(link.href) ?? false;
+    <nav className="flex flex-wrap gap-1">
+      {AMBIENTES.map(({ href, label, match }) => {
+        const isActive = match.some(
+          (m) => pathname === m || pathname.startsWith(m + "/")
+        );
         return (
           <Link
-            key={link.href}
-            href={link.href}
+            key={href}
+            href={href}
+            aria-current={isActive ? "page" : undefined}
             className={[
-              "px-3 py-1.5 rounded text-sm font-medium transition-colors",
+              "rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               isActive
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
             ].join(" ")}
           >
-            {link.label}
+            {label}
           </Link>
         );
       })}

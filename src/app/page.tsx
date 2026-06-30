@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { AppShell } from "@/components/shared/app-shell";
 
 // Prova OAB 1ª fase: 06/09/2026
 const EXAM_DATE = new Date("2026-09-06T00:00:00-03:00");
@@ -41,10 +41,8 @@ export default function HomePage() {
   const diasRestantes = getDaysUntilExam();
 
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-center p-8">
-      <div className="absolute right-4 top-4">
-        <ThemeToggle />
-      </div>
+    <AppShell>
+      <div className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center p-8">
       {/* Countdown */}
       <section className="mb-10 text-center">
         <div className="text-6xl font-bold tabular-nums text-foreground">
@@ -68,6 +66,7 @@ export default function HomePage() {
           </Link>
         ))}
       </section>
-    </main>
+      </div>
+    </AppShell>
   );
 }

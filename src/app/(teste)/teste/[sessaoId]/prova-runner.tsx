@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useProvaStore } from "@/lib/store/prova-store";
 import { saveResposta, finalizeSession } from "../../_actions/sessao.actions";
+import { BRAND_CLASS } from "@/components/shared/brand";
 
 type Letra = "A" | "B" | "C" | "D";
 
@@ -37,9 +39,11 @@ function formatTime(totalSeg: number): string {
 }
 
 export default function ProvaRunner({ sessaoId, questoes, respostasIniciais, inicio }: Props) {
+  const router = useRouter();
   const { respostas, questaoAtual, setResposta, setQuestaoAtual, initStore } = useProvaStore();
   const [segundos, setSegundos] = useState(0);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showExit, setShowExit] = useState(false);
   const [finalizando, setFinalizando] = useState(false);
   const savingRef = useRef<Set<string>>(new Set());
 
@@ -79,6 +83,15 @@ export default function ProvaRunner({ sessaoId, questoes, respostasIniciais, ini
       {/* Header fixo com timer */}
       <header className="sticky top-0 z-10 bg-card border-b border-border px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
+          {/* Marca → home. Modo foco: gateada por confirm (sessão ativa). */}
+          <button
+            type="button"
+            onClick={() => setShowExit(true)}
+            aria-label="Sair para a página inicial"
+            className={BRAND_CLASS}
+          >
+            Advoga
+          </button>
           <span className="text-sm font-medium text-muted-foreground">
             OAB — Prova Simulada
           </span>
@@ -245,6 +258,37 @@ export default function ProvaRunner({ sessaoId, questoes, respostasIniciais, ini
                   {finalizando ? "Finalizando..." : "Confirmar e ver resultado"}
                 </button>
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de saída (marca → home). Mesmo padrão visual do confirm acima;
+          NÃO toca finalizeSession/gabarito — só navega. As respostas já são
+          salvas a cada clique (saveResposta), então sair é não-destrutivo. */}
+      {showExit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-card rounded-xl p-6 max-w-sm w-full mx-4 shadow-xl">
+            <h2 className="text-lg font-bold text-foreground mb-2">Sair da prova?</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              Suas respostas já estão salvas. A prova continua aberta e você pode
+              retomá-la depois. Deseja voltar para a página inicial?
+            </p>
+            <div className="flex gap-3 mt-4">
+              <button
+                type="button"
+                onClick={() => setShowExit(false)}
+                className="flex-1 rounded-lg border border-border px-4 py-2 text-sm text-muted-foreground hover:bg-muted transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => router.push("/")}
+                className="flex-1 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                Sair
+              </button>
             </div>
           </div>
         </div>

@@ -1,9 +1,9 @@
 // AMBIENTE: VERIFICAÇÃO — correção + diagnóstico + dashboard
-// Drop 4: adicionada nav (Dashboard | Incidência), espelhando (estudo)/layout.tsx — aditivo.
-import Link from "next/link";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
+// Fase 1 (AppShell): header global de 2 camadas. Tier 2 = Dashboard | Incidência.
+// (/resultado/[sessaoId] não tem entrada no Tier 2; o Tier 1 ainda marca "Verificação".)
+import { AppShell } from "@/components/shared/app-shell";
 
-const NAV_LINKS = [
+const SUB_NAV = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/incidencia", label: "Incidência" },
 ];
@@ -13,28 +13,5 @@ export default function VerificacaoLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b bg-card px-6 py-3">
-        <div className="flex items-center gap-6 flex-wrap">
-          <span className="font-semibold text-foreground shrink-0">Ambiente de Verificação</span>
-          <nav className="flex items-center gap-1 flex-wrap">
-            {NAV_LINKS.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className="px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
-          <div className="ml-auto">
-            <ThemeToggle />
-          </div>
-        </div>
-      </header>
-      <main className="flex-1">{children}</main>
-    </div>
-  );
+  return <AppShell secondaryNav={SUB_NAV}>{children}</AppShell>;
 }

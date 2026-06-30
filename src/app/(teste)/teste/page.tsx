@@ -2,6 +2,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import IniciarProvaForm from "./iniciar-prova-form";
+import { Brand } from "@/components/shared/brand";
 
 export default async function TestePage() {
   const supabase = await createClient();
@@ -22,7 +23,12 @@ export default async function TestePage() {
   }
 
   return (
-    <div className="p-8 max-w-3xl mx-auto">
+    <>
+      {/* Chrome mínima do modo foco: só a marca → home (sem nav completa). */}
+      <header className="border-b border-border bg-card px-6 py-3">
+        <Brand />
+      </header>
+      <div className="p-8 max-w-3xl mx-auto w-full">
       <h1 className="text-2xl font-bold mb-2 text-foreground">Provas e Simulados</h1>
       <p className="text-muted-foreground mb-6">
         Selecione uma prova para iniciar. O gabarito fica oculto até você finalizar.
@@ -56,6 +62,7 @@ export default async function TestePage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
