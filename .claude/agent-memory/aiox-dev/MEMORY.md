@@ -7,3 +7,4 @@
 - [Supabase gen types](feedback_supabase_gentypes_junk.md) — regen db.types.ts: usar `--project-id` (Management API, sem Docker, sem lixo); `--local`/`--db-url` exigem Docker.
 - [Cockpit v2 Fatia A+B](project_cockpit_v2_drop1_5.md) — /metas + compensação + /materiais + /progresso + Recharts. 316 testes, build verde. Smoke 2026-06-26.
 - [Incidência Drop 4](project_advoga_incidencia_drop4.md) — /incidencia descritivo anti-chute (densificação zeros + sparkline mono). Convenção testes: tests/unit + `vitest run --dir tests`.
+- [UI/UX Overhaul](project_advoga_uiux_overhaul.md) — Fases 0-2 done: tokens+dark (chave `advoga.theme`, sem next-themes) + AppShell 2-tier + /como-usar + first-run tour (spotlight custom, `data-tour` anchors). Fases 3-4 pendentes.

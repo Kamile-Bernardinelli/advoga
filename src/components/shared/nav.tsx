@@ -6,11 +6,20 @@ import { usePathname } from "next/navigation";
 // Tier 1: os 4 ambientes. `match` cobre TODAS as sub-rotas de cada ambiente,
 // para que o estado ativo destaque o ambiente correto em qualquer sub-página
 // (ex.: em /cronograma o ambiente ativo continua sendo "Estudo").
-const AMBIENTES = [
+// `tour` (opcional) ancora o first-run tour em ambientes específicos (Fase 2).
+interface Ambiente {
+  href: string;
+  label: string;
+  match: string[];
+  tour?: string;
+}
+
+const AMBIENTES: Ambiente[] = [
   { href: "/teste", label: "Teste", match: ["/teste"] },
   {
     href: "/plano",
     label: "Estudo",
+    tour: "ambiente-estudo",
     match: [
       "/plano",
       "/cronograma",
@@ -34,8 +43,8 @@ export function Nav() {
   const pathname = usePathname() ?? "";
 
   return (
-    <nav className="flex flex-wrap gap-1">
-      {AMBIENTES.map(({ href, label, match }) => {
+    <nav data-tour="ambientes" className="flex flex-wrap gap-1">
+      {AMBIENTES.map(({ href, label, match, tour }) => {
         const isActive = match.some(
           (m) => pathname === m || pathname.startsWith(m + "/")
         );
@@ -43,6 +52,7 @@ export function Nav() {
           <Link
             key={href}
             href={href}
+            data-tour={tour}
             aria-current={isActive ? "page" : undefined}
             className={[
               "rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",

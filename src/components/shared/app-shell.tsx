@@ -3,6 +3,7 @@ import { Brand } from "@/components/shared/brand";
 import { Nav } from "@/components/shared/nav";
 import { SubNav, type SubNavLink } from "@/components/shared/sub-nav";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { FirstRunTour } from "@/components/onboarding/first-run-tour";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -29,6 +30,7 @@ export function AppShell({ children, secondaryNav }: AppShellProps) {
           <div className="ml-auto flex items-center gap-1">
             <Link
               href="/como-usar"
+              data-tour="como-usar"
               className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               Como usar
@@ -46,6 +48,9 @@ export function AppShell({ children, secondaryNav }: AppShellProps) {
       </header>
 
       <main className="flex-1">{children}</main>
+
+      {/* First-run tour (Fase 2) — ilha cliente; auto-dispara só na 1ª sessão. */}
+      <FirstRunTour />
     </div>
   );
 }
