@@ -10,11 +10,14 @@ export interface SubNavLink {
 
 // Tier 2 do AppShell: sub-rotas do ambiente atual, com estado ativo sutil
 // (bg-muted) — distinto do Tier 1, cujo ativo usa o accent de marca (bg-primary).
+// Mobile (< md): vira uma faixa de chips com scroll horizontal (proposal §3.3) —
+// nada quebra/empilha quando há muitas sub-rotas (Estudo tem 7). No >= md volta a
+// quebrar linha normalmente.
 export function SubNav({ links }: { links: SubNavLink[] }) {
   const pathname = usePathname() ?? "";
 
   return (
-    <nav className="flex flex-wrap items-center gap-1">
+    <nav className="-mx-1 flex flex-nowrap items-center gap-1 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:overflow-visible">
       {links.map(({ href, label }) => {
         const isActive = pathname === href || pathname.startsWith(href + "/");
         return (
@@ -23,7 +26,7 @@ export function SubNav({ links }: { links: SubNavLink[] }) {
             href={href}
             aria-current={isActive ? "page" : undefined}
             className={[
-              "rounded-md px-3 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "flex min-h-9 shrink-0 items-center whitespace-nowrap rounded-md px-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               isActive
                 ? "bg-muted font-medium text-foreground"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",

@@ -13,6 +13,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { TempoPorNo } from "@/lib/types/domain";
+import { useChartTheme } from "@/lib/use-chart-theme";
 
 interface GraficoTempoPorMateriaProps {
   dados: TempoPorNo[];
@@ -27,6 +28,7 @@ function formatarMin(min: number): string {
 }
 
 export function GraficoTempoPorMateria({ dados }: GraficoTempoPorMateriaProps) {
+  const t = useChartTheme();
   if (dados.length === 0) return null;
 
   // Trunca nomes longos para o eixo Y
@@ -44,10 +46,10 @@ export function GraficoTempoPorMateria({ dados }: GraficoTempoPorMateriaProps) {
         layout="vertical"
         margin={{ top: 4, right: 32, left: 8, bottom: 4 }}
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false} />
+        <CartesianGrid strokeDasharray="3 3" stroke={t.grid} horizontal={false} />
         <XAxis
           type="number"
-          tick={{ fontSize: 11, fill: "#9ca3af" }}
+          tick={{ fontSize: 11, fill: t.axis }}
           axisLine={false}
           tickLine={false}
           tickFormatter={(v: number) => formatarMin(v)}
@@ -56,18 +58,18 @@ export function GraficoTempoPorMateria({ dados }: GraficoTempoPorMateriaProps) {
           type="category"
           dataKey="nome"
           width={140}
-          tick={{ fontSize: 11, fill: "#6b7280" }}
+          tick={{ fontSize: 11, fill: t.axis }}
           axisLine={false}
           tickLine={false}
         />
         <Tooltip
+          {...t.tooltipProps}
           formatter={(value) => [
             typeof value === "number" ? formatarMin(value) : `${value}`,
             "Tempo",
           ]}
-          contentStyle={{ fontSize: 12, borderRadius: 6 }}
         />
-        <Bar dataKey="min" fill="#3b82f6" radius={[0, 4, 4, 0]} isAnimationActive={false} />
+        <Bar dataKey="min" fill={t.series.primary} radius={[0, 4, 4, 0]} isAnimationActive={false} />
       </BarChart>
     </ResponsiveContainer>
   );

@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { SaldoMes } from "@/lib/types/domain";
+import { useChartTheme } from "@/lib/use-chart-theme";
 
 // ---------------------------------------------------------------------------
 // Tipos
@@ -36,6 +37,7 @@ function formatarMin(min: number): string {
 // ---------------------------------------------------------------------------
 
 export function GraficoProgressoMensal({ saldoMes }: GraficoProgressoMensalProps) {
+  const t        = useChartTheme();
   const realMin  = saldoMes?.realMin ?? 0;
   const metaMin  = saldoMes?.metaMensalMin ?? null;
   const pct      = saldoMes?.pctMeta ?? null;
@@ -53,7 +55,7 @@ export function GraficoProgressoMensal({ saldoMes }: GraficoProgressoMensalProps
 
   const pctDisplay = pct ?? Math.round((realMin / metaMin) * 100);
   const pctCapped  = Math.min(100, pctDisplay);
-  const cor        = pctDisplay >= 100 ? "#22c55e" : pctDisplay >= 60 ? "#3b82f6" : "#f59e0b";
+  const cor        = pctDisplay >= 100 ? t.series.positive : pctDisplay >= 60 ? t.series.primary : t.series.warning;
 
   const chartData = [
     { name: "Progresso", value: pctCapped, fill: cor },
@@ -74,13 +76,13 @@ export function GraficoProgressoMensal({ saldoMes }: GraficoProgressoMensalProps
             endAngle={-270}
           >
             <RadialBar
-              background
+              background={{ fill: t.series.metaBar }}
               dataKey="value"
               isAnimationActive={false}
             />
             <Tooltip
+              {...t.tooltipProps}
               formatter={(value) => [typeof value === "number" ? `${value}%` : `${value}`, "Progresso"]}
-              contentStyle={{ fontSize: 12, borderRadius: 6 }}
             />
           </RadialBarChart>
         </ResponsiveContainer>

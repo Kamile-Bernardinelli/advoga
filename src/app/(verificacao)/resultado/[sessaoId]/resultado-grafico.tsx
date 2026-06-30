@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { useChartTheme, type ChartTheme } from "@/lib/use-chart-theme";
 
 interface Materia {
   id: string;
@@ -22,13 +23,14 @@ interface Props {
   materias: Materia[];
 }
 
-function getBarColor(taxa: number): string {
-  if (taxa >= 0.7) return "#16a34a"; // verde
-  if (taxa >= 0.5) return "#d97706"; // âmbar
-  return "#dc2626"; // vermelho
+function getBarColor(taxa: number, t: ChartTheme): string {
+  if (taxa >= 0.7) return t.series.positive; // verde
+  if (taxa >= 0.5) return t.series.warning; // âmbar
+  return t.series.negative; // vermelho
 }
 
 export default function ResultadoGrafico({ materias }: Props) {
+  const t = useChartTheme();
   const dados = materias.map((m) => ({
     nome: m.nome.length > 20 ? m.nome.slice(0, 18) + "…" : m.nome,
     nomeCompleto: m.nome,
@@ -49,36 +51,37 @@ export default function ResultadoGrafico({ materias }: Props) {
             type="number"
             domain={[0, 100]}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 11 }}
+            tick={{ fontSize: 11, fill: t.axis }}
           />
           <YAxis
             type="category"
             dataKey="nome"
             width={160}
-            tick={{ fontSize: 11 }}
+            tick={{ fontSize: 11, fill: t.axis }}
           />
           <Tooltip
+            {...t.tooltipProps}
             formatter={(value, _name, props) => {
               const { acertos, total, nomeCompleto } = props.payload;
               return [`${value}% (${acertos}/${total})`, nomeCompleto];
             }}
           />
-          <Bar dataKey="taxa" radius={[0, 4, 4, 0]}>
+          <Bar dataKey="taxa" radius={[0, 4, 4, 0]} isAnimationActive={false}>
             {dados.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={getBarColor(entry.taxa / 100)} />
+              <Cell key={`cell-${index}`} fill={getBarColor(entry.taxa / 100, t)} />
             ))}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
       <div className="flex items-center gap-4 mt-3 justify-center text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-sm inline-block bg-green-600" /> ≥ 70%
+          <span className="w-3 h-3 rounded-sm inline-block" style={{ backgroundColor: t.series.positive }} /> ≥ 70%
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-sm inline-block bg-amber-600" /> 50–69%
+          <span className="w-3 h-3 rounded-sm inline-block" style={{ backgroundColor: t.series.warning }} /> 50–69%
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-sm inline-block bg-red-600" /> &lt; 50%
+          <span className="w-3 h-3 rounded-sm inline-block" style={{ backgroundColor: t.series.negative }} /> &lt; 50%
         </span>
       </div>
     </div>

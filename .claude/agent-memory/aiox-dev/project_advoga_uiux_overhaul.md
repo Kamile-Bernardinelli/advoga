@@ -63,6 +63,37 @@ Direcao aprovada: **polir o visual limpo existente, NAO restyle**. Exame OAB 202
   - `rever-tour-button.tsx` (cliente): dispara `TOUR_EVENT` → replay na mesma pagina (sem limpar flag).
 - TS 0, build verde, `/como-usar` prerendered estatico. Seguranca intacta (so arquivos de UI).
 
-**Proximas fases:** 3=polish por tela + a11y + mobile (hamburger no Tier 1 <md; tap targets 44px;
-Tier 2 chip-scroll; recharts token-driven), 4=QA gate.
+**Fase 3 (Polish + Mobile + a11y) — CONCLUIDA** (commit `feat(ui): fase 3 — charts dark-themed + mobile responsive + a11y + polish`):
+- **Charts token-driven (7 recharts):** `src/lib/use-chart-theme.ts` (`useChartTheme()` hook).
+  Recharts nao aceita `var()` em fill/stroke -> o hook resolve `var(--token)` para rgb CONCRETO via
+  elemento-sonda + `getComputedStyle().color` + normalizacao por canvas (oklch->rgb; sentinel #fe0fdc
+  guarda contra canvas sem oklch -> devolve raw em vez de preto). Re-resolve no toggle via
+  MutationObserver na classe de <html>. Resolucao inicial deferida com rAF (evita set-state-in-effect
+  lint — mesmo padrao do tour). Retorna grid(--border), axis(--muted-foreground),
+  tooltipProps(contentStyle/labelStyle/itemStyle/cursor de --popover/--popover-foreground), e
+  series.{primary=--primary indigo, neutral, positive/warning/negative/metaBar/reference = pares
+  claro/escuro hardcoded p/ legibilidade AA}. Todos os 7 graficos consomem via `<Tooltip {...t.tooltipProps}>`
+  + `tick={{fill:t.axis}}`. Series perf (verde/ambar/vermelho) e legend swatches agora theme-aware.
+- **Mobile nav:** `src/components/shared/mobile-nav.tsx` (ilha, hamburger <md). Reusa `AMBIENTES`
+  (agora exportado de nav.tsx) + "Como usar". Esc/backdrop/onClick fecham; close-on-route via rAF.
+  `<Nav>` (desktop) ganhou `hidden md:flex`; "Como usar" inline `hidden md:inline-flex`; header `relative`
+  (anchor do painel `absolute top-full`). `<SubNav>` (Tier 2) virou chip-row com scroll-x no mobile
+  (`flex-nowrap overflow-x-auto md:flex-wrap`, scrollbar oculta).
+- **Incidencia table:** wrapper `overflow-x-auto` + `min-w-[600px]` (scroll-x no mobile, nao esmaga).
+- **a11y:** tap targets — hamburger size-11 (44), menu rows min-h-11 (44), toggle `size-11 md:size-9`
+  (44 touch / 36 desktop), nav/subnav links min-h-9 (36, desktop-density). focus-visible rings nos
+  home cards, links Treinar/Ver-resultado/ajustar, card de incidencia, checkbox do cronograma
+  (+ hit-area 44 via `before:-inset-3`, +aria-pressed). `dark:hover:` adicionado em todos os links
+  `text-X-600/700 hover:text-X-800/900` (blue->dark:hover:300, purple->dark:hover:200/300).
+- **Polish:** countdown hero do dashboard -> accent de marca (`from-primary to-primary/85`,
+  text-primary-foreground; eliminou ultimo bg-white hardcoded). Numero do countdown da home -> text-primary.
+  Empty state do cronograma ganhou icone (CalendarDays) + hierarquia. Empty states de progresso ja existiam.
+- DOD: typecheck 0, build verde, 106/106 testes. Seguranca intacta (so chrome/estilo; `(teste)`/
+  `questoes_prova`/`finalizeSession`/`sessao.actions` NAO tocados; resultado-grafico so muda cor).
+- Deixado p/ QA (Fase 4): card-reflow da tabela de incidencia (fiz scroll-x, suficiente); tour mobile
+  ancora em `[data-tour]` que ficam `hidden` no mobile (spotlight pode mirar caixa 0 — edge 1a-sessao
+  mobile); verificacao visual de contraste AA do indigo accent no dark.
+
+**Fase 4 (QA gate):** contraste AA nos 2 temas, focus em todos interativos, keyboard nav, tap targets,
+re-confirmar boundary gabarito/`questoes_prova`, smoke cross-device claro/escuro.
 Seguranca: fluxo de teste/`questoes_prova` (gabarito) NAO pode ser tocado em nenhuma fase de UI.

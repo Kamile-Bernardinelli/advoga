@@ -177,7 +177,7 @@ export default async function DashboardPage() {
           </div>
           <a
             href={`/resultado/${ultimaSessaoInfo.sessaoId}`}
-            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+            className="inline-flex min-h-9 items-center rounded px-1 text-sm font-medium text-blue-600 transition-colors hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:text-blue-400 dark:hover:text-blue-300"
           >
             Ver resultado →
           </a>
@@ -187,7 +187,7 @@ export default async function DashboardPage() {
       {/* Descoberta: link para o painel de incidência do corpus (Drop 4) */}
       <Link
         href="/incidencia"
-        className="block bg-blue-50 dark:bg-blue-950/30 rounded-xl border border-blue-200 dark:border-blue-900 p-4 mb-8 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+        className="block bg-blue-50 dark:bg-blue-950/30 rounded-xl border border-blue-200 dark:border-blue-900 p-4 mb-8 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
           Incidência &amp; tendência por subtema →

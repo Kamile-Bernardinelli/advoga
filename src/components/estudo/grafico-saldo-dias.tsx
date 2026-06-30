@@ -15,6 +15,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { SaldoDia } from "@/lib/types/domain";
+import { useChartTheme } from "@/lib/use-chart-theme";
 
 // ---------------------------------------------------------------------------
 // Tipos
@@ -38,6 +39,7 @@ function formatarDia(iso: string): string {
 // ---------------------------------------------------------------------------
 
 export function GraficoSaldoDias({ dados }: GraficoSaldoDiasProps) {
+  const t = useChartTheme();
   if (dados.length === 0) {
     return (
       <p className="text-sm text-muted-foreground italic text-center py-4">
@@ -56,32 +58,32 @@ export function GraficoSaldoDias({ dados }: GraficoSaldoDiasProps) {
   return (
     <ResponsiveContainer width="100%" height={200}>
       <BarChart data={chartData} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+        <CartesianGrid strokeDasharray="3 3" stroke={t.grid} />
         <XAxis
           dataKey="dia"
-          tick={{ fontSize: 11, fill: "#9ca3af" }}
+          tick={{ fontSize: 11, fill: t.axis }}
           axisLine={false}
           tickLine={false}
         />
         <YAxis
-          tick={{ fontSize: 11, fill: "#9ca3af" }}
+          tick={{ fontSize: 11, fill: t.axis }}
           axisLine={false}
           tickLine={false}
           unit=" m"
         />
         <Tooltip
+          {...t.tooltipProps}
           formatter={(value, name) => [
             typeof value === "number" ? `${value}min` : `${value}`,
             name === "meta" ? "Meta" : "Real",
           ]}
-          contentStyle={{ fontSize: 12, borderRadius: 6 }}
         />
         <Legend
           formatter={(value) => (value === "meta" ? "Meta" : "Real")}
-          wrapperStyle={{ fontSize: 12 }}
+          wrapperStyle={{ fontSize: 12, color: t.axis }}
         />
-        <Bar dataKey="meta" fill="#e5e7eb" radius={[3, 3, 0, 0]} isAnimationActive={false} />
-        <Bar dataKey="real" fill="#3b82f6" radius={[3, 3, 0, 0]} isAnimationActive={false} />
+        <Bar dataKey="meta" fill={t.series.metaBar} radius={[3, 3, 0, 0]} isAnimationActive={false} />
+        <Bar dataKey="real" fill={t.series.primary} radius={[3, 3, 0, 0]} isAnimationActive={false} />
       </BarChart>
     </ResponsiveContainer>
   );

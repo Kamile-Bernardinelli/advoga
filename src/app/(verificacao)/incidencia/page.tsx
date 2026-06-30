@@ -99,8 +99,11 @@ export default async function IncidenciaPage() {
           {/* Ranking por subtema — tabela top-40 com sparkline densificada */}
           <div>
             <h2 className="text-base font-semibold text-foreground mb-3">Ranking por subtema</h2>
-            <div className="bg-card rounded-xl border border-border overflow-hidden">
-              <table className="w-full text-sm">
+            {/* Scroll horizontal no mobile: a tabela mantém min-width e nunca esmaga
+                colunas/quebra layout em ~375px (proposal §3.4). */}
+            <div className="bg-card rounded-xl border border-border">
+              <div className="overflow-x-auto rounded-xl">
+                <table className="w-full min-w-[600px] text-sm">
                 <thead className="bg-muted border-b border-border">
                   <tr>
                     <th className="text-right px-3 py-3 font-medium text-muted-foreground w-10">#</th>
@@ -158,7 +161,7 @@ export default async function IncidenciaPage() {
                           {l.disponiveis > 0 ? (
                             <Link
                               href={`/treino?subtema=${l.subtemaId}`}
-                              className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 font-medium"
+                              className="inline-flex min-h-9 items-center rounded px-1 text-sm font-medium text-blue-600 transition-colors hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:text-blue-400 dark:hover:text-blue-300"
                             >
                               Treinar
                             </Link>
@@ -170,7 +173,8 @@ export default async function IncidenciaPage() {
                     );
                   })}
                 </tbody>
-              </table>
+                </table>
+              </div>
             </div>
             <p className="text-xs text-muted-foreground mt-2">
               Mostrando os {Math.min(TOP_TABELA, linhas.length)} de maior incidência de{" "}

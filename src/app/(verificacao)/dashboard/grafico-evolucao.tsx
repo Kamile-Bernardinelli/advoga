@@ -10,6 +10,7 @@ import {
   CartesianGrid,
   ReferenceLine,
 } from "recharts";
+import { useChartTheme } from "@/lib/use-chart-theme";
 
 interface Ponto {
   data: string;
@@ -23,6 +24,8 @@ interface Props {
 }
 
 export default function GraficoEvolucao({ dados }: Props) {
+  const t = useChartTheme();
+
   return (
     <div className="bg-card rounded-xl border border-border p-4">
       <ResponsiveContainer width="100%" height={300}>
@@ -30,31 +33,32 @@ export default function GraficoEvolucao({ dados }: Props) {
           data={dados}
           margin={{ top: 8, right: 16, left: 8, bottom: 4 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+          <CartesianGrid strokeDasharray="3 3" stroke={t.grid} />
           <XAxis
             dataKey="data"
-            tick={{ fontSize: 10 }}
+            tick={{ fontSize: 10, fill: t.axis }}
             tickFormatter={(v: string) => v.slice(5)} // MM-DD
           />
           <YAxis
             domain={[0, 100]}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 10 }}
+            tick={{ fontSize: 10, fill: t.axis }}
           />
           <Tooltip
+            {...t.tooltipProps}
             formatter={(value, _name, props) => {
               const p = props.payload;
               return [`${value}% (${p.acertos}/${p.total})`, "Taxa de acerto"];
             }}
             labelFormatter={(label) => `Data: ${label}`}
           />
-          <ReferenceLine y={70} stroke="#16a34a" strokeDasharray="4 2" label={{ value: "70%", fill: "#16a34a", fontSize: 10 }} />
+          <ReferenceLine y={70} stroke={t.series.reference} strokeDasharray="4 2" label={{ value: "70%", fill: t.series.reference, fontSize: 10 }} />
           <Line
             type="monotone"
             dataKey="taxa"
-            stroke="#2563eb"
+            stroke={t.series.primary}
             strokeWidth={2}
-            dot={{ r: 4, fill: "#2563eb" }}
+            dot={{ r: 4, fill: t.series.primary }}
             activeDot={{ r: 6 }}
           />
         </LineChart>

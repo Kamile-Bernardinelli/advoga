@@ -1,9 +1,10 @@
 "use client";
 
 // [client] Headline recharts — top-15 subtemas por INCIDÊNCIA (spec §4.3).
-// Espelha grafico-materias.tsx, mas com COR ÚNICA neutra (#6366f1 indigo): aqui a barra mede
-// VOLUME do corpus, não desempenho — colorir por valor implicaria juízo (anti-chute §7).
-// Sem paleta verde/âmbar/vermelho. isAnimationActive=false (convenção recharts do projeto).
+// Espelha grafico-materias.tsx, mas com COR ÚNICA (accent de marca, token --primary):
+// aqui a barra mede VOLUME do corpus, não desempenho — colorir por valor implicaria
+// juízo (anti-chute §7). Sem paleta verde/âmbar/vermelho. isAnimationActive=false
+// (convenção recharts do projeto). Cores resolvidas por tema via useChartTheme (Fase 3).
 
 import {
   BarChart,
@@ -13,6 +14,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useChartTheme } from "@/lib/use-chart-theme";
 
 export interface IncidenciaChartItem {
   subtemaNome: string;
@@ -26,6 +28,7 @@ interface Props {
 }
 
 export default function GraficoIncidencia({ dados }: Props) {
+  const t = useChartTheme();
   const data = dados.map((d) => ({
     nome: d.subtemaNome.length > 22 ? d.subtemaNome.slice(0, 20) + "…" : d.subtemaNome,
     nomeCompleto: d.subtemaNome,
@@ -46,15 +49,16 @@ export default function GraficoIncidencia({ dados }: Props) {
             type="number"
             domain={[0, "dataMax"]}
             allowDecimals={false}
-            tick={{ fontSize: 10 }}
+            tick={{ fontSize: 10, fill: t.axis }}
           />
           <YAxis
             type="category"
             dataKey="nome"
             width={170}
-            tick={{ fontSize: 10 }}
+            tick={{ fontSize: 10, fill: t.axis }}
           />
           <Tooltip
+            {...t.tooltipProps}
             formatter={(_value, _name, props) => {
               const p = props.payload;
               return [
@@ -65,7 +69,7 @@ export default function GraficoIncidencia({ dados }: Props) {
           />
           <Bar
             dataKey="incidencia"
-            fill="#6366f1"
+            fill={t.series.primary}
             radius={[0, 4, 4, 0]}
             isAnimationActive={false}
           />

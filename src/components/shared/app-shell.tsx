@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Brand } from "@/components/shared/brand";
 import { Nav } from "@/components/shared/nav";
+import { MobileNav } from "@/components/shared/mobile-nav";
 import { SubNav, type SubNavLink } from "@/components/shared/sub-nav";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { FirstRunTour } from "@/components/onboarding/first-run-tour";
@@ -22,26 +23,28 @@ export function AppShell({ children, secondaryNav }: AppShellProps) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-border bg-card">
+      <header className="relative border-b border-border bg-card">
         {/* Tier 1 — primário, sempre visível */}
-        <div className="flex flex-wrap items-center gap-4 px-6 py-3">
+        <div className="flex flex-wrap items-center gap-4 px-4 py-3 md:px-6">
           <Brand className="shrink-0" />
           <Nav />
           <div className="ml-auto flex items-center gap-1">
+            {/* "Como usar" inline só no desktop; no mobile vive no MobileNav. */}
             <Link
               href="/como-usar"
               data-tour="como-usar"
-              className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="hidden min-h-9 items-center rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:inline-flex"
             >
               Como usar
             </Link>
             <ThemeToggle />
+            <MobileNav />
           </div>
         </div>
 
         {/* Tier 2 — contextual, sub-rotas do ambiente atual */}
         {hasSecondary && (
-          <div className="border-t border-border px-6 py-2">
+          <div className="border-t border-border px-4 py-2 md:px-6">
             <SubNav links={secondaryNav} />
           </div>
         )}

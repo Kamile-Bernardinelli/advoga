@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { useChartTheme, type ChartTheme } from "@/lib/use-chart-theme";
 
 interface Materia {
   nome: string;
@@ -22,13 +23,14 @@ interface Props {
   materias: Materia[];
 }
 
-function getBarColor(taxa: number): string {
-  if (taxa >= 70) return "#16a34a";
-  if (taxa >= 50) return "#d97706";
-  return "#dc2626";
+function getBarColor(taxa: number, t: ChartTheme): string {
+  if (taxa >= 70) return t.series.positive;
+  if (taxa >= 50) return t.series.warning;
+  return t.series.negative;
 }
 
 export default function GraficoMaterias({ materias }: Props) {
+  const t = useChartTheme();
   const dados = materias
     .filter((m) => m.n_feitas > 0)
     .map((m) => ({
@@ -52,26 +54,27 @@ export default function GraficoMaterias({ materias }: Props) {
             type="number"
             domain={[0, 100]}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 10 }}
+            tick={{ fontSize: 10, fill: t.axis }}
           />
           <YAxis
             type="category"
             dataKey="nome"
             width={150}
-            tick={{ fontSize: 10 }}
+            tick={{ fontSize: 10, fill: t.axis }}
           />
           <Tooltip
+            {...t.tooltipProps}
             formatter={(value, _name, props) => {
               const p = props.payload;
               const suffix = !p.amostra_suficiente ? " (insuf.)" : "";
               return [`${value}% (${p.n_acertos}/${p.n_feitas})${suffix}`, p.nomeCompleto];
             }}
           />
-          <Bar dataKey="taxa" radius={[0, 4, 4, 0]}>
+          <Bar dataKey="taxa" radius={[0, 4, 4, 0]} isAnimationActive={false}>
             {dados.map((entry, i) => (
               <Cell
                 key={i}
-                fill={entry.amostra_suficiente ? getBarColor(entry.taxa) : "#9ca3af"}
+                fill={entry.amostra_suficiente ? getBarColor(entry.taxa, t) : t.series.neutral}
               />
             ))}
           </Bar>

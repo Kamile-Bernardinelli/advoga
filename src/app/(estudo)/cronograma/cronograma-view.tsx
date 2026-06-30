@@ -5,6 +5,7 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
+import { CalendarDays, Check } from "lucide-react";
 import { marcarBlocoFeito } from "@/app/(estudo)/_actions/cronograma.actions";
 import type { CronogramaBloco, BlocoStatus } from "@/lib/types/domain";
 
@@ -64,17 +65,14 @@ function BlocoCard({ bloco, onStatusChange }: BlocoCardProps) {
           onClick={handleMarcar}
           disabled={isPending}
           aria-label={isFeito ? "Marcar como pendente" : "Marcar como feito"}
-          className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
+          aria-pressed={isFeito}
+          className={`relative w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors before:absolute before:-inset-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
             isFeito
               ? "border-green-500 bg-green-500"
               : "border-border bg-card hover:border-ring"
           } ${isPending ? "opacity-50 cursor-wait" : "cursor-pointer"}`}
         >
-          {isFeito && (
-            <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-          )}
+          {isFeito && <Check className="w-3 h-3 text-white" strokeWidth={3} aria-hidden />}
         </button>
 
         {/* Conteúdo do bloco */}
@@ -95,7 +93,7 @@ function BlocoCard({ bloco, onStatusChange }: BlocoCardProps) {
           {bloco.tipo === "questoes" && bloco.subtemaId && (
             <Link
               href={`/treino?subtema=${bloco.subtemaId}`}
-              className="inline-block mt-1 text-xs text-purple-700 dark:text-purple-300 underline underline-offset-2 hover:text-purple-900"
+              className="mt-1 inline-flex min-h-9 items-center rounded text-xs text-purple-700 underline underline-offset-2 transition-colors hover:text-purple-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:text-purple-300 dark:hover:text-purple-200"
             >
               Treinar questões
             </Link>
@@ -156,10 +154,14 @@ interface CronogramaViewProps {
 export function CronogramaView({ blocos, onStatusChange }: CronogramaViewProps) {
   if (blocos.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-border bg-muted p-8 text-center text-muted-foreground text-sm">
-        Nenhum bloco de estudo agendado para esta semana.
-        <br />
-        Informe as horas disponíveis e gere o roteiro.
+      <div className="flex flex-col items-center rounded-xl border border-dashed border-border bg-muted p-8 text-center">
+        <CalendarDays className="mb-3 size-8 text-muted-foreground" aria-hidden />
+        <p className="text-sm font-medium text-foreground">
+          Nenhum bloco de estudo agendado para esta semana.
+        </p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Informe as horas disponíveis acima e gere o roteiro.
+        </p>
       </div>
     );
   }

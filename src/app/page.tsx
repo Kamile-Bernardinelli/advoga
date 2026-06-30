@@ -43,9 +43,9 @@ export default function HomePage() {
   return (
     <AppShell>
       <div className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center p-8">
-      {/* Countdown */}
+      {/* Countdown — número em accent de marca (identidade na home, §4 home punch list) */}
       <section className="mb-10 text-center">
-        <div className="text-6xl font-bold tabular-nums text-foreground">
+        <div className="text-6xl font-bold tabular-nums text-primary">
           {diasRestantes}
         </div>
         <div className="text-lg text-muted-foreground mt-1">
@@ -59,7 +59,7 @@ export default function HomePage() {
           <Link
             key={a.href}
             href={a.href}
-            className={`rounded-xl border p-6 transition-colors ${a.cor}`}
+            className={`rounded-xl border p-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-safe:active:translate-y-px ${a.cor}`}
           >
             <h2 className="text-xl font-semibold text-foreground">{a.nome}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{a.descricao}</p>

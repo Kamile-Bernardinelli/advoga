@@ -108,7 +108,7 @@ function HeaderAderencia({ aderencia, hoje, onOverrideSet }: HeaderAderenciaProp
               <button
                 type="button"
                 onClick={() => setEditandoMeta(true)}
-                className="text-xs text-blue-600 dark:text-blue-400 underline underline-offset-2 hover:text-blue-800"
+                className="rounded text-xs text-blue-600 underline underline-offset-2 transition-colors hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:text-blue-400 dark:hover:text-blue-300"
               >
                 ajustar
               </button>
@@ -263,7 +263,7 @@ function BlocoCard({ bloco, onStatusChange, onLogged }: BlocoCardProps) {
           {bloco.tipo === "questoes" && (
             <Link
               href={bloco.subtemaId ? `/treino?subtema=${bloco.subtemaId}` : "/treino"}
-              className="inline-block mt-2 text-xs text-purple-700 dark:text-purple-300 underline underline-offset-2 hover:text-purple-900"
+              className="mt-2 inline-flex min-h-9 items-center rounded text-xs text-purple-700 underline underline-offset-2 transition-colors hover:text-purple-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:text-purple-300 dark:hover:text-purple-200"
             >
               {bloco.subtemaNome ? "Treinar questões deste subtema" : "Ir para treino de questões"}
             </Link>
